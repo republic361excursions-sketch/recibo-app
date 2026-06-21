@@ -221,7 +221,6 @@
 
         .qr-info span { font-weight: 600; color: #1a2a4a; }
 
-        /* ===== BOTONES (SOLO VISIBLES PARA ADMIN) ===== */
         .acciones-recibo {
             display: none;
             flex-wrap: wrap;
@@ -286,45 +285,104 @@
 
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
-            <div class="fila"><span class="label">Factura / Reserva</span><span class="valor"><%= idFactura %></span></div>
-            <div class="fila"><span class="label">Cliente</span><span class="valor"><%= cliente %></span></div>
+
+            <div class="fila">
+                <span class="label">Factura / Reserva</span>
+                <span class="valor"><%= idFactura %></span>
+            </div>
+            <div class="fila">
+                <span class="label">Cliente</span>
+                <span class="valor"><%= cliente %></span>
+            </div>
             <% if (whatsapp) { %>
-            <div class="fila"><span class="label">WhatsApp</span><span class="valor"><%= whatsapp %></span></div>
+            <div class="fila">
+                <span class="label">WhatsApp</span>
+                <span class="valor"><%= whatsapp %></span>
+            </div>
             <% } %>
             <% if (correo) { %>
-            <div class="fila"><span class="label">Correo Electrónico</span><span class="valor"><%= correo %></span></div>
+            <div class="fila">
+                <span class="label">Correo Electrónico</span>
+                <span class="valor"><%= correo %></span>
+            </div>
             <% } %>
-            <% if (hotel) { %>
-            <div class="fila"><span class="label">Hotel</span><span class="valor"><%= hotel %></span></div>
-            <% } %>
-            <% if (habitacion) { %>
-            <div class="fila"><span class="label">Habitación</span><span class="valor"><%= habitacion %></span></div>
-            <% } %>
-            <div class="fila"><span class="label">Excursión</span><span class="valor"><%= excursion %></span></div>
-            <div class="fila"><span class="label">Fecha</span><span class="valor"><%= fechaExcursion %></span></div>
-            <div class="fila"><span class="label">Personas</span><span class="valor"><%= adultos %> Adultos, <%= ninos %> Niños</span></div>
-            <div class="fila"><span class="label">Transporte</span><span class="valor"><%= transporte %></span></div>
-            <div class="fila"><span class="label">Método de Pago</span><span class="valor"><%= metodoPago %></span></div>
+            <div class="fila">
+                <span class="label">Recogida</span>
+                <span class="valor"><%= hotel %></span>
+            </div>
+            <div class="fila">
+                <span class="label">Habitación</span>
+                <span class="valor"><%= habitacion %></span>
+            </div>
+            <div class="fila">
+                <span class="label">Excursión</span>
+                <span class="valor"><%= excursion %></span>
+            </div>
+            <div class="fila">
+                <span class="label">Fecha</span>
+                <span class="valor"><%= fechaExcursion %></span>
+            </div>
+            <div class="fila">
+                <span class="label">Personas</span>
+                <span class="valor"><%= adultos %> Adultos, <%= ninos %> Niños</span>
+            </div>
+            <div class="fila">
+                <span class="label">Transporte</span>
+                <span class="valor"><%= transporte %></span>
+            </div>
+            <div class="fila">
+                <span class="label">Método de Pago</span>
+                <span class="valor"><%= metodoPago %></span>
+            </div>
             <% if (notas && notas !== 'Sin notas adicionales') { %>
-            <div class="fila"><span class="label">Notas</span><span class="valor"><%= notas %></span></div>
+            <div class="fila">
+                <span class="label">Notas</span>
+                <span class="valor"><%= notas %></span>
+            </div>
             <% } %>
         </div>
 
         <table class="tabla">
-            <thead><tr><th>Concepto</th><th class="monto">Monto (USD)</th></tr></thead>
+            <thead>
+                <tr>
+                    <th>Concepto</th>
+                    <th class="monto">Monto (USD)</th>
+                </tr>
+            </thead>
             <tbody>
-                <tr><td><strong><%= excursion %></strong></td><td class="monto"></td></tr>
-                <tr><td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td><td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td></tr>
+                <tr>
+                    <td><strong><%= excursion %></strong></td>
+                    <td class="monto"></td>
+                </tr>
+                <tr>
+                    <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
+                    <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
+                </tr>
                 <% if (ninos > 0) { %>
-                <tr><td>Niños: <%= ninos %> × $<%= precioNino.toFixed(2) %></td><td class="monto">$<%= (ninos * precioNino).toFixed(2) %></td></tr>
+                <tr>
+                    <td>Niños: <%= ninos %> × $<%= precioNino.toFixed(2) %></td>
+                    <td class="monto">$<%= (ninos * precioNino).toFixed(2) %></td>
+                </tr>
                 <% } %>
-                <tr><td><strong>Subtotal</strong></td><td class="monto total">$<%= subtotal.toFixed(2) %></td></tr>
+                <tr>
+                    <td><strong>Subtotal</strong></td>
+                    <td class="monto total">$<%= subtotal.toFixed(2) %></td>
+                </tr>
                 <% if (descuento > 0) { %>
-                <tr><td style="color:#27ae60;"><strong>Descuento</strong></td><td class="monto">-$<%= descuento.toFixed(2) %></td></tr>
-                <tr><td><strong>Total</strong></td><td class="monto total">$<%= total.toFixed(2) %></td></tr>
+                <tr>
+                    <td style="color:#27ae60;"><strong>Descuento</strong></td>
+                    <td class="monto">-$<%= descuento.toFixed(2) %></td>
+                </tr>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td class="monto total">$<%= total.toFixed(2) %></td>
+                </tr>
                 <% } %>
                 <% if (depositoPagado > 0 && totalPendiente > 0) { %>
-                <tr><td>Depósito Pagado (25%)</td><td class="monto">$<%= depositoPagado.toFixed(2) %></td></tr>
+                <tr>
+                    <td>Depósito Pagado (25%)</td>
+                    <td class="monto">$<%= depositoPagado.toFixed(2) %></td>
+                </tr>
                 <% } %>
             </tbody>
         </table>
@@ -338,18 +396,37 @@
         <% } %>
 
         <div class="resumen-pago">
-            <div class="fila"><span class="label">Subtotal</span><span class="value">$<%= subtotal.toFixed(2) %></span></div>
+            <div class="fila">
+                <span class="label">Subtotal</span>
+                <span class="value">$<%= subtotal.toFixed(2) %></span>
+            </div>
             <% if (descuento > 0) { %>
-            <div class="fila"><span class="label">Descuento</span><span class="value" style="color:#27ae60;">-$<%= descuento.toFixed(2) %></span></div>
-            <div class="fila"><span class="label">Total</span><span class="value">$<%= total.toFixed(2) %></span></div>
+            <div class="fila">
+                <span class="label">Descuento</span>
+                <span class="value" style="color:#27ae60;">-$<%= descuento.toFixed(2) %></span>
+            </div>
+            <div class="fila">
+                <span class="label">Total</span>
+                <span class="value">$<%= total.toFixed(2) %></span>
+            </div>
             <% } %>
             <% if (depositoPagado > 0 && totalPendiente > 0) { %>
-            <div class="fila"><span class="label">Depósito Pagado</span><span class="value">$<%= depositoPagado.toFixed(2) %></span></div>
+            <div class="fila">
+                <span class="label">Depósito Pagado</span>
+                <span class="value">$<%= depositoPagado.toFixed(2) %></span>
+            </div>
             <% } %>
-            <div class="fila total"><span class="label">Balance Pendiente</span><span class="value pendiente <%= totalPendiente === 0 ? 'pagado' : '' %>">$<%= totalPendiente.toFixed(2) %></span></div>
+            <div class="fila total">
+                <span class="label">Balance Pendiente</span>
+                <span class="value pendiente <%= totalPendiente === 0 ? 'pagado' : '' %>">
+                    $<%= totalPendiente.toFixed(2) %>
+                </span>
+            </div>
         </div>
 
-        <div class="qr-info"><span>Documento de verificación</span> &mdash; Código <%= numeroRecibo %></div>
+        <div class="qr-info">
+            <span>Documento de verificación</span> &mdash; Código <%= numeroRecibo %>
+        </div>
 
         <div class="footer">
             <p class="empresa">Republic Excursions</p>
@@ -359,7 +436,6 @@
         </div>
     </div>
 
-    <!-- ===== BOTONES: SOLO SE RENDERIZAN SI mostrarBotones = true ===== -->
     <% if (mostrarBotones) { %>
     <div class="acciones-recibo visible">
         <button class="btn-accion imagen" onclick="descargarImagen()">Descargar Imagen</button>
