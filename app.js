@@ -15,7 +15,7 @@ app.get('/ver-recibo', (req, res) => {
     const { 
         id, recibo, cliente, excursion, 
         adultos, ninos, precioAdulto, precioNino,
-        subtotal, deposito, estado, metodoPago,
+        subtotal, descuento, total, deposito, estado, metodoPago,
         whatsapp, correo, hotel, habitacion, transporte, notas, fechaExcursion
     } = req.query;
 
@@ -28,8 +28,10 @@ app.get('/ver-recibo', (req, res) => {
     const precioAdultoNum = parseFloat(precioAdulto) || 75;
     const precioNinoNum = parseFloat(precioNino) || 0;
     const subtotalNum = parseFloat(subtotal) || ((numAdultos * precioAdultoNum) + (numNinos * precioNinoNum));
+    const descuentoNum = parseFloat(descuento) || 0;
+    const totalNum = parseFloat(total) || (subtotalNum - descuentoNum);
     const depositoNum = parseFloat(deposito) || 0;
-    const totalPendiente = subtotalNum - depositoNum;
+    const totalPendiente = totalNum - depositoNum;
 
     const datos = {
         idFactura: id,
@@ -41,6 +43,8 @@ app.get('/ver-recibo', (req, res) => {
         precioAdulto: precioAdultoNum,
         precioNino: precioNinoNum,
         subtotal: subtotalNum,
+        descuento: descuentoNum,
+        total: totalNum,
         depositoPagado: depositoNum,
         totalPendiente: totalPendiente,
         metodoPago: metodoPago || 'Efectivo',
