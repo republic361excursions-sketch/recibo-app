@@ -46,7 +46,6 @@
             font-size: 14px;
             margin-top: 5px;
         }
-        
         .info-cliente {
             background: #f8f9fa;
             padding: 15px 20px;
@@ -82,21 +81,6 @@
             text-align: right;
             font-size: 13px;
         }
-
-        .estado-pago {
-            text-align: center;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 20px 0;
-            border: 2px solid #28a745;
-            background: #d4edda;
-        }
-        .estado-pago .texto {
-            font-size: 20px;
-            font-weight: 700;
-            color: #155724;
-        }
-
         .tabla {
             width: 100%;
             border-collapse: collapse;
@@ -122,7 +106,9 @@
             font-weight: 700;
             font-size: 16px;
         }
-
+        .tabla .descuento {
+            color: #28a745;
+        }
         .balance-pendiente {
             text-align: center;
             font-size: 20px;
@@ -146,7 +132,6 @@
             color: #856404;
             font-weight: 600;
         }
-
         .mensaje-falta-pagar {
             text-align: center;
             padding: 18px;
@@ -168,7 +153,19 @@
         .mensaje-falta-pagar .monto {
             font-size: 28px;
         }
-
+        .estado-pago {
+            text-align: center;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border: 2px solid #28a745;
+            background: #d4edda;
+        }
+        .estado-pago .texto {
+            font-size: 20px;
+            font-weight: 700;
+            color: #155724;
+        }
         .resumen-pago {
             background: #f8f9fa;
             padding: 15px;
@@ -204,7 +201,9 @@
             margin-top: 5px;
             font-size: 16px;
         }
-
+        .resumen-pago .fila.descuento .value {
+            color: #28a745;
+        }
         .footer {
             text-align: center;
             margin-top: 20px;
@@ -218,7 +217,6 @@
             font-weight: 700;
             font-size: 12px;
         }
-
         .qr-info {
             text-align: center;
             margin: 15px 0;
@@ -232,11 +230,9 @@
             font-weight: 700;
             color: #1a3c6e;
         }
-
         @media print {
             body { background: white; padding: 0; }
             .recibo { box-shadow: none; border: 1px solid #ddd; }
-            .no-print { display: none; }
         }
     </style>
 </head>
@@ -249,7 +245,7 @@
         </div>
 
         <div class="info-cliente">
-            <div class="titulo">Datos de la Reserva</div>
+            <div class="titulo">DATOS DE LA RESERVA</div>
             <div class="fila">
                 <span class="label">Factura / Reserva:</span>
                 <span class="valor"><%= idFactura %></span>
@@ -336,6 +332,16 @@
                     <td><strong>Subtotal</strong></td>
                     <td class="monto"><strong>$<%= subtotal.toFixed(2) %></strong></td>
                 </tr>
+                <% if (descuento > 0) { %>
+                <tr>
+                    <td style="color: #28a745;"><strong>Descuento</strong></td>
+                    <td class="monto" style="color: #28a745;">-$<%= descuento.toFixed(2) %></td>
+                </tr>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td class="monto"><strong>$<%= total.toFixed(2) %></strong></td>
+                </tr>
+                <% } %>
                 <% if (depositoPagado > 0 && totalPendiente > 0) { %>
                 <tr>
                     <td>Depósito Pagado (25%)</td>
@@ -358,7 +364,7 @@
             </div>
         <% } else { %>
             <div class="mensaje-falta-pagar pagado">
-                TODO PAGADO - Saldo: $0.00
+                TODO PAGADO
             </div>
         <% } %>
 
@@ -373,6 +379,16 @@
                 <span class="label">Subtotal</span>
                 <span class="value">$<%= subtotal.toFixed(2) %></span>
             </div>
+            <% if (descuento > 0) { %>
+            <div class="fila descuento">
+                <span class="label">Descuento</span>
+                <span class="value">-$<%= descuento.toFixed(2) %></span>
+            </div>
+            <div class="fila">
+                <span class="label">Total</span>
+                <span class="value">$<%= total.toFixed(2) %></span>
+            </div>
+            <% } %>
             <% if (depositoPagado > 0 && totalPendiente > 0) { %>
             <div class="fila">
                 <span class="label">Depósito Pagado</span>
