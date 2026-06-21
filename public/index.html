@@ -337,7 +337,6 @@
             background: #2c3e6e;
         }
 
-        /* ===== IDIOMAS ===== */
         .lang-es { display: block; }
         .lang-en { display: none; }
         body.english .lang-es { display: none; }
@@ -759,7 +758,8 @@
                 fechaExcursion: fechaExcursion
             });
 
-            const enlace = base + '?' + params.toString();
+            // ✅ ESTA ES LA LÍNEA CLAVE - AGREGA admin=true
+            const enlace = base + '?' + params.toString() + '&admin=true';
 
             document.getElementById('enlaceGenerado').textContent = enlace;
             document.getElementById('verRecibo').href = enlace;
