@@ -17,7 +17,7 @@
         }
         .container {
             background: white;
-            max-width: 800px;
+            max-width: 850px;
             width: 100%;
             padding: 40px;
             border-radius: 20px;
@@ -26,12 +26,14 @@
         h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            font-size: 28px;
         }
         .subtitulo {
             text-align: center;
             color: #666;
             margin-bottom: 30px;
+            font-size: 16px;
         }
         .form-group {
             margin-bottom: 15px;
@@ -41,13 +43,15 @@
             font-weight: 600;
             color: #555;
             margin-bottom: 5px;
+            font-size: 14px;
         }
         .form-group input, .form-group select {
             width: 100%;
-            padding: 10px;
+            padding: 10px 12px;
             border: 2px solid #e9ecef;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
+            transition: border 0.3s;
         }
         .form-group input:focus, .form-group select:focus {
             border-color: #667eea;
@@ -71,6 +75,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
+            margin-top: 10px;
         }
         .btn:hover {
             background: #5563c1;
@@ -82,9 +87,15 @@
             background: #f8f9fa;
             border-radius: 12px;
             display: none;
+            border: 2px solid #28a745;
         }
         .resultado.visible {
             display: block;
+        }
+        .resultado h3 {
+            color: #28a745;
+            margin-bottom: 15px;
+            text-align: center;
         }
         .resultado .enlace {
             word-break: break-all;
@@ -92,18 +103,19 @@
             padding: 15px;
             border-radius: 8px;
             border: 1px solid #e9ecef;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 15px;
         }
         .resultado .qr-container {
             text-align: center;
-            margin: 20px 0;
+            margin: 15px 0;
         }
         .resultado .qr-container img {
-            max-width: 200px;
+            max-width: 180px;
             border: 2px solid #e9ecef;
             border-radius: 12px;
             padding: 10px;
+            background: white;
         }
         .btn-copiar {
             background: #28a745;
@@ -113,7 +125,6 @@
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            margin-right: 10px;
         }
         .btn-copiar:hover {
             background: #218838;
@@ -130,33 +141,37 @@
         .btn-qr:hover {
             background: #e0a800;
         }
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-whatsapp:hover {
+            background: #1da851;
+        }
         .estado-options {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
+            padding-top: 5px;
         }
         .estado-options label {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             font-weight: normal;
             cursor: pointer;
+            font-size: 14px;
         }
         .estado-options input[type="radio"] {
             width: auto;
-        }
-        .whatsapp-btn {
-            display: inline-block;
-            background: #25D366;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        .whatsapp-btn:hover {
-            background: #1da851;
+            margin: 0;
         }
         .acciones {
             display: flex;
@@ -164,6 +179,28 @@
             gap: 10px;
             justify-content: center;
             margin-top: 15px;
+        }
+        .btn-ver-recibo {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+        }
+        .btn-ver-recibo:hover {
+            background: #5563c1;
+        }
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .container {
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -173,41 +210,57 @@
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
         <form id="formRecibo">
-            <!-- Datos del Cliente -->
+            <!-- ====== DATOS DE LA RESERVA ====== -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>ID / Código de Reserva *</label>
+                    <label>🔑 ID / Código de Reserva *</label>
                     <input type="text" id="id" placeholder="Ej: BUG-5198" required>
                 </div>
                 <div class="form-group">
-                    <label>Número de Recibo *</label>
+                    <label>🧾 Número de Recibo *</label>
                     <input type="text" id="recibo" placeholder="Ej: REC-20260621-4028" required>
                 </div>
             </div>
 
+            <!-- ====== DATOS DEL CLIENTE ====== -->
             <div class="form-group">
-                <label>Cliente *</label>
+                <label>👤 Cliente *</label>
                 <input type="text" id="cliente" placeholder="Nombre completo" required>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label>WhatsApp</label>
+                    <label>📱 WhatsApp</label>
                     <input type="text" id="whatsapp" placeholder="Ej: 8098412221">
                 </div>
                 <div class="form-group">
-                    <label>Correo</label>
+                    <label>📧 Correo</label>
                     <input type="email" id="correo" placeholder="correo@ejemplo.com">
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Hotel</label>
+                <label>🏨 Hotel</label>
                 <input type="text" id="hotel" placeholder="Ej: Riu Bavaro">
             </div>
 
+            <div class="form-row">
+                <div class="form-group">
+                    <label>✈️ Transporte</label>
+                    <select id="transporte">
+                        <option value="Sí">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>📅 Fecha de la Excursión</label>
+                    <input type="date" id="fechaExcursion">
+                </div>
+            </div>
+
+            <!-- ====== EXCURSIÓN ====== -->
             <div class="form-group">
-                <label>Excursión *</label>
+                <label>🏝️ Excursión *</label>
                 <select id="excursion" required>
                     <option value="">Selecciona una excursión...</option>
                     <option value="Buggys + Playa Macao">Buggys + Playa Macao</option>
@@ -220,37 +273,49 @@
                     <option value="Zipline Adventure">Zipline Adventure</option>
                     <option value="Dune Buggy Excursion">Dune Buggy Excursion</option>
                     <option value="Catamaran Party">Catamaran Party</option>
+                    <!-- ✅ AGREGAR NUEVAS EXCURSIONES AQUÍ -->
+                    <option value="Isla Saona Premium">Isla Saona Premium</option>
+                    <option value="Dolphin Swim Adventure">Dolphin Swim Adventure</option>
+                    <option value="Buggy Extreme">Buggy Extreme</option>
+                    <option value="Speed Boat Adventure">Speed Boat Adventure</option>
                 </select>
             </div>
 
+            <!-- ====== PERSONAS ====== -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Adultos *</label>
+                    <label>👨 Adultos *</label>
                     <input type="number" id="adultos" value="1" min="1" required>
                 </div>
                 <div class="form-group">
-                    <label>Niños</label>
+                    <label>👶 Niños</label>
                     <input type="number" id="ninos" value="0" min="0">
                 </div>
                 <div class="form-group">
-                    <label>Precio por Adulto (USD) *</label>
+                    <label>💰 Precio por Adulto (USD) *</label>
                     <input type="number" id="precioAdulto" value="45" min="0" step="0.01" required>
                 </div>
             </div>
 
+            <!-- ====== FINANCIERO ====== -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Subtotal (USD)</label>
-                    <input type="number" id="subtotal" value="270" min="0" step="0.01">
+                    <label>💵 Subtotal (USD)</label>
+                    <input type="number" id="subtotal" value="45" min="0" step="0.01">
                 </div>
                 <div class="form-group">
-                    <label>Depósito Pagado (USD)</label>
-                    <input type="number" id="deposito" value="67.50" min="0" step="0.01">
+                    <label>🏦 Depósito Pagado (USD)</label>
+                    <input type="number" id="deposito" value="11.25" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>💲 Total Pagado (USD)</label>
+                    <input type="number" id="totalPagado" value="0" min="0" step="0.01">
                 </div>
             </div>
 
+            <!-- ====== ESTADO ====== -->
             <div class="form-group">
-                <label>Estado de Pago *</label>
+                <label>📌 Estado de Pago *</label>
                 <div class="estado-options">
                     <label><input type="radio" name="estado" value="deposito" checked> 💳 Depósito (25%)</label>
                     <label><input type="radio" name="estado" value="completo"> ✅ Pago Completo</label>
@@ -258,21 +323,29 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Método de Pago</label>
-                <select id="metodoPago">
-                    <option value="Efectivo">Efectivo</option>
-                    <option value="PayPal">PayPal</option>
-                    <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
-                    <option value="Transferencia Bancaria">Transferencia Bancaria</option>
-                </select>
+            <!-- ====== MÉTODO DE PAGO ====== -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>💳 Método de Pago</label>
+                    <select id="metodoPago">
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="PayPal">PayPal</option>
+                        <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+                        <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>📝 Notas Adicionales</label>
+                    <input type="text" id="notas" placeholder="Ej: Sin notas adicionales">
+                </div>
             </div>
 
             <button type="submit" class="btn">🚀 Generar Recibo</button>
         </form>
 
+        <!-- ====== RESULTADO ====== -->
         <div id="resultado" class="resultado">
-            <h3>✅ Recibo Generado</h3>
+            <h3>✅ Recibo Generado Exitosamente</h3>
             
             <div class="qr-container">
                 <img id="qrImg" src="" alt="QR Code">
@@ -283,26 +356,53 @@
             <div class="acciones">
                 <button class="btn-copiar" onclick="copiarEnlace()">📋 Copiar Enlace</button>
                 <button class="btn-qr" onclick="descargarQR()">📱 Descargar QR</button>
-                <a id="whatsappLink" href="#" target="_blank" class="whatsapp-btn">📲 Enviar por WhatsApp</a>
+                <a id="whatsappLink" href="#" target="_blank" class="btn-whatsapp">📲 Enviar por WhatsApp</a>
             </div>
 
-            <div style="margin-top: 15px;">
-                <a id="verRecibo" href="#" target="_blank" class="btn" style="display: inline-block; text-align: center; text-decoration: none;">🧾 Ver Recibo</a>
+            <div style="text-align: center; margin-top: 15px;">
+                <a id="verRecibo" href="#" target="_blank" class="btn-ver-recibo">🧾 Ver Recibo</a>
+            </div>
+
+            <div style="text-align: center; margin-top: 10px; font-size: 12px; color: #888;">
+                El recibo también se ha guardado en Google Sheets
             </div>
         </div>
     </div>
 
     <script>
+        // ====== GENERAR CÓDIGOS AUTOMÁTICAMENTE ======
+        document.addEventListener('DOMContentLoaded', function() {
+            const hoy = new Date();
+            const fechaStr = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
+            document.getElementById('recibo').value = 'REC-' + fechaStr + '-' + Math.floor(Math.random() * 9000 + 1000);
+            document.getElementById('id').value = 'BUG-' + Math.floor(Math.random() * 9000 + 1000);
+            
+            // Fecha por defecto: hoy + 7 días
+            const semana = new Date();
+            semana.setDate(semana.getDate() + 7);
+            document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
+        });
+
+        // ====== CALCULAR SUBTOTAL ======
+        document.getElementById('adultos').addEventListener('input', calcularSubtotal);
+        document.getElementById('precioAdulto').addEventListener('input', calcularSubtotal);
+
+        function calcularSubtotal() {
+            const adultos = parseInt(document.getElementById('adultos').value) || 0;
+            const precio = parseFloat(document.getElementById('precioAdulto').value) || 0;
+            const subtotal = adultos * precio;
+            document.getElementById('subtotal').value = subtotal.toFixed(2);
+            const deposito = subtotal * 0.25;
+            document.getElementById('deposito').value = deposito.toFixed(2);
+        }
+
+        // ====== ENVIAR FORMULARIO ======
         document.getElementById('formRecibo').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // Obtener valores
             const id = document.getElementById('id').value;
             const recibo = document.getElementById('recibo').value;
             const cliente = document.getElementById('cliente').value;
-            const whatsapp = document.getElementById('whatsapp').value;
-            const correo = document.getElementById('correo').value;
-            const hotel = document.getElementById('hotel').value;
             const excursion = document.getElementById('excursion').value;
             const adultos = document.getElementById('adultos').value;
             const ninos = document.getElementById('ninos').value;
@@ -311,14 +411,20 @@
             const deposito = document.getElementById('deposito').value;
             const estado = document.querySelector('input[name="estado"]:checked').value;
             const metodoPago = document.getElementById('metodoPago').value;
+            const whatsapp = document.getElementById('whatsapp').value || '';
+            const correo = document.getElementById('correo').value || '';
+            const hotel = document.getElementById('hotel').value || '';
+            const transporte = document.getElementById('transporte').value || 'Sí';
+            const notas = document.getElementById('notas').value || 'Sin notas adicionales';
+            const totalPagado = document.getElementById('totalPagado').value || '0';
+            const fechaExcursion = document.getElementById('fechaExcursion').value || '';
 
-            // Validar campos obligatorios
             if (!id || !recibo || !cliente || !excursion || !adultos || !precioAdulto) {
-                alert('Por favor, completa todos los campos obligatorios (*)');
+                alert('⚠️ Por favor, completa todos los campos obligatorios (*)');
                 return;
             }
 
-            // Construir enlace
+            // ====== CONSTRUIR ENLACE ======
             const base = 'https://recibo-app.vercel.app/ver-recibo';
             const params = new URLSearchParams({
                 id: id,
@@ -331,17 +437,19 @@
                 subtotal: subtotal,
                 deposito: deposito,
                 estado: estado,
-                metodoPago: metodoPago
+                metodoPago: metodoPago,
+                whatsapp: whatsapp,
+                correo: correo,
+                hotel: hotel,
+                transporte: transporte,
+                notas: notas,
+                totalPagado: totalPagado,
+                fechaExcursion: fechaExcursion
             });
-
-            // Agregar campos opcionales si existen
-            if (whatsapp) params.append('whatsapp', whatsapp);
-            if (correo) params.append('correo', correo);
-            if (hotel) params.append('hotel', hotel);
 
             const enlace = base + '?' + params.toString();
 
-            // Mostrar enlace
+            // ====== MOSTRAR RESULTADO ======
             document.getElementById('enlaceGenerado').textContent = enlace;
             document.getElementById('verRecibo').href = enlace;
 
@@ -349,52 +457,59 @@
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(enlace)}&size=200x200`;
             document.getElementById('qrImg').src = qrUrl;
 
-            // Enlace de WhatsApp
+            // WhatsApp
             const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlace}`;
             document.getElementById('whatsappLink').href = `https://wa.me/1${whatsapp ? '?text=' + encodeURIComponent(mensaje) : '?text=' + encodeURIComponent(mensaje)}`;
 
-            // Mostrar resultado
             document.getElementById('resultado').classList.add('visible');
+
+            // ====== GUARDAR EN GOOGLE SHEETS ======
+            const datos = {
+                id, recibo, cliente, excursion,
+                adultos, ninos, precioAdulto, subtotal, deposito,
+                estado, metodoPago, whatsapp, correo, hotel,
+                transporte, notas, totalPagado, fechaExcursion
+            };
+
+            // URL de Google Apps Script (CAMBIA ESTA URL POR LA TUYA)
+            const googleScriptURL = 'https://script.google.com/macros/s/TU_ID_AQUI/exec';
+            
+            fetch(googleScriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            }).catch(() => console.log('Datos enviados a Google Sheets'));
         });
 
+        // ====== COPIAR ENLACE ======
         function copiarEnlace() {
             const enlace = document.getElementById('enlaceGenerado').textContent;
             navigator.clipboard.writeText(enlace).then(() => {
                 alert('✅ Enlace copiado al portapapeles');
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = enlace;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('✅ Enlace copiado al portapapeles');
             });
         }
 
+        // ====== DESCARGAR QR ======
         function descargarQR() {
             const qrImg = document.getElementById('qrImg');
             const link = document.createElement('a');
-            link.download = 'recibo-qr.png';
+            link.download = 'recibo-qr-' + document.getElementById('id').value + '.png';
             link.href = qrImg.src;
             link.click();
         }
 
-        // Calcular subtotal automáticamente
-        document.getElementById('adultos').addEventListener('input', calcularSubtotal);
-        document.getElementById('precioAdulto').addEventListener('input', calcularSubtotal);
-
-        function calcularSubtotal() {
-            const adultos = parseInt(document.getElementById('adultos').value) || 0;
-            const precio = parseFloat(document.getElementById('precioAdulto').value) || 0;
-            const subtotal = adultos * precio;
-            document.getElementById('subtotal').value = subtotal.toFixed(2);
-
-            // Calcular depósito automático (25%)
-            const deposito = subtotal * 0.25;
-            document.getElementById('deposito').value = deposito.toFixed(2);
-        }
-
-        // Calcular al cargar
+        // ====== CALCULAR AL CARGAR ======
         calcularSubtotal();
-
-        // Generar recibo automático al cargar
-        document.getElementById('id').value = 'BUG-' + Math.floor(Math.random() * 9000 + 1000);
-        const hoy = new Date();
-        const fechaStr = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
-        document.getElementById('recibo').value = 'REC-' + fechaStr + '-' + Math.floor(Math.random() * 9000 + 1000);
     </script>
 </body>
 </html>
