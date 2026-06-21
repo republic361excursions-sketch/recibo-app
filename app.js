@@ -3,33 +3,26 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configurar EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-// Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Ruta principal: muestra el formulario
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Ruta para ver el recibo
 app.get('/ver-recibo', (req, res) => {
     const { 
         id, recibo, cliente, excursion, 
         adultos, ninos, precioAdulto, precioNino,
         subtotal, deposito, estado, metodoPago,
-        whatsapp, correo, hotel, transporte, notas, totalPagado, fechaExcursion
+        whatsapp, correo, hotel, habitacion, transporte, notas, totalPagado, fechaExcursion
     } = req.query;
 
-    // Validar parámetros obligatorios
     if (!id || !recibo) {
-        return res.status(400).send('❌ Faltan parámetros obligatorios: id y recibo');
+        return res.status(400).send('Faltan parámetros obligatorios: id y recibo');
     }
 
-    // Convertir valores numéricos
     const numAdultos = parseInt(adultos) || 1;
     const numNinos = parseInt(ninos) || 0;
     const precioAdultoNum = parseFloat(precioAdulto) || 75;
@@ -38,7 +31,6 @@ app.get('/ver-recibo', (req, res) => {
     const depositoNum = parseFloat(deposito) || 0;
     const totalPendiente = subtotalNum - depositoNum;
 
-    // Construir datos para la vista
     const datos = {
         idFactura: id,
         numeroRecibo: recibo,
@@ -55,6 +47,7 @@ app.get('/ver-recibo', (req, res) => {
         whatsapp: whatsapp || '',
         correo: correo || '',
         hotel: hotel || '',
+        habitacion: habitacion || '',
         transporte: transporte || 'Sí',
         notas: notas || 'Sin notas adicionales',
         totalPagado: totalPagado || '0',
@@ -67,7 +60,6 @@ app.get('/ver-recibo', (req, res) => {
         estado: estado || 'pendiente'
     };
 
-    // Determinar estado visual
     let estadoTexto = '';
     let estadoColor = '';
     let estadoReal = datos.estado;
@@ -78,19 +70,19 @@ app.get('/ver-recibo', (req, res) => {
 
     switch(estadoReal) {
         case 'completo':
-            estadoTexto = '✅ PAGADO COMPLETO';
+            estadoTexto = 'PAGADO COMPLETO';
             estadoColor = '#28a745';
             break;
         case 'deposito':
-            estadoTexto = '💳 DEPÓSITO PAGADO (25%)';
+            estadoTexto = 'DEPÓSITO PAGADO (25%)';
             estadoColor = '#ffc107';
             break;
         case 'pendiente':
-            estadoTexto = '⏳ PENDIENTE DE PAGO';
+            estadoTexto = 'PENDIENTE DE PAGO';
             estadoColor = '#dc3545';
             break;
         default:
-            estadoTexto = '❓ ESTADO DESCONOCIDO';
+            estadoTexto = 'ESTADO DESCONOCIDO';
             estadoColor = '#6c757d';
     }
 
@@ -102,5 +94,5 @@ app.get('/ver-recibo', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor en http://localhost:${PORT}`);
+    console.log(`Servidor en http://localhost:${PORT}`);
 });
