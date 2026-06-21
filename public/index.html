@@ -278,13 +278,13 @@
             <!-- BUSCADOR POR ID -->
             <div class="buscar-row">
                 <div class="form-group">
-                    <label>🔍 Buscar por ID / Código de Reserva</label>
+                    <label>Buscar por ID / Código de Reserva</label>
                     <input type="text" id="buscarId" placeholder="Ej: BUG-5198">
-                    <div class="mensaje-error" id="mensajeError">❌ No se encontró ninguna reserva con ese ID</div>
-                    <div class="encontrado" id="mensajeEncontrado">✅ Reserva encontrada. Los datos se han cargado automáticamente.</div>
+                    <div class="mensaje-error" id="mensajeError">No se encontró ninguna reserva con ese ID</div>
+                    <div class="encontrado" id="mensajeEncontrado">Reserva encontrada. Los datos se han cargado automáticamente.</div>
                 </div>
-                <button type="button" class="btn btn-buscar" id="btnBuscar">🔍 Buscar Reserva</button>
-                <span class="loading" id="loading">⏳ Cargando...</span>
+                <button type="button" class="btn btn-buscar" id="btnBuscar">Buscar Reserva</button>
+                <span class="loading" id="loading">Cargando...</span>
             </div>
 
             <!-- DATOS DE LA RESERVA -->
@@ -448,8 +448,8 @@
 
     <script>
         // ====== CONFIGURACIÓN ======
-        // URL de Google Apps Script - YA CONFIGURADA
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1XMDrVmQbwTWzLBuahgC9Wq7vGcqvhIm/exec';
+        // ✅ URL CORREGIDA DE GOOGLE APPS SCRIPT
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1XMDrVmQbwTWzLBuahgC9Wq7vGcqvhIm6t8hVKNRN1rUjQlAzx4wE63KSMU/exec';
 
         // ====== GENERAR CÓDIGOS AUTOMÁTICAMENTE ======
         document.addEventListener('DOMContentLoaded', function() {
@@ -484,7 +484,7 @@
             mensajeEncontrado.classList.remove('visible');
             
             if (!idBuscado) {
-                mensajeError.textContent = '⚠️ Por favor, escribe un ID para buscar.';
+                mensajeError.textContent = 'Por favor, escribe un ID para buscar.';
                 mensajeError.classList.add('visible');
                 return;
             }
@@ -503,17 +503,17 @@
                     if (data.success && data.resultados && data.resultados.length > 0) {
                         const reserva = data.resultados[0];
                         cargarDatosReserva(reserva);
-                        mensajeEncontrado.textContent = '✅ Reserva encontrada: ' + reserva.id + ' - ' + reserva.cliente;
+                        mensajeEncontrado.textContent = 'Reserva encontrada: ' + reserva.id + ' - ' + reserva.cliente;
                         mensajeEncontrado.classList.add('visible');
                     } else {
-                        mensajeError.textContent = '❌ No se encontró ninguna reserva con el ID: ' + idBuscado;
+                        mensajeError.textContent = 'No se encontró ninguna reserva con el ID: ' + idBuscado;
                         mensajeError.classList.add('visible');
                     }
                 })
                 .catch(error => {
                     loading.classList.remove('visible');
                     document.getElementById('btnBuscar').disabled = false;
-                    mensajeError.textContent = '❌ Error al conectar con Google Sheets. Verifica la URL.';
+                    mensajeError.textContent = 'Error al conectar con Google Sheets. Verifica la URL.';
                     mensajeError.classList.add('visible');
                     console.error('Error:', error);
                 });
@@ -693,7 +693,7 @@
                 habitacion, transporte, notas, fechaExcursion
             };
 
-            const googleScriptURL = 'https://script.google.com/macros/s/AKfycby1XMDrVmQbwTWzLBuahgC9Wq7vGcqvhIm/exec';
+            const googleScriptURL = 'https://script.google.com/macros/s/AKfycby1XMDrVmQbwTWzLBuahgC9Wq7vGcqvhIm6t8hVKNRN1rUjQlAzx4wE63KSMU/exec';
             
             fetch(googleScriptURL, {
                 method: 'POST',
