@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #f5f5f0;
@@ -16,55 +17,46 @@
             align-items: center;
             padding: 30px;
         }
+
         .container {
             background: #ffffff;
             max-width: 700px;
             width: 100%;
             padding: 45px 50px;
             border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
             border: 1px solid #edebe6;
         }
-        .header-lang {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
         }
-        .header-lang h1 {
+
+        .header h1 {
             font-size: 22px;
             font-weight: 700;
             color: #1a2a4a;
             letter-spacing: 2px;
         }
-        .header-lang h1 span { color: #c9a84c; }
-        .lang-buttons { display: flex; gap: 6px; }
-        .lang-btn {
-            background: transparent;
-            color: #8e9aaf;
-            border: 2px solid #eae8e3;
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
+
+        .header h1 span {
+            color: #c9a84c;
         }
-        .lang-btn:hover { border-color: #667eea; color: #667eea; }
-        .lang-btn.active {
-            background: #1a2a4a;
-            border-color: #1a2a4a;
-            color: white;
-        }
+
         .subtitulo {
             font-size: 14px;
             color: #8e9aaf;
             margin-bottom: 30px;
             font-weight: 400;
             letter-spacing: 0.5px;
+            text-align: center;
         }
-        .form-group { margin-bottom: 18px; }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
         .form-group label {
             display: block;
             font-weight: 600;
@@ -73,8 +65,14 @@
             font-size: 13px;
             letter-spacing: 0.3px;
         }
-        .form-group label .required { color: #e74c3c; font-weight: 700; }
-        .form-group input, .form-group select {
+
+        .form-group label .required {
+            color: #e74c3c;
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 12px 14px;
             border: 2px solid #eae8e3;
@@ -85,24 +83,36 @@
             background: #fafaf8;
             color: #2c3e50;
         }
-        .form-group input:focus, .form-group select:focus {
+
+        .form-group input:focus,
+        .form-group select:focus {
             border-color: #1a2a4a;
             outline: none;
             background: white;
         }
+
         .form-group input::placeholder {
             color: #b5c0d0;
             font-weight: 300;
             font-size: 13px;
         }
-        .form-row { display: flex; gap: 20px; }
-        .form-row .form-group { flex: 1; }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
         .small-hint {
             color: #b5c0d0;
             font-size: 12px;
             margin-top: 4px;
             font-weight: 300;
         }
+
         .btn {
             width: 100%;
             padding: 16px;
@@ -118,7 +128,11 @@
             letter-spacing: 1px;
             margin-top: 8px;
         }
-        .btn:hover { background: #2c3e6e; }
+
+        .btn:hover {
+            background: #2c3e6e;
+        }
+
         .btn-descuento {
             background: #8e9aaf;
             padding: 12px 18px;
@@ -128,17 +142,34 @@
             font-weight: 500;
             letter-spacing: 0.5px;
         }
-        .btn-descuento:hover { background: #6b7a8f; }
-        .btn-descuento.activo { background: #e74c3c; }
-        .btn-descuento.activo:hover { background: #c0392b; }
-        .descuento-activo { display: none; }
-        .descuento-activo.visible { display: block; }
+
+        .btn-descuento:hover {
+            background: #6b7a8f;
+        }
+
+        .btn-descuento.activo {
+            background: #e74c3c;
+        }
+
+        .btn-descuento.activo:hover {
+            background: #c0392b;
+        }
+
+        .descuento-activo {
+            display: none;
+        }
+
+        .descuento-activo.visible {
+            display: block;
+        }
+
         .estado-options {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
             padding-top: 4px;
         }
+
         .estado-options label {
             display: flex;
             align-items: center;
@@ -148,12 +179,14 @@
             font-size: 14px;
             color: #2c3e50;
         }
+
         .estado-options input[type="radio"] {
             width: 16px;
             height: 16px;
             accent-color: #1a2a4a;
             cursor: pointer;
         }
+
         .resultado {
             margin-top: 30px;
             padding: 25px;
@@ -162,7 +195,11 @@
             display: none;
             border: 2px solid #c9a84c;
         }
-        .resultado.visible { display: block; }
+
+        .resultado.visible {
+            display: block;
+        }
+
         .resultado h3 {
             color: #1a2a4a;
             font-size: 18px;
@@ -170,6 +207,7 @@
             text-align: center;
             font-weight: 600;
         }
+
         .resultado .enlace {
             word-break: break-all;
             background: white;
@@ -180,7 +218,12 @@
             margin-bottom: 15px;
             color: #2c3e50;
         }
-        .resultado .qr-container { text-align: center; margin: 15px 0; }
+
+        .resultado .qr-container {
+            text-align: center;
+            margin: 15px 0;
+        }
+
         .resultado .qr-container img {
             max-width: 160px;
             border: 2px solid #eae8e3;
@@ -188,6 +231,7 @@
             padding: 8px;
             background: white;
         }
+
         .acciones {
             display: flex;
             flex-wrap: wrap;
@@ -195,6 +239,7 @@
             justify-content: center;
             margin-top: 15px;
         }
+
         .btn-copiar {
             background: #28a745;
             color: white;
@@ -206,7 +251,11 @@
             font-family: 'Inter', sans-serif;
             font-size: 13px;
         }
-        .btn-copiar:hover { background: #218838; }
+
+        .btn-copiar:hover {
+            background: #218838;
+        }
+
         .btn-qr {
             background: #c9a84c;
             color: white;
@@ -218,7 +267,11 @@
             font-family: 'Inter', sans-serif;
             font-size: 13px;
         }
-        .btn-qr:hover { background: #b8973a; }
+
+        .btn-qr:hover {
+            background: #b8973a;
+        }
+
         .btn-whatsapp {
             background: #25D366;
             color: white;
@@ -232,7 +285,11 @@
             font-family: 'Inter', sans-serif;
             font-size: 13px;
         }
-        .btn-whatsapp:hover { background: #1da851; }
+
+        .btn-whatsapp:hover {
+            background: #1da851;
+        }
+
         .btn-ver-recibo {
             display: inline-block;
             background: #1a2a4a;
@@ -245,247 +302,214 @@
             font-family: 'Inter', sans-serif;
             text-align: center;
         }
-        .btn-ver-recibo:hover { background: #2c3e6e; }
-        .lang-es { display: block; }
-        .lang-en { display: none; }
-        body.english .lang-es { display: none; }
-        body.english .lang-en { display: block; }
+
+        .btn-ver-recibo:hover {
+            background: #2c3e6e;
+        }
+
         @media (max-width: 600px) {
-            .container { padding: 25px 20px; }
-            .form-row { flex-direction: column; gap: 0; }
-            .header-lang { flex-direction: column; gap: 10px; align-items: flex-start; }
-            .estado-options { flex-direction: column; gap: 8px; }
-            .resultado .enlace { font-size: 12px; }
+            .container {
+                padding: 25px 20px;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .estado-options {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .resultado .enlace {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header-lang">
+        <div class="header">
             <h1>Republic <span>Excursions</span></h1>
-            <div class="lang-buttons">
-                <button class="lang-btn active" id="btnEs" onclick="setLang('es')">ES</button>
-                <button class="lang-btn" id="btnEn" onclick="setLang('en')">EN</button>
-            </div>
         </div>
-        <p class="subtitulo lang-es">Generador de Recibos de Pago</p>
-        <p class="subtitulo lang-en">Payment Receipt Generator</p>
+        <p class="subtitulo">Generador de Recibos de Pago</p>
 
         <form id="formRecibo">
+            <!-- ID -->
             <div class="form-group">
-                <label class="lang-es">ID / Código de Reserva</label>
-                <label class="lang-en">ID / Reservation Code</label>
-                <input type="text" id="id" class="lang-es" placeholder="Ej: BUG-5198">
-                <input type="text" id="id" class="lang-en" placeholder="e.g. BUG-5198">
+                <label>ID / Código de Reserva</label>
+                <input type="text" id="id" placeholder="Ej: BUG-5198">
             </div>
+
+            <!-- CLIENTE -->
             <div class="form-group">
-                <label><span class="lang-es">Cliente <span class="required">*</span></span><span class="lang-en">Client <span class="required">*</span></span></label>
-                <input type="text" id="cliente" class="lang-es" placeholder="Nombre completo">
-                <input type="text" id="cliente" class="lang-en" placeholder="Full name">
+                <label>Cliente <span class="required">*</span></label>
+                <input type="text" id="cliente" placeholder="Nombre completo">
             </div>
+
+            <!-- WHATSAPP + CORREO -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="lang-es">WhatsApp</label>
-                    <label class="lang-en">WhatsApp</label>
-                    <input type="text" id="whatsapp" class="lang-es" placeholder="Ej: 809-555-1234">
-                    <input type="text" id="whatsapp" class="lang-en" placeholder="e.g. 809-555-1234">
+                    <label>WhatsApp</label>
+                    <input type="text" id="whatsapp" placeholder="Ej: 809-555-1234">
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Correo</label>
-                    <label class="lang-en">Email</label>
-                    <input type="email" id="correo" class="lang-es" placeholder="correo@ejemplo.com">
-                    <input type="email" id="correo" class="lang-en" placeholder="example@email.com">
+                    <label>Correo</label>
+                    <input type="email" id="correo" placeholder="correo@ejemplo.com">
                 </div>
             </div>
+
+            <!-- HOTEL + AIRBNB + HABITACION -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="lang-es">Hotel</label>
-                    <label class="lang-en">Hotel</label>
-                    <input type="text" id="hotel" class="lang-es" placeholder="Nombre del hotel">
-                    <input type="text" id="hotel" class="lang-en" placeholder="Hotel name">
+                    <label>Hotel / Airbnb</label>
+                    <input type="text" id="hotel" placeholder="Nombre del hotel o Airbnb">
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Habitación</label>
-                    <label class="lang-en">Room</label>
-                    <input type="text" id="habitacion" class="lang-es" placeholder="Ej: 123">
-                    <input type="text" id="habitacion" class="lang-en" placeholder="e.g. 123">
+                    <label>Habitación</label>
+                    <input type="text" id="habitacion" placeholder="Ej: 123">
                 </div>
             </div>
+
+            <!-- TRANSPORTE + FECHA -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="lang-es">Transporte</label>
-                    <label class="lang-en">Transport</label>
-                    <select id="transporte" class="lang-es">
+                    <label>Transporte</label>
+                    <select id="transporte">
                         <option value="Sí">Sí</option>
                         <option value="No">No</option>
                     </select>
-                    <select id="transporte" class="lang-en">
-                        <option value="Sí">Yes</option>
-                        <option value="No">No</option>
-                    </select>
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Fecha Excursión</label>
-                    <label class="lang-en">Excursion Date</label>
+                    <label>Fecha de la Excursión</label>
                     <input type="date" id="fechaExcursion">
                 </div>
             </div>
+
+            <!-- EXCURSION -->
             <div class="form-group">
-                <label><span class="lang-es">Excursión <span class="required">*</span></span><span class="lang-en">Excursion <span class="required">*</span></span></label>
-                <input type="text" id="excursion" class="lang-es" placeholder="Nombre de la excursión">
-                <input type="text" id="excursion" class="lang-en" placeholder="Excursion name">
+                <label>Excursión <span class="required">*</span></label>
+                <input type="text" id="excursion" placeholder="Nombre de la excursión">
             </div>
+
+            <!-- ADULTOS + NIÑOS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label><span class="lang-es">Adultos <span class="required">*</span></span><span class="lang-en">Adults <span class="required">*</span></span></label>
-                    <input type="number" id="adultos" class="lang-es" placeholder="Cantidad" min="0">
-                    <input type="number" id="adultos" class="lang-en" placeholder="Quantity" min="0">
+                    <label>Adultos <span class="required">*</span></label>
+                    <input type="number" id="adultos" placeholder="Cantidad" min="0">
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Niños</label>
-                    <label class="lang-en">Children</label>
-                    <input type="number" id="ninos" class="lang-es" placeholder="Cantidad" min="0">
-                    <input type="number" id="ninos" class="lang-en" placeholder="Quantity" min="0">
+                    <label>Niños</label>
+                    <input type="number" id="ninos" placeholder="Cantidad" min="0">
                 </div>
             </div>
+
+            <!-- PRECIOS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label><span class="lang-es">Precio Adulto (USD) <span class="required">*</span></span><span class="lang-en">Adult Price (USD) <span class="required">*</span></span></label>
-                    <input type="number" id="precioAdulto" class="lang-es" placeholder="Ej: 45" min="0" step="0.01">
-                    <input type="number" id="precioAdulto" class="lang-en" placeholder="e.g. 45" min="0" step="0.01">
+                    <label>Precio por Adulto (USD) <span class="required">*</span></label>
+                    <input type="number" id="precioAdulto" placeholder="Ej: 45" min="0" step="0.01">
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Precio Niño (USD)</label>
-                    <label class="lang-en">Child Price (USD)</label>
-                    <input type="number" id="precioNino" class="lang-es" placeholder="Ej: 25" min="0" step="0.01">
-                    <input type="number" id="precioNino" class="lang-en" placeholder="e.g. 25" min="0" step="0.01">
-                    <div class="small-hint lang-es">Si no aplica, dejar en 0.</div>
-                    <div class="small-hint lang-en">If not applicable, leave as 0.</div>
+                    <label>Precio por Niño (USD)</label>
+                    <input type="number" id="precioNino" placeholder="Ej: 25" min="0" step="0.01">
+                    <div class="small-hint">Si no aplica, dejar en 0.</div>
                 </div>
             </div>
+
+            <!-- SUBTOTAL + DEPOSITO -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="lang-es">Subtotal (USD)</label>
-                    <label class="lang-en">Subtotal (USD)</label>
+                    <label>Subtotal (USD)</label>
                     <input type="number" id="subtotal" min="0" step="0.01">
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Depósito (USD)</label>
-                    <label class="lang-en">Deposit (USD)</label>
+                    <label>Depósito (USD)</label>
                     <input type="number" id="deposito" min="0" step="0.01">
                 </div>
             </div>
+
+            <!-- DESCUENTO -->
             <div class="form-group descuento-activo" id="descuentoGroup">
-                <label class="lang-es">Descuento (USD)</label>
-                <label class="lang-en">Discount (USD)</label>
+                <label>Descuento (USD)</label>
                 <input type="number" id="descuento" min="0" step="0.01" oninput="calcularTotal()">
-                <div class="small-hint lang-es">Monto a descontar del subtotal</div>
-                <div class="small-hint lang-en">Amount to subtract from subtotal</div>
+                <div class="small-hint">Monto a descontar del subtotal</div>
             </div>
+
+            <!-- TOTAL + DESCUENTO -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="lang-es">Total (USD)</label>
-                    <label class="lang-en">Total (USD)</label>
+                    <label>Total (USD)</label>
                     <input type="number" id="total" min="0" step="0.01" readonly style="background:#f0f0f0; font-weight:600; color:#1a2a4a;">
                 </div>
                 <div class="form-group" style="display:flex; align-items:flex-end;">
                     <button type="button" class="btn btn-descuento" id="btnDescuento" onclick="toggleDescuento()">
-                        <span class="lang-es">+ Agregar Descuento</span>
-                        <span class="lang-en">+ Add Discount</span>
+                        + Agregar Descuento
                     </button>
                 </div>
             </div>
+
+            <!-- ESTADO DE PAGO -->
             <div class="form-group">
-                <label class="lang-es">Estado de Pago</label>
-                <label class="lang-en">Payment Status</label>
+                <label>Estado de Pago</label>
                 <div class="estado-options">
-                    <label><input type="radio" name="estado" value="deposito" checked onclick="ajustarDeposito()"> <span class="lang-es">Depósito (25%)</span><span class="lang-en">Deposit (25%)</span></label>
-                    <label><input type="radio" name="estado" value="completo" onclick="ajustarDeposito()"> <span class="lang-es">Pago Completo</span><span class="lang-en">Full Payment</span></label>
-                    <label><input type="radio" name="estado" value="pendiente" onclick="ajustarDeposito()"> <span class="lang-es">Pendiente</span><span class="lang-en">Pending</span></label>
+                    <label><input type="radio" name="estado" value="deposito" checked onclick="ajustarDeposito()"> Depósito (25%)</label>
+                    <label><input type="radio" name="estado" value="completo" onclick="ajustarDeposito()"> Pago Completo</label>
+                    <label><input type="radio" name="estado" value="pendiente" onclick="ajustarDeposito()"> Pendiente</label>
                 </div>
-                <div class="small-hint lang-es" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta al total.</div>
-                <div class="small-hint lang-en" style="margin-top:6px;">When selecting "Full Payment", the deposit adjusts to the total.</div>
+                <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta al total.</div>
             </div>
+
+            <!-- METODO PAGO + NOTAS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="lang-es">Método de Pago</label>
-                    <label class="lang-en">Payment Method</label>
-                    <select id="metodoPago" class="lang-es">
+                    <label>Método de Pago</label>
+                    <select id="metodoPago">
                         <option value="Efectivo">Efectivo</option>
                         <option value="PayPal">PayPal</option>
                         <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
                         <option value="Transferencia Bancaria">Transferencia Bancaria</option>
                     </select>
-                    <select id="metodoPago" class="lang-en">
-                        <option value="Efectivo">Cash</option>
-                        <option value="PayPal">PayPal</option>
-                        <option value="Tarjeta de Crédito">Credit Card</option>
-                        <option value="Transferencia Bancaria">Bank Transfer</option>
-                    </select>
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Notas</label>
-                    <label class="lang-en">Notes</label>
-                    <input type="text" id="notas" class="lang-es" placeholder="Notas adicionales">
-                    <input type="text" id="notas" class="lang-en" placeholder="Additional notes">
+                    <label>Notas</label>
+                    <input type="text" id="notas" placeholder="Notas adicionales">
                 </div>
             </div>
-            <button type="submit" class="btn">
-                <span class="lang-es">GENERAR RECIBO</span>
-                <span class="lang-en">GENERATE RECEIPT</span>
-            </button>
+
+            <button type="submit" class="btn">GENERAR RECIBO</button>
         </form>
 
+        <!-- RESULTADO -->
         <div id="resultado" class="resultado">
-            <h3 class="lang-es">Recibo Generado</h3>
-            <h3 class="lang-en">Receipt Generated</h3>
+            <h3>Recibo Generado</h3>
+            
             <div class="qr-container">
                 <img id="qrImg" src="" alt="QR Code">
             </div>
+
             <div class="enlace" id="enlaceGenerado"></div>
+
             <div class="acciones">
-                <button class="btn-copiar" onclick="copiarEnlace()">
-                    <span class="lang-es">Copiar Enlace</span>
-                    <span class="lang-en">Copy Link</span>
-                </button>
-                <button class="btn-qr" onclick="descargarQR()">
-                    <span class="lang-es">Descargar QR</span>
-                    <span class="lang-en">Download QR</span>
-                </button>
-                <a id="whatsappLink" href="#" target="_blank" class="btn-whatsapp">
-                    <span class="lang-es">WhatsApp</span>
-                    <span class="lang-en">WhatsApp</span>
-                </a>
-                <a id="verRecibo" href="#" target="_blank" class="btn-ver-recibo">
-                    <span class="lang-es">Ver Recibo</span>
-                    <span class="lang-en">View Receipt</span>
-                </a>
+                <button class="btn-copiar" onclick="copiarEnlace()">Copiar Enlace</button>
+                <button class="btn-qr" onclick="descargarQR()">Descargar QR</button>
+                <a id="whatsappLink" href="#" target="_blank" class="btn-whatsapp">WhatsApp</a>
+                <a id="verRecibo" href="#" target="_blank" class="btn-ver-recibo">Ver Recibo</a>
             </div>
         </div>
     </div>
 
     <script>
-        function setLang(lang) {
-            document.body.classList.remove('english');
-            document.getElementById('btnEs').classList.remove('active');
-            document.getElementById('btnEn').classList.remove('active');
-            if (lang === 'en') {
-                document.body.classList.add('english');
-                document.getElementById('btnEn').classList.add('active');
-            } else {
-                document.getElementById('btnEs').classList.add('active');
-            }
-        }
-
+        // ====== GENERAR FECHA ======
         document.addEventListener('DOMContentLoaded', function() {
             const semana = new Date();
             semana.setDate(semana.getDate() + 7);
             document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
+            
             calcularSubtotal();
             calcularTotal();
             ajustarDeposito();
         });
 
+        // ====== CALCULAR SUBTOTAL ======
         document.getElementById('adultos').addEventListener('input', function() {
             calcularSubtotal(); calcularTotal(); ajustarDeposito();
         });
@@ -508,6 +532,7 @@
             document.getElementById('subtotal').value = subtotal.toFixed(2);
         }
 
+        // ====== CALCULAR TOTAL ======
         function calcularTotal() {
             const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
             const descuento = parseFloat(document.getElementById('descuento').value) || 0;
@@ -516,21 +541,23 @@
             ajustarDeposito();
         }
 
+        // ====== DESCUENTO ======
         function toggleDescuento() {
             const group = document.getElementById('descuentoGroup');
             const btn = document.getElementById('btnDescuento');
             group.classList.toggle('visible');
             if (group.classList.contains('visible')) {
-                btn.innerHTML = document.body.classList.contains('english') ? 'Remove Discount' : 'Quitar Descuento';
+                btn.innerHTML = 'Quitar Descuento';
                 btn.classList.add('activo');
             } else {
                 document.getElementById('descuento').value = '';
-                btn.innerHTML = document.body.classList.contains('english') ? '+ Add Discount' : '+ Agregar Descuento';
+                btn.innerHTML = '+ Agregar Descuento';
                 btn.classList.remove('activo');
                 calcularTotal();
             }
         }
 
+        // ====== AJUSTAR DEPOSITO ======
         function ajustarDeposito() {
             const estado = document.querySelector('input[name="estado"]:checked').value;
             const total = parseFloat(document.getElementById('total').value) || 0;
@@ -544,9 +571,9 @@
             }
         }
 
+        // ====== ENVIAR ======
         document.getElementById('formRecibo').addEventListener('submit', function(e) {
             e.preventDefault();
-            const isEn = document.body.classList.contains('english');
             
             const id = document.getElementById('id').value;
             const cliente = document.getElementById('cliente').value;
@@ -570,7 +597,7 @@
             const fechaExcursion = document.getElementById('fechaExcursion').value || '';
 
             if (!id || !cliente || !excursion || !adultos || !precioAdulto) {
-                alert(isEn ? 'Please complete all required fields' : 'Por favor, completa los campos obligatorios');
+                alert('Por favor, completa los campos obligatorios');
                 return;
             }
 
@@ -585,25 +612,20 @@
                 notas: notas, fechaExcursion: fechaExcursion
             });
 
-            // ✅ QR SIN admin (para clientes)
+            // Enlace para clientes (SIN admin)
             const enlaceQR = base + '?' + params.toString();
             
-            // ✅ Enlace CON admin (para ti)
+            // Enlace para administrador (CON admin)
             const enlaceAdmin = base + '?' + params.toString() + '&admin=true';
 
-            // Mostramos el enlace CON admin (tú lo ves)
-            document.getElementById('enlaceGenerado').textContent = enlaceAdmin;
+            // Mostramos el enlace SIN admin para copiar
+            document.getElementById('enlaceGenerado').textContent = enlaceQR;
             document.getElementById('verRecibo').href = enlaceAdmin;
 
-            // QR con enlace SIN admin
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(enlaceQR)}&size=200x200`;
             document.getElementById('qrImg').src = qrUrl;
 
-            // WhatsApp con enlace SIN admin
-            const mensaje = isEn 
-                ? `Hello ${cliente}, your receipt for ${excursion} is ready. Scan this QR or click the link: ${enlaceQR}`
-                : `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlaceQR}`;
-            
+            const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlaceQR}`;
             document.getElementById('whatsappLink').href = `https://wa.me/1${whatsapp ? '?text=' + encodeURIComponent(mensaje) : '?text=' + encodeURIComponent(mensaje)}`;
 
             document.getElementById('resultado').classList.add('visible');
@@ -612,7 +634,7 @@
         function copiarEnlace() {
             const enlace = document.getElementById('enlaceGenerado').textContent;
             navigator.clipboard.writeText(enlace).then(() => {
-                alert(document.body.classList.contains('english') ? 'Link copied' : 'Enlace copiado');
+                alert('Enlace copiado');
             }).catch(() => {
                 const textarea = document.createElement('textarea');
                 textarea.value = enlace;
@@ -620,7 +642,7 @@
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                alert(document.body.classList.contains('english') ? 'Link copied' : 'Enlace copiado');
+                alert('Enlace copiado');
             });
         }
 
