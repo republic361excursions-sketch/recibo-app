@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recibo <%= numeroRecibo %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,8 +13,8 @@
         }
 
         body {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            background: #e8e6e1;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f0;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -26,24 +27,24 @@
             max-width: 800px;
             width: 100%;
             padding: 50px 55px;
-            border-radius: 4px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            border: 1px solid #eae8e3;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid #edebe6;
         }
 
         /* ===== HEADER ===== */
         .header {
             text-align: center;
             border-bottom: 2px solid #1a2a4a;
-            padding-bottom: 25px;
-            margin-bottom: 30px;
+            padding-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .header .logo {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             color: #1a2a4a;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             text-transform: uppercase;
         }
 
@@ -52,45 +53,45 @@
         }
 
         .header .titulo {
-            font-size: 28px;
-            font-weight: 400;
+            font-size: 26px;
+            font-weight: 300;
             color: #2c3e50;
-            margin-top: 8px;
-            letter-spacing: 2px;
+            margin-top: 6px;
+            letter-spacing: 1px;
         }
 
         .header .recibo-numero {
-            font-size: 14px;
-            color: #7f8c8d;
-            margin-top: 6px;
-            font-weight: 300;
-            letter-spacing: 1px;
+            font-size: 13px;
+            color: #8e9aaf;
+            margin-top: 4px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
         }
 
         /* ===== DATOS DE LA RESERVA ===== */
         .info-cliente {
-            margin-bottom: 30px;
-            padding: 20px 25px;
+            margin-bottom: 32px;
+            padding: 18px 24px;
             background: #f8f7f4;
-            border-radius: 4px;
+            border-radius: 8px;
             border-left: 4px solid #c9a84c;
         }
 
         .info-cliente .titulo {
             font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #7f8c8d;
-            font-weight: 700;
-            margin-bottom: 12px;
+            letter-spacing: 1.5px;
+            color: #8e9aaf;
+            font-weight: 600;
+            margin-bottom: 10px;
             border-bottom: 1px solid #eae8e3;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
         }
 
         .info-cliente .fila {
             display: flex;
             justify-content: space-between;
-            padding: 5px 0;
+            padding: 4px 0;
             font-size: 14px;
             color: #2c3e50;
             border-bottom: 1px solid #f0efeb;
@@ -101,8 +102,8 @@
         }
 
         .info-cliente .label {
-            font-weight: 600;
-            color: #5d6d7e;
+            font-weight: 500;
+            color: #6b7a8f;
         }
 
         .info-cliente .valor {
@@ -115,36 +116,36 @@
         .tabla {
             width: 100%;
             border-collapse: collapse;
-            margin: 25px 0;
+            margin: 24px 0;
             font-size: 14px;
             border-bottom: 2px solid #1a2a4a;
         }
 
         .tabla th {
             text-align: left;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 2px solid #1a2a4a;
             color: #1a2a4a;
-            font-weight: 700;
-            font-size: 13px;
+            font-weight: 600;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
         }
 
         .tabla td {
-            padding: 10px 0;
-            border-bottom: 1px solid #eae8e3;
+            padding: 8px 0;
+            border-bottom: 1px solid #eeede8;
             color: #2c3e50;
         }
 
         .tabla .monto {
             text-align: right;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .tabla .total {
-            font-weight: 700;
-            font-size: 16px;
+            font-weight: 600;
+            font-size: 15px;
         }
 
         .tabla .descuento {
@@ -154,12 +155,12 @@
         /* ===== ESTADO DE PAGO ===== */
         .estado-unico {
             text-align: center;
-            padding: 18px 20px;
-            border-radius: 4px;
-            margin: 25px 0;
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 1px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
         }
 
         .estado-unico.pagado {
@@ -181,21 +182,21 @@
         }
 
         .estado-unico .monto {
-            font-size: 28px;
+            font-size: 26px;
         }
 
         /* ===== RESUMEN ===== */
         .resumen-pago {
             background: #f8f7f4;
-            padding: 18px 25px;
-            border-radius: 4px;
+            padding: 16px 24px;
+            border-radius: 8px;
             margin: 20px 0;
         }
 
         .resumen-pago .fila {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
+            padding: 5px 0;
             border-bottom: 1px solid #eae8e3;
             font-size: 14px;
         }
@@ -205,12 +206,12 @@
         }
 
         .resumen-pago .label {
-            font-weight: 600;
-            color: #5d6d7e;
+            font-weight: 500;
+            color: #6b7a8f;
         }
 
         .resumen-pago .value {
-            font-weight: 700;
+            font-weight: 600;
             color: #1a2a4a;
         }
 
@@ -224,9 +225,9 @@
 
         .resumen-pago .fila.total {
             border-top: 2px solid #1a2a4a;
-            padding-top: 10px;
-            margin-top: 5px;
-            font-size: 16px;
+            padding-top: 8px;
+            margin-top: 4px;
+            font-size: 15px;
         }
 
         .resumen-pago .fila.descuento .value {
@@ -236,46 +237,46 @@
         /* ===== FOOTER ===== */
         .footer {
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
+            margin-top: 28px;
+            padding-top: 18px;
             border-top: 1px solid #eae8e3;
-            color: #95a5a6;
+            color: #aab3c5;
             font-size: 12px;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .footer .empresa {
             color: #1a2a4a;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 13px;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
         }
 
         .footer .direccion {
             margin-top: 4px;
             font-size: 11px;
-            color: #bdc3c7;
+            color: #c5cdd8;
         }
 
         .footer .codigo {
             margin-top: 6px;
             font-size: 10px;
-            color: #bdc3c7;
-            letter-spacing: 1px;
+            color: #c5cdd8;
+            letter-spacing: 0.5px;
         }
 
         .qr-info {
             text-align: center;
-            margin: 15px 0;
+            margin: 14px 0;
             padding: 10px;
             background: #f8f7f4;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 12px;
-            color: #7f8c8d;
+            color: #8e9aaf;
         }
 
         .qr-info span {
-            font-weight: 700;
+            font-weight: 600;
             color: #1a2a4a;
         }
 
@@ -293,7 +294,7 @@
 
         @media (max-width: 600px) {
             .recibo {
-                padding: 25px 20px;
+                padding: 24px 18px;
             }
             .info-cliente .fila {
                 flex-direction: column;
@@ -308,10 +309,10 @@
             }
             .estado-unico {
                 font-size: 18px;
-                padding: 14px;
+                padding: 12px;
             }
             .estado-unico .monto {
-                font-size: 22px;
+                font-size: 20px;
             }
         }
     </style>
