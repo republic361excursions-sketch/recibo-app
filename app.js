@@ -15,7 +15,7 @@ app.get('/ver-recibo', (req, res) => {
     const { 
         id, recibo, cliente, excursion, 
         adultos, ninos, precioAdulto, 
-        subtotal, deposito, balance, estado 
+        subtotal, deposito, estado 
     } = req.query;
 
     // Validar parámetros obligatorios
@@ -23,18 +23,28 @@ app.get('/ver-recibo', (req, res) => {
         return res.status(400).send('❌ Faltan parámetros obligatorios: id y recibo');
     }
 
-    // Construir los datos con valores por defecto si faltan
+    // Convertir valores numéricos
+    const numAdultos = parseInt(adultos) || 1;
+    const numNinos = parseInt(ninos) || 0;
+    const precioAdultoNum = parseFloat(precioAdulto) || 75;
+    const subtotalNum = parseFloat(subtotal) || (numAdultos * precioAdultoNum);
+    const depositoNum = parseFloat(deposito) || 0;
+
+    // ✅ CÁLCULO AUTOMÁTICO DEL BALANCE PENDIENTE
+    const totalPendiente = subtotalNum - depositoNum;
+
+    // Construir los datos
     const datos = {
         idFactura: id,
         numeroRecibo: recibo,
         cliente: cliente || 'Cliente no especificado',
         excursion: excursion || 'Excursión no especificada',
-        adultos: parseInt(adultos) || 1,
-        ninos: parseInt(ninos) || 0,
-        precioAdulto: parseFloat(precioAdulto) || 75,
-        subtotal: parseFloat(subtotal) || 375,
-        depositoPagado: parseFloat(deposito) || 0,
-        totalPendiente: parseFloat(balance) || 375,
+        adultos: numAdultos,
+        ninos: numNinos,
+        precioAdulto: precioAdultoNum,
+        subtotal: subtotalNum,
+        depositoPagado: depositoNum,
+        totalPendiente: totalPendiente, // ✅ AHORA ES UN CÁLCULO
         metodoPago: 'Efectivo',
         fecha: new Date().toLocaleDateString('es-ES', {
             year: 'numeric',
@@ -44,11 +54,17 @@ app.get('/ver-recibo', (req, res) => {
         estado: estado || 'pendiente'
     };
 
-    // Determinar estado visual
+    // Determinar estado visual basado en el balance REAL
     let estadoTexto = '';
     let estadoColor = '';
-    
-    switch(datos.estado) {
+    let estadoReal = datos.estado;
+
+    // 🔥 CORRECCIÓN: Forzar estado 'completo' si el balance es 0
+    if (totalPendiente <= 0) {
+        estadoReal = 'completo';
+    }
+
+    switch(estadoReal) {
         case 'completo':
             estadoTexto = '✅ PAGADO COMPLETO';
             estadoColor = '#28a745';
