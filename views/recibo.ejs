@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recibo <%= numeroRecibo %></title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -17,27 +17,28 @@
             background: #f5f5f0;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             padding: 30px;
         }
 
         .recibo {
             background: #ffffff;
-            max-width: 800px;
+            max-width: 700px;
             width: 100%;
-            padding: 50px 55px;
+            padding: 45px 50px;
             border-radius: 12px;
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
             border: 1px solid #edebe6;
+            margin-bottom: 30px;
         }
 
         /* ===== HEADER ===== */
         .header {
             text-align: center;
             border-bottom: 2px solid #1a2a4a;
-            padding-bottom: 24px;
-            margin-bottom: 32px;
+            padding-bottom: 22px;
+            margin-bottom: 28px;
         }
 
         .header .logo {
@@ -53,10 +54,10 @@
         }
 
         .header .titulo {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 300;
             color: #2c3e50;
-            margin-top: 6px;
+            margin-top: 4px;
             letter-spacing: 1px;
         }
 
@@ -70,8 +71,8 @@
 
         /* ===== DATOS DE LA RESERVA ===== */
         .info-cliente {
-            margin-bottom: 32px;
-            padding: 18px 24px;
+            margin-bottom: 28px;
+            padding: 16px 22px;
             background: #f8f7f4;
             border-radius: 8px;
             border-left: 4px solid #c9a84c;
@@ -146,10 +147,6 @@
         .tabla .total {
             font-weight: 600;
             font-size: 15px;
-        }
-
-        .tabla .descuento {
-            color: #27ae60;
         }
 
         /* ===== ESTADO DE PAGO ===== */
@@ -230,10 +227,6 @@
             font-size: 15px;
         }
 
-        .resumen-pago .fila.descuento .value {
-            color: #27ae60;
-        }
-
         /* ===== FOOTER ===== */
         .footer {
             text-align: center;
@@ -280,6 +273,61 @@
             color: #1a2a4a;
         }
 
+        /* ===== BOTONES DE ACCIÓN ===== */
+        .acciones-recibo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            max-width: 700px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-accion {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            background: #1a2a4a;
+            color: white;
+        }
+
+        .btn-accion:hover {
+            background: #2c3e6e;
+        }
+
+        .btn-accion.whatsapp {
+            background: #25D366;
+        }
+
+        .btn-accion.whatsapp:hover {
+            background: #1da851;
+        }
+
+        .btn-accion.imagen {
+            background: #c9a84c;
+        }
+
+        .btn-accion.imagen:hover {
+            background: #b8973a;
+        }
+
+        .btn-accion.volver {
+            background: #8e9aaf;
+        }
+
+        .btn-accion.volver:hover {
+            background: #6b7a8f;
+        }
+
         @media print {
             body {
                 background: white;
@@ -290,11 +338,14 @@
                 border: 1px solid #ddd;
                 padding: 30px;
             }
+            .acciones-recibo {
+                display: none !important;
+            }
         }
 
         @media (max-width: 600px) {
             .recibo {
-                padding: 24px 18px;
+                padding: 25px 20px;
             }
             .info-cliente .fila {
                 flex-direction: column;
@@ -314,19 +365,28 @@
             .estado-unico .monto {
                 font-size: 20px;
             }
+            .acciones-recibo {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn-accion {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="recibo">
-        <!-- ===== HEADER ===== -->
+    <!-- RECIBO -->
+    <div id="reciboContainer" class="recibo">
+        <!-- HEADER -->
         <div class="header">
             <div class="logo">Republic <span>Excursions</span></div>
             <div class="titulo">Recibo de Pago</div>
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
 
-        <!-- ===== DATOS DE LA RESERVA ===== -->
+        <!-- DATOS DE LA RESERVA -->
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
 
@@ -390,7 +450,7 @@
             <% } %>
         </div>
 
-        <!-- ===== TABLA DE CONCEPTOS ===== -->
+        <!-- TABLA DE CONCEPTOS -->
         <table class="tabla">
             <thead>
                 <tr>
@@ -436,7 +496,7 @@
             </tbody>
         </table>
 
-        <!-- ===== ESTADO DE PAGO ===== -->
+        <!-- ESTADO DE PAGO -->
         <% if (totalPendiente <= 0) { %>
             <div class="estado-unico pagado">
                 Pagado Completo
@@ -451,16 +511,16 @@
             </div>
         <% } %>
 
-        <!-- ===== RESUMEN ===== -->
+        <!-- RESUMEN -->
         <div class="resumen-pago">
             <div class="fila">
                 <span class="label">Subtotal</span>
                 <span class="value">$<%= subtotal.toFixed(2) %></span>
             </div>
             <% if (descuento > 0) { %>
-            <div class="fila descuento">
+            <div class="fila">
                 <span class="label">Descuento</span>
-                <span class="value">-$<%= descuento.toFixed(2) %></span>
+                <span class="value" style="color:#27ae60;">-$<%= descuento.toFixed(2) %></span>
             </div>
             <div class="fila">
                 <span class="label">Total</span>
@@ -481,12 +541,12 @@
             </div>
         </div>
 
-        <!-- ===== CÓDIGO DE VERIFICACIÓN ===== -->
+        <!-- CÓDIGO DE VERIFICACIÓN -->
         <div class="qr-info">
             <span>Documento de verificación</span> &mdash; Código <%= numeroRecibo %>
         </div>
 
-        <!-- ===== FOOTER ===== -->
+        <!-- FOOTER -->
         <div class="footer">
             <p class="empresa">Republic Excursions</p>
             <p class="direccion">Punta Cana, República Dominicana</p>
@@ -494,5 +554,63 @@
             <p class="codigo">Este documento es un comprobante de pago válido</p>
         </div>
     </div>
+
+    <!-- BOTONES DE ACCIÓN -->
+    <div class="acciones-recibo">
+        <button class="btn-accion imagen" onclick="descargarImagen()">
+            📷 Descargar Imagen
+        </button>
+        <a href="#" class="btn-accion whatsapp" id="whatsappBtn">
+            📲 Enviar por WhatsApp
+        </a>
+        <a href="/" class="btn-accion volver">
+            ← Volver al inicio
+        </a>
+    </div>
+
+    <script>
+        // ====== GENERAR ENLACE DE WHATSAPP ======
+        document.addEventListener('DOMContentLoaded', function() {
+            const cliente = '<%= cliente %>';
+            const excursion = '<%= excursion %>';
+            const enlace = window.location.href;
+            const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Puedes verlo aquí: ${enlace}`;
+            const whatsappBtn = document.getElementById('whatsappBtn');
+            whatsappBtn.href = `https://wa.me/1?text=${encodeURIComponent(mensaje)}`;
+        });
+
+        // ====== DESCARGAR IMAGEN ======
+        function descargarImagen() {
+            const elemento = document.getElementById('reciboContainer');
+            
+            // Mostrar loading
+            const btn = document.querySelector('.btn-accion.imagen');
+            const textoOriginal = btn.innerHTML;
+            btn.innerHTML = '⏳ Generando...';
+            btn.disabled = true;
+
+            html2canvas(elemento, {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                useCORS: true,
+                allowTaint: true,
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `recibo-${document.querySelector('.recibo-numero').textContent.trim().replace(/\s/g, '')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                btn.innerHTML = textoOriginal;
+                btn.disabled = false;
+            }).catch(error => {
+                console.error('Error al generar la imagen:', error);
+                btn.innerHTML = '❌ Error';
+                btn.disabled = false;
+                setTimeout(() => {
+                    btn.innerHTML = textoOriginal;
+                }, 3000);
+            });
+        }
+    </script>
 </body>
 </html>
