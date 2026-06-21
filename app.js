@@ -15,7 +15,7 @@ app.get('/ver-recibo', (req, res) => {
     const { 
         id, recibo, cliente, excursion, 
         adultos, ninos, precioAdulto, 
-        subtotal, deposito, estado 
+        subtotal, deposito, estado, metodoPago
     } = req.query;
 
     // Validar parámetros obligatorios
@@ -33,6 +33,9 @@ app.get('/ver-recibo', (req, res) => {
     // ✅ CÁLCULO AUTOMÁTICO DEL BALANCE PENDIENTE
     const totalPendiente = subtotalNum - depositoNum;
 
+    // ✅ MÉTODO DE PAGO DESDE LA URL
+    const metodoPagoMostrar = metodoPago || 'Efectivo';
+
     // Construir los datos
     const datos = {
         idFactura: id,
@@ -44,8 +47,8 @@ app.get('/ver-recibo', (req, res) => {
         precioAdulto: precioAdultoNum,
         subtotal: subtotalNum,
         depositoPagado: depositoNum,
-        totalPendiente: totalPendiente, // ✅ AHORA ES UN CÁLCULO
-        metodoPago: 'Efectivo',
+        totalPendiente: totalPendiente,
+        metodoPago: metodoPagoMostrar, // ✅ AHORA USA EL PARÁMETRO DE LA URL
         fecha: new Date().toLocaleDateString('es-ES', {
             year: 'numeric',
             month: 'long',
@@ -59,7 +62,7 @@ app.get('/ver-recibo', (req, res) => {
     let estadoColor = '';
     let estadoReal = datos.estado;
 
-    // 🔥 CORRECCIÓN: Forzar estado 'completo' si el balance es 0
+    // Forzar estado 'completo' si el balance es 0
     if (totalPendiente <= 0) {
         estadoReal = 'completo';
     }
