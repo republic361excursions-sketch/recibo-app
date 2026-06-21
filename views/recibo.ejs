@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .recibo {
+            background: white;
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+        }
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        .info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        .badge {
+            display: inline-block;
+            background: #d4edda;
+            color: #155724;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            color: #999;
+            font-size: 12px;
+        }
+        .btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+        .btn:hover {
+            background: #5563c1;
+        }
+    </style>
+</head>
+<body>
+    <div class="recibo">
+        <div class="header">
+            <h1>🧾 RECIBO DE PAGO</h1>
+            <p>Comprobante de pago</p>
+        </div>
+
+        <div class="info">
+            <div class="info-item">
+                <span><strong>Factura:</strong></span>
+                <span><%= idFactura %></span>
+            </div>
+            <div class="info-item">
+                <span><strong>Número de Recibo:</strong></span>
+                <span><%= numeroRecibo %></span>
+            </div>
+            <div class="info-item">
+                <span><strong>Fecha:</strong></span>
+                <span><%= fecha %></span>
+            </div>
+            <div class="info-item">
+                <span><strong>Hora:</strong></span>
+                <span><%= hora %></span>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <span class="badge">✅ PAGADO</span>
+            <p style="margin-top: 15px; color: #333;">Este recibo es válido</p>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 - Todos los derechos reservados</p>
+            <p>Código: <%= numeroRecibo %></p>
+            <a href="/" class="btn">Volver al inicio</a>
+        </div>
+    </div>
+</body>
+</html>
