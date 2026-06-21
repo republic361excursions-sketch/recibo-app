@@ -357,17 +357,28 @@
                 </div>
             </div>
 
-           <!-- HOTEL + AIRBNB + HABITACION -->
-<div class="form-row">
-    <div class="form-group">
-        <label>Hotel / Airbnb</label>
-        <input type="text" id="hotel" placeholder="Nombre del hotel o Airbnb">
-    </div>
-    <div class="form-group">
-        <label>Habitación</label>
-        <input type="text" id="habitacion" placeholder="Ej: 123">
-    </div>
-</div>
+            <!-- TIPO DE ALOJAMIENTO + NOMBRE + HABITACION -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tipo de Alojamiento</label>
+                    <select id="tipoAlojamiento">
+                        <option value="Hotel">Hotel</option>
+                        <option value="Airbnb">Airbnb</option>
+                        <option value="Casa Particular">Casa Particular</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nombre del Alojamiento</label>
+                    <input type="text" id="hotel" placeholder="Ej: Riu Bavaro, Villa Sol, etc.">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Habitación</label>
+                    <input type="text" id="habitacion" placeholder="Ej: 123">
+                </div>
+            </div>
 
             <!-- TRANSPORTE + FECHA -->
             <div class="form-row">
@@ -590,11 +601,15 @@
             const metodoPago = document.getElementById('metodoPago').value;
             const whatsapp = document.getElementById('whatsapp').value || '';
             const correo = document.getElementById('correo').value || '';
+            const tipoAlojamiento = document.getElementById('tipoAlojamiento').value || '';
             const hotel = document.getElementById('hotel').value || '';
             const habitacion = document.getElementById('habitacion').value || '';
             const transporte = document.getElementById('transporte').value || 'Sí';
             const notas = document.getElementById('notas').value || 'Sin notas adicionales';
             const fechaExcursion = document.getElementById('fechaExcursion').value || '';
+
+            // Combinar tipo de alojamiento + nombre
+            const alojamientoCompleto = tipoAlojamiento + (hotel ? ' - ' + hotel : '');
 
             if (!id || !cliente || !excursion || !adultos || !precioAdulto) {
                 alert('Por favor, completa los campos obligatorios');
@@ -608,7 +623,7 @@
                 precioNino: precioNino, subtotal: subtotal, descuento: descuento,
                 total: total, deposito: deposito, estado: estado,
                 metodoPago: metodoPago, whatsapp: whatsapp, correo: correo,
-                hotel: hotel, habitacion: habitacion, transporte: transporte,
+                hotel: alojamientoCompleto, habitacion: habitacion, transporte: transporte,
                 notas: notas, fechaExcursion: fechaExcursion
             });
 
