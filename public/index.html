@@ -204,6 +204,22 @@
         .descuento-activo.visible {
             display: block;
         }
+        .btn-descuento {
+            background: #6c757d;
+            padding: 12px 20px;
+            font-size: 14px;
+            width: auto;
+            margin-top: 0;
+        }
+        .btn-descuento:hover {
+            background: #5a6268;
+        }
+        .btn-descuento.activo {
+            background: #dc3545;
+        }
+        .btn-descuento.activo:hover {
+            background: #c82333;
+        }
         @media (max-width: 600px) {
             .form-row {
                 flex-direction: column;
@@ -309,7 +325,7 @@
                 </div>
             </div>
 
-            <!-- FINANCIERO -->
+            <!-- FINANCIERO Y DESCUENTO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Subtotal (USD)</label>
@@ -321,21 +337,21 @@
                 </div>
             </div>
 
-            <!-- DESCUENTO -->
+            <!-- DESCUENTO (OCULTO POR DEFECTO) -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label>Descuento (USD)</label>
                 <input type="number" id="descuento" value="0" min="0" step="0.01" oninput="calcularTotal()">
                 <div class="small-hint">Monto a descontar del subtotal</div>
             </div>
 
-            <!-- TOTAL -->
+            <!-- TOTAL Y BOTON DESCUENTO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Total (USD)</label>
                     <input type="number" id="total" value="0" min="0" step="0.01" readonly style="background: #f0f0f0; font-weight: bold; color: #1a3c6e;">
                 </div>
                 <div class="form-group" style="display: flex; align-items: flex-end;">
-                    <button type="button" class="btn" style="margin-top: 0; background: #6c757d; padding: 10px;" onclick="toggleDescuento()">Agregar Descuento</button>
+                    <button type="button" class="btn btn-descuento" id="btnDescuento" onclick="toggleDescuento()">Agregar Descuento</button>
                 </div>
             </div>
 
@@ -449,17 +465,23 @@
             const descuento = parseFloat(document.getElementById('descuento').value) || 0;
             const total = subtotal - descuento;
             document.getElementById('total').value = total.toFixed(2);
-            
-            // Actualizar depósito según el nuevo total
             ajustarDeposito();
         }
 
         // ====== MOSTRAR/OCULTAR CAMPO DE DESCUENTO ======
         function toggleDescuento() {
             const group = document.getElementById('descuentoGroup');
+            const btn = document.getElementById('btnDescuento');
+            
             group.classList.toggle('visible');
-            if (!group.classList.contains('visible')) {
+            
+            if (group.classList.contains('visible')) {
+                btn.textContent = 'Quitar Descuento';
+                btn.classList.add('activo');
+            } else {
                 document.getElementById('descuento').value = 0;
+                btn.textContent = 'Agregar Descuento';
+                btn.classList.remove('activo');
                 calcularTotal();
             }
         }
@@ -510,7 +532,6 @@
                 return;
             }
 
-            // CONSTRUIR ENLACE
             const base = 'https://recibo-app.vercel.app/ver-recibo';
             const params = new URLSearchParams({
                 id: id,
