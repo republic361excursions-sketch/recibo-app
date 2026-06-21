@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Servir archivos estáticos (CSS, JS, HTML)
+// Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta principal: muestra el formulario
@@ -19,22 +19,26 @@ app.get('/', (req, res) => {
 app.get('/ver-recibo', (req, res) => {
     const { 
         id, recibo, cliente, excursion, 
-        adultos, ninos, precioAdulto, 
+        adultos, ninos, precioAdulto, precioNino,
         subtotal, deposito, estado, metodoPago,
-        whatsapp, correo, hotel
+        whatsapp, correo, hotel, transporte, notas, totalPagado, fechaExcursion
     } = req.query;
 
+    // Validar parámetros obligatorios
     if (!id || !recibo) {
         return res.status(400).send('❌ Faltan parámetros obligatorios: id y recibo');
     }
 
+    // Convertir valores numéricos
     const numAdultos = parseInt(adultos) || 1;
     const numNinos = parseInt(ninos) || 0;
     const precioAdultoNum = parseFloat(precioAdulto) || 75;
-    const subtotalNum = parseFloat(subtotal) || (numAdultos * precioAdultoNum);
+    const precioNinoNum = parseFloat(precioNino) || 0;
+    const subtotalNum = parseFloat(subtotal) || ((numAdultos * precioAdultoNum) + (numNinos * precioNinoNum));
     const depositoNum = parseFloat(deposito) || 0;
     const totalPendiente = subtotalNum - depositoNum;
 
+    // Construir datos para la vista
     const datos = {
         idFactura: id,
         numeroRecibo: recibo,
@@ -43,6 +47,7 @@ app.get('/ver-recibo', (req, res) => {
         adultos: numAdultos,
         ninos: numNinos,
         precioAdulto: precioAdultoNum,
+        precioNino: precioNinoNum,
         subtotal: subtotalNum,
         depositoPagado: depositoNum,
         totalPendiente: totalPendiente,
@@ -50,6 +55,10 @@ app.get('/ver-recibo', (req, res) => {
         whatsapp: whatsapp || '',
         correo: correo || '',
         hotel: hotel || '',
+        transporte: transporte || 'Sí',
+        notas: notas || 'Sin notas adicionales',
+        totalPagado: totalPagado || '0',
+        fechaExcursion: fechaExcursion || new Date().toLocaleDateString('es-ES'),
         fecha: new Date().toLocaleDateString('es-ES', {
             year: 'numeric',
             month: 'long',
@@ -58,6 +67,7 @@ app.get('/ver-recibo', (req, res) => {
         estado: estado || 'pendiente'
     };
 
+    // Determinar estado visual
     let estadoTexto = '';
     let estadoColor = '';
     let estadoReal = datos.estado;
