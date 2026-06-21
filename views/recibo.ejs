@@ -38,7 +38,6 @@
             font-size: 14px;
         }
         
-        /* DATOS DEL CLIENTE */
         .info-cliente {
             background: #f8f9fa;
             padding: 15px 20px;
@@ -63,7 +62,6 @@
             text-align: right;
         }
 
-        /* TABLA DE CONCEPTOS */
         .tabla {
             width: 100%;
             border-collapse: collapse;
@@ -87,7 +85,6 @@
             font-size: 18px;
         }
 
-        /* BALANCE PENDIENTE */
         .balance-pendiente {
             text-align: right;
             font-size: 22px;
@@ -104,7 +101,6 @@
             color: #28a745;
         }
 
-        /* ESTADO DE PAGO */
         .estado-pago {
             text-align: center;
             padding: 18px;
@@ -119,16 +115,22 @@
             color: #155724;
         }
 
-        /* FALTA PAGAR */
         .mensaje-proveedor {
             text-align: center;
             padding: 15px;
-            background: #fff3cd;
-            border: 2px solid #ffc107;
             border-radius: 10px;
             margin: 15px 0;
             font-size: 20px;
             font-weight: bold;
+        }
+        .mensaje-proveedor.pagado {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        .mensaje-proveedor.pendiente {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
             color: #856404;
         }
 
@@ -156,13 +158,11 @@
 </head>
 <body>
     <div class="recibo">
-        <!-- HEADER -->
         <div class="header">
             <h1>🧾 REPUBLIC EXCURSIONS</h1>
             <p>Comprobante de pago</p>
         </div>
 
-        <!-- DATOS DEL CLIENTE -->
         <div class="info-cliente">
             <div class="fila">
                 <span class="label">Factura:</span>
@@ -190,7 +190,6 @@
             </div>
         </div>
 
-        <!-- TABLA DE CONCEPTOS -->
         <table class="tabla">
             <thead>
                 <tr>
@@ -218,7 +217,6 @@
             </tbody>
         </table>
 
-        <!-- BALANCE PENDIENTE -->
         <div class="balance-pendiente">
             <span>Balance Pendiente:</span>
             <span class="importe <%= totalPendiente === 0 ? 'pagado' : '' %>">
@@ -226,19 +224,23 @@
             </span>
         </div>
 
-        <!-- ESTADO DE PAGO -->
         <div class="estado-pago" style="border-color: <%= estadoColor %>; background: <%= estadoColor %>15;">
             <div class="texto" style="color: <%= estadoColor %>;">
                 <%= estadoTexto %>
             </div>
         </div>
 
-        <!-- FALTA PAGAR -->
-        <div class="mensaje-proveedor">
-            Falta pagar: $<%= totalPendiente.toFixed(2) %>
-        </div>
+        <!-- ⭐ AQUÍ ESTÁ EL CAMBIO IMPORTANTE -->
+        <% if (totalPendiente > 0) { %>
+            <div class="mensaje-proveedor pendiente">
+                ⚠️ Falta pagar: $<%= totalPendiente.toFixed(2) %>
+            </div>
+        <% } else { %>
+            <div class="mensaje-proveedor pagado">
+                ✅ Saldo: $0.00 - Todo pagado
+            </div>
+        <% } %>
 
-        <!-- FOOTER -->
         <div class="footer">
             <p>© 2026 - Republic Excursions</p>
             <a href="/" class="btn">Volver al inicio</a>
