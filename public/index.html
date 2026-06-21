@@ -193,6 +193,11 @@
         .btn-ver-recibo:hover {
             background: #5563c1;
         }
+        .small-hint {
+            color: #888;
+            font-size: 12px;
+            margin-top: 4px;
+        }
         @media (max-width: 600px) {
             .form-row {
                 flex-direction: column;
@@ -258,27 +263,11 @@
                 </div>
             </div>
 
-            <!-- ====== EXCURSIÓN ====== -->
+            <!-- ====== EXCURSIÓN (AHORA ES UN INPUT DE TEXTO) ====== -->
             <div class="form-group">
                 <label>🏝️ Excursión *</label>
-                <select id="excursion" required>
-                    <option value="">Selecciona una excursión...</option>
-                    <option value="Buggys + Playa Macao">Buggys + Playa Macao</option>
-                    <option value="Dolphin Punta Cana">Dolphin Punta Cana</option>
-                    <option value="Isla Saona">Isla Saona</option>
-                    <option value="Safari Monkeyland">Safari Monkeyland</option>
-                    <option value="Parque Nacional Los Haitises">Parque Nacional Los Haitises</option>
-                    <option value="Santo Domingo City Tour">Santo Domingo City Tour</option>
-                    <option value="Samaná Whale Watching">Samaná Whale Watching</option>
-                    <option value="Zipline Adventure">Zipline Adventure</option>
-                    <option value="Dune Buggy Excursion">Dune Buggy Excursion</option>
-                    <option value="Catamaran Party">Catamaran Party</option>
-                    <!-- ✅ AGREGAR NUEVAS EXCURSIONES AQUÍ -->
-                    <option value="Isla Saona Premium">Isla Saona Premium</option>
-                    <option value="Dolphin Swim Adventure">Dolphin Swim Adventure</option>
-                    <option value="Buggy Extreme">Buggy Extreme</option>
-                    <option value="Speed Boat Adventure">Speed Boat Adventure</option>
-                </select>
+                <input type="text" id="excursion" placeholder="Ej: Buggys + Playa Macao, Isla Saona, etc." required>
+                <div class="small-hint">✏️ Escribe el nombre de la excursión. Puedes agregar cualquier excursión nueva sin modificar el código.</div>
             </div>
 
             <!-- ====== PERSONAS ====== -->
@@ -291,9 +280,18 @@
                     <label>👶 Niños</label>
                     <input type="number" id="ninos" value="0" min="0">
                 </div>
+            </div>
+
+            <!-- ====== PRECIOS ====== -->
+            <div class="form-row">
                 <div class="form-group">
                     <label>💰 Precio por Adulto (USD) *</label>
                     <input type="number" id="precioAdulto" value="45" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>💰 Precio por Niño (USD)</label>
+                    <input type="number" id="precioNino" value="25" min="0" step="0.01">
+                    <div class="small-hint">Si no aplica, dejar en 0.</div>
                 </div>
             </div>
 
@@ -377,7 +375,6 @@
             document.getElementById('recibo').value = 'REC-' + fechaStr + '-' + Math.floor(Math.random() * 9000 + 1000);
             document.getElementById('id').value = 'BUG-' + Math.floor(Math.random() * 9000 + 1000);
             
-            // Fecha por defecto: hoy + 7 días
             const semana = new Date();
             semana.setDate(semana.getDate() + 7);
             document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
@@ -385,13 +382,19 @@
 
         // ====== CALCULAR SUBTOTAL ======
         document.getElementById('adultos').addEventListener('input', calcularSubtotal);
+        document.getElementById('ninos').addEventListener('input', calcularSubtotal);
         document.getElementById('precioAdulto').addEventListener('input', calcularSubtotal);
+        document.getElementById('precioNino').addEventListener('input', calcularSubtotal);
 
         function calcularSubtotal() {
             const adultos = parseInt(document.getElementById('adultos').value) || 0;
-            const precio = parseFloat(document.getElementById('precioAdulto').value) || 0;
-            const subtotal = adultos * precio;
+            const ninos = parseInt(document.getElementById('ninos').value) || 0;
+            const precioAdulto = parseFloat(document.getElementById('precioAdulto').value) || 0;
+            const precioNino = parseFloat(document.getElementById('precioNino').value) || 0;
+            
+            const subtotal = (adultos * precioAdulto) + (ninos * precioNino);
             document.getElementById('subtotal').value = subtotal.toFixed(2);
+            
             const deposito = subtotal * 0.25;
             document.getElementById('deposito').value = deposito.toFixed(2);
         }
@@ -407,6 +410,7 @@
             const adultos = document.getElementById('adultos').value;
             const ninos = document.getElementById('ninos').value;
             const precioAdulto = document.getElementById('precioAdulto').value;
+            const precioNino = document.getElementById('precioNino').value;
             const subtotal = document.getElementById('subtotal').value;
             const deposito = document.getElementById('deposito').value;
             const estado = document.querySelector('input[name="estado"]:checked').value;
@@ -434,6 +438,7 @@
                 adultos: adultos,
                 ninos: ninos,
                 precioAdulto: precioAdulto,
+                precioNino: precioNino,
                 subtotal: subtotal,
                 deposito: deposito,
                 estado: estado,
@@ -453,11 +458,9 @@
             document.getElementById('enlaceGenerado').textContent = enlace;
             document.getElementById('verRecibo').href = enlace;
 
-            // Generar QR
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(enlace)}&size=200x200`;
             document.getElementById('qrImg').src = qrUrl;
 
-            // WhatsApp
             const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlace}`;
             document.getElementById('whatsappLink').href = `https://wa.me/1${whatsapp ? '?text=' + encodeURIComponent(mensaje) : '?text=' + encodeURIComponent(mensaje)}`;
 
@@ -466,12 +469,11 @@
             // ====== GUARDAR EN GOOGLE SHEETS ======
             const datos = {
                 id, recibo, cliente, excursion,
-                adultos, ninos, precioAdulto, subtotal, deposito,
+                adultos, ninos, precioAdulto, precioNino, subtotal, deposito,
                 estado, metodoPago, whatsapp, correo, hotel,
                 transporte, notas, totalPagado, fechaExcursion
             };
 
-            // URL de Google Apps Script (CAMBIA ESTA URL POR LA TUYA)
             const googleScriptURL = 'https://script.google.com/macros/s/TU_ID_AQUI/exec';
             
             fetch(googleScriptURL, {
@@ -488,7 +490,6 @@
             navigator.clipboard.writeText(enlace).then(() => {
                 alert('✅ Enlace copiado al portapapeles');
             }).catch(() => {
-                // Fallback
                 const textarea = document.createElement('textarea');
                 textarea.value = enlace;
                 document.body.appendChild(textarea);
