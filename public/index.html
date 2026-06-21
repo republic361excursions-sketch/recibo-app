@@ -187,6 +187,87 @@
             cursor: pointer;
         }
 
+        .vista-previa {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f7f4;
+            border-radius: 10px;
+            border: 2px solid #eae8e3;
+        }
+
+        .vista-previa h4 {
+            color: #1a2a4a;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .vista-previa .recibo-mini {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #eae8e3;
+            font-size: 13px;
+            color: #2c3e50;
+        }
+
+        .vista-previa .recibo-mini .fila {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            border-bottom: 1px solid #f0efeb;
+        }
+
+        .vista-previa .recibo-mini .fila:last-child {
+            border-bottom: none;
+        }
+
+        .vista-previa .recibo-mini .label {
+            font-weight: 500;
+            color: #6b7a8f;
+        }
+
+        .vista-previa .recibo-mini .valor {
+            font-weight: 400;
+            color: #1a2a4a;
+        }
+
+        .vista-previa .recibo-mini .estado-mini {
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .vista-previa .recibo-mini .estado-mini.pagado {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .vista-previa .recibo-mini .estado-mini.falta {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .vista-previa .recibo-mini .estado-mini.pendiente {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .vista-previa .recibo-mini .total-mini {
+            font-weight: 700;
+            font-size: 15px;
+            color: #1a2a4a;
+            text-align: right;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 2px solid #1a2a4a;
+        }
+
         .resultado {
             margin-top: 30px;
             padding: 25px;
@@ -322,6 +403,10 @@
             .resultado .enlace {
                 font-size: 12px;
             }
+            .vista-previa .recibo-mini {
+                font-size: 12px;
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -332,7 +417,7 @@
         </div>
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
-        <form id="formRecibo">
+        <form id="formRecibo" oninput="actualizarVistaPrevia()">
             <!-- ID -->
             <div class="form-group">
                 <label>ID / Código de Reserva</label>
@@ -357,7 +442,7 @@
                 </div>
             </div>
 
-            <!-- TIPO DE RECOGIDA + LUGAR DE RECOGIDA + HABITACION -->
+            <!-- TIPO DE RECOGIDA + LUGAR DE RECOGIDA + HABITACION/APARTAMENTO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Recogida</label>
@@ -374,7 +459,7 @@
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Habitación / Apartamento</label>
+                    <label id="labelHabitacion">Habitación</label>
                     <input type="text" id="habitacion" placeholder="Ej: 123, Villa B12">
                 </div>
             </div>
@@ -440,7 +525,7 @@
             <!-- DESCUENTO -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label>Descuento (USD)</label>
-                <input type="number" id="descuento" min="0" step="0.01" oninput="calcularTotal()">
+                <input type="number" id="descuento" min="0" step="0.01" oninput="actualizarVistaPrevia()">
                 <div class="small-hint">Monto a descontar del subtotal</div>
             </div>
 
@@ -461,9 +546,9 @@
             <div class="form-group">
                 <label>Estado de Pago</label>
                 <div class="estado-options">
-                    <label><input type="radio" name="estado" value="deposito" checked onclick="ajustarDeposito()"> Depósito (25%)</label>
-                    <label><input type="radio" name="estado" value="completo" onclick="ajustarDeposito()"> Pago Completo</label>
-                    <label><input type="radio" name="estado" value="pendiente" onclick="ajustarDeposito()"> Pendiente</label>
+                    <label><input type="radio" name="estado" value="deposito" checked onclick="ajustarDeposito(); actualizarVistaPrevia();"> Depósito (25%)</label>
+                    <label><input type="radio" name="estado" value="completo" onclick="ajustarDeposito(); actualizarVistaPrevia();"> Pago Completo</label>
+                    <label><input type="radio" name="estado" value="pendiente" onclick="ajustarDeposito(); actualizarVistaPrevia();"> Pendiente</label>
                 </div>
                 <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta al total.</div>
             </div>
@@ -488,6 +573,55 @@
             <button type="submit" class="btn">GENERAR RECIBO</button>
         </form>
 
+        <!-- ===== VISTA PREVIA EN VIVO ===== -->
+        <div class="vista-previa">
+            <h4>VISTA PREVIA DEL RECIBO</h4>
+            <div class="recibo-mini" id="vistaPrevia">
+                <div class="fila">
+                    <span class="label">Factura / Reserva</span>
+                    <span class="valor" id="vpId">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Cliente</span>
+                    <span class="valor" id="vpCliente">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">WhatsApp</span>
+                    <span class="valor" id="vpWhatsapp">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Recogida</span>
+                    <span class="valor" id="vpRecogida">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label" id="vpLabelHabitacion">Habitación</span>
+                    <span class="valor" id="vpHabitacion">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Excursión</span>
+                    <span class="valor" id="vpExcursion">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Fecha</span>
+                    <span class="valor" id="vpFecha">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Personas</span>
+                    <span class="valor" id="vpPersonas">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Transporte</span>
+                    <span class="valor" id="vpTransporte">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Método de Pago</span>
+                    <span class="valor" id="vpMetodoPago">---</span>
+                </div>
+                <div class="estado-mini pagado" id="vpEstado">Pagado Completo</div>
+                <div class="total-mini" id="vpTotal">Total: $0.00</div>
+            </div>
+        </div>
+
         <!-- RESULTADO -->
         <div id="resultado" class="resultado">
             <h3>Recibo Generado</h3>
@@ -508,6 +642,82 @@
     </div>
 
     <script>
+        // ====== VISTA PREVIA EN VIVO ======
+        function actualizarVistaPrevia() {
+            const id = document.getElementById('id').value || '---';
+            const cliente = document.getElementById('cliente').value || '---';
+            const whatsapp = document.getElementById('whatsapp').value || '---';
+            const tipoRecogida = document.getElementById('tipoRecogida').value || '';
+            const lugarRecogida = document.getElementById('lugarRecogida').value || '';
+            const recogida = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '') || '---';
+            const habitacion = document.getElementById('habitacion').value || '---';
+            const excursion = document.getElementById('excursion').value || '---';
+            const fecha = document.getElementById('fechaExcursion').value || '---';
+            const adultos = document.getElementById('adultos').value || 0;
+            const ninos = document.getElementById('ninos').value || 0;
+            const transporte = document.getElementById('transporte').value || '---';
+            const metodoPago = document.getElementById('metodoPago').value || '---';
+            const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+            const descuento = parseFloat(document.getElementById('descuento').value) || 0;
+            const total = subtotal - descuento;
+            const estado = document.querySelector('input[name="estado"]:checked').value;
+            const deposito = parseFloat(document.getElementById('deposito').value) || 0;
+            const balance = total - deposito;
+
+            // Cambiar etiqueta de habitación según tipo
+            const labelHabitacion = document.getElementById('vpLabelHabitacion');
+            const tipo = document.getElementById('tipoRecogida').value;
+            if (tipo === 'Hotel') {
+                labelHabitacion.textContent = 'Habitación';
+            } else if (tipo === 'Airbnb') {
+                labelHabitacion.textContent = 'Apartamento';
+            } else if (tipo === 'Punto de Encuentro') {
+                labelHabitacion.textContent = 'Referencia';
+            }
+
+            document.getElementById('vpId').textContent = id;
+            document.getElementById('vpCliente').textContent = cliente;
+            document.getElementById('vpWhatsapp').textContent = whatsapp;
+            document.getElementById('vpRecogida').textContent = recogida;
+            document.getElementById('vpHabitacion').textContent = habitacion;
+            document.getElementById('vpExcursion').textContent = excursion;
+            document.getElementById('vpFecha').textContent = fecha;
+            document.getElementById('vpPersonas').textContent = adultos + ' Adultos, ' + ninos + ' Niños';
+            document.getElementById('vpTransporte').textContent = transporte;
+            document.getElementById('vpMetodoPago').textContent = metodoPago;
+
+            const estadoEl = document.getElementById('vpEstado');
+            if (balance <= 0) {
+                estadoEl.textContent = '✅ Pagado Completo';
+                estadoEl.className = 'estado-mini pagado';
+            } else if (estado === 'deposito') {
+                estadoEl.textContent = '⚠️ Falta Pagar: $' + balance.toFixed(2);
+                estadoEl.className = 'estado-mini falta';
+            } else {
+                estadoEl.textContent = '⏳ Pendiente de Pago: $' + balance.toFixed(2);
+                estadoEl.className = 'estado-mini pendiente';
+            }
+
+            document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
+        }
+
+        // ====== CAMBIAR ETIQUETA SEGÚN TIPO DE RECOGIDA ======
+        document.getElementById('tipoRecogida').addEventListener('change', function() {
+            const label = document.getElementById('labelHabitacion');
+            const input = document.getElementById('habitacion');
+            if (this.value === 'Hotel') {
+                label.textContent = 'Habitación';
+                input.placeholder = 'Ej: 123';
+            } else if (this.value === 'Airbnb') {
+                label.textContent = 'Apartamento';
+                input.placeholder = 'Ej: Villa B12, Casa 5';
+            } else if (this.value === 'Punto de Encuentro') {
+                label.textContent = 'Referencia';
+                input.placeholder = 'Ej: Parque Central, Esquina calle 5';
+            }
+            actualizarVistaPrevia();
+        });
+
         // ====== GENERAR FECHA ======
         document.addEventListener('DOMContentLoaded', function() {
             const semana = new Date();
@@ -517,6 +727,12 @@
             calcularSubtotal();
             calcularTotal();
             ajustarDeposito();
+            actualizarVistaPrevia();
+
+            document.querySelectorAll('#formRecibo input, #formRecibo select').forEach(el => {
+                el.addEventListener('input', actualizarVistaPrevia);
+                el.addEventListener('change', actualizarVistaPrevia);
+            });
         });
 
         // ====== CALCULAR SUBTOTAL ======
@@ -564,6 +780,7 @@
                 btn.innerHTML = '+ Agregar Descuento';
                 btn.classList.remove('activo');
                 calcularTotal();
+                actualizarVistaPrevia();
             }
         }
 
@@ -607,7 +824,6 @@
             const notas = document.getElementById('notas').value || 'Sin notas adicionales';
             const fechaExcursion = document.getElementById('fechaExcursion').value || '';
 
-            // Combinar tipo de recogida + lugar de recogida
             const recogidaCompleta = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '');
 
             if (!id || !cliente || !excursion || !adultos || !precioAdulto) {
@@ -626,13 +842,9 @@
                 notas: notas, fechaExcursion: fechaExcursion
             });
 
-            // Enlace para clientes (SIN admin)
             const enlaceQR = base + '?' + params.toString();
-            
-            // Enlace para administrador (CON admin)
             const enlaceAdmin = base + '?' + params.toString() + '&admin=true';
 
-            // Mostramos el enlace SIN admin para copiar
             document.getElementById('enlaceGenerado').textContent = enlaceQR;
             document.getElementById('verRecibo').href = enlaceAdmin;
 
