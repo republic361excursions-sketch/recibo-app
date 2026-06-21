@@ -4,198 +4,270 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Republic Excursions - Generador de Recibos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f0;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 30px;
         }
+
         .container {
-            background: white;
-            max-width: 850px;
+            background: #ffffff;
+            max-width: 700px;
             width: 100%;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 45px 50px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid #edebe6;
         }
+
+        /* ===== HEADER ===== */
         .header-lang {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 5px;
-            font-size: 28px;
+
+        .header-lang h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a2a4a;
+            letter-spacing: 2px;
         }
-        .subtitulo {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 16px;
+
+        .header-lang h1 span {
+            color: #c9a84c;
         }
+
+        .lang-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
         .lang-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 8px 16px;
+            background: transparent;
+            color: #8e9aaf;
+            border: 2px solid #eae8e3;
+            padding: 5px 14px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
         }
+
         .lang-btn:hover {
-            background: #5563c1;
+            border-color: #667eea;
+            color: #667eea;
         }
+
         .lang-btn.active {
-            background: #1a3c6e;
+            background: #1a2a4a;
+            border-color: #1a2a4a;
+            color: white;
         }
+
+        .subtitulo {
+            font-size: 14px;
+            color: #8e9aaf;
+            margin-bottom: 30px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== FORM ===== */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
+
         .form-group label {
             display: block;
             font-weight: 600;
-            color: #555;
+            color: #2c3e50;
             margin-bottom: 5px;
-            font-size: 14px;
+            font-size: 13px;
+            letter-spacing: 0.3px;
         }
-        .form-group input, .form-group select {
+
+        .form-group label .required {
+            color: #e74c3c;
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 10px 12px;
-            border: 2px solid #e9ecef;
+            padding: 12px 14px;
+            border: 2px solid #eae8e3;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
             transition: border 0.3s;
+            background: #fafaf8;
+            color: #2c3e50;
         }
-        .form-group input:focus, .form-group select:focus {
-            border-color: #667eea;
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #1a2a4a;
             outline: none;
+            background: white;
         }
+
+        .form-group input::placeholder {
+            color: #b5c0d0;
+            font-weight: 300;
+            font-size: 13px;
+        }
+
         .form-row {
             display: flex;
-            gap: 15px;
+            gap: 20px;
         }
+
         .form-row .form-group {
             flex: 1;
         }
+
+        .small-hint {
+            color: #b5c0d0;
+            font-size: 12px;
+            margin-top: 4px;
+            font-weight: 300;
+        }
+
+        /* ===== BUTTONS ===== */
         .btn {
             width: 100%;
-            padding: 15px;
-            background: #667eea;
+            padding: 16px;
+            background: #1a2a4a;
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
+            transition: background 0.3s;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 1px;
+            margin-top: 8px;
         }
+
         .btn:hover {
-            background: #5563c1;
-            transform: translateY(-2px);
+            background: #2c3e6e;
         }
+
+        .btn-descuento {
+            background: #8e9aaf;
+            padding: 12px 18px;
+            font-size: 13px;
+            width: auto;
+            margin-top: 0;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-descuento:hover {
+            background: #6b7a8f;
+        }
+
+        .btn-descuento.activo {
+            background: #e74c3c;
+        }
+
+        .btn-descuento.activo:hover {
+            background: #c0392b;
+        }
+
+        /* ===== DESCUENTO ===== */
+        .descuento-activo {
+            display: none;
+        }
+
+        .descuento-activo.visible {
+            display: block;
+        }
+
+        /* ===== RADIO ===== */
+        .estado-options {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding-top: 4px;
+        }
+
+        .estado-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 400;
+            cursor: pointer;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .estado-options input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #1a2a4a;
+            cursor: pointer;
+        }
+
+        /* ===== RESULTADO ===== */
         .resultado {
             margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 12px;
+            padding: 25px;
+            background: #f8f7f4;
+            border-radius: 10px;
             display: none;
-            border: 2px solid #28a745;
+            border: 2px solid #c9a84c;
         }
+
         .resultado.visible {
             display: block;
         }
+
         .resultado h3 {
-            color: #28a745;
+            color: #1a2a4a;
+            font-size: 18px;
             margin-bottom: 15px;
             text-align: center;
+            font-weight: 600;
         }
+
         .resultado .enlace {
             word-break: break-all;
             background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
+            padding: 14px;
+            border-radius: 6px;
+            border: 1px solid #eae8e3;
             font-size: 13px;
             margin-bottom: 15px;
+            color: #2c3e50;
         }
+
         .resultado .qr-container {
             text-align: center;
             margin: 15px 0;
         }
+
         .resultado .qr-container img {
-            max-width: 180px;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 10px;
+            max-width: 160px;
+            border: 2px solid #eae8e3;
+            border-radius: 10px;
+            padding: 8px;
             background: white;
         }
-        .btn-copiar {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .btn-copiar:hover {
-            background: #218838;
-        }
-        .btn-qr {
-            background: #ffc107;
-            color: #333;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .btn-qr:hover {
-            background: #e0a800;
-        }
-        .btn-whatsapp {
-            background: #25D366;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-whatsapp:hover {
-            background: #1da851;
-        }
-        .estado-options {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            padding-top: 5px;
-        }
-        .estado-options label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: normal;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .estado-options input[type="radio"] {
-            width: auto;
-            margin: 0;
-        }
+
         .acciones {
             display: flex;
             flex-wrap: wrap;
@@ -203,71 +275,110 @@
             justify-content: center;
             margin-top: 15px;
         }
+
+        .btn-copiar {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+
+        .btn-copiar:hover {
+            background: #218838;
+        }
+
+        .btn-qr {
+            background: #c9a84c;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+
+        .btn-qr:hover {
+            background: #b8973a;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1da851;
+        }
+
         .btn-ver-recibo {
             display: inline-block;
-            background: #667eea;
+            background: #1a2a4a;
             color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 10px 22px;
+            border-radius: 6px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
             text-align: center;
         }
+
         .btn-ver-recibo:hover {
-            background: #5563c1;
+            background: #2c3e6e;
         }
-        .small-hint {
-            color: #888;
-            font-size: 12px;
-            margin-top: 4px;
-        }
-        .descuento-activo {
-            display: none;
-        }
-        .descuento-activo.visible {
-            display: block;
-        }
-        .btn-descuento {
-            background: #6c757d;
-            padding: 12px 20px;
-            font-size: 14px;
-            width: auto;
-            margin-top: 0;
-        }
-        .btn-descuento:hover {
-            background: #5a6268;
-        }
-        .btn-descuento.activo {
-            background: #dc3545;
-        }
-        .btn-descuento.activo:hover {
-            background: #c82333;
-        }
-        /* IDIOMAS - SOLO UNO VISIBLE A LA VEZ */
+
+        /* ===== IDIOMAS ===== */
         .lang-es { display: block; }
         .lang-en { display: none; }
         body.english .lang-es { display: none; }
         body.english .lang-en { display: block; }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 600px) {
+            .container {
+                padding: 25px 20px;
+            }
             .form-row {
                 flex-direction: column;
                 gap: 0;
             }
-            .container {
-                padding: 20px;
-            }
             .header-lang {
                 flex-direction: column;
                 gap: 10px;
+                align-items: flex-start;
+            }
+            .estado-options {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .resultado .enlace {
+                font-size: 12px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- HEADER CON IDIOMAS -->
         <div class="header-lang">
-            <h1>REPUBLIC EXCURSIONS</h1>
-            <div>
+            <h1>Republic <span>Excursions</span></h1>
+            <div class="lang-buttons">
                 <button class="lang-btn active" id="btnEs" onclick="setLang('es')">ES</button>
                 <button class="lang-btn" id="btnEn" onclick="setLang('en')">EN</button>
             </div>
@@ -278,18 +389,20 @@
         <p class="subtitulo lang-en">Payment Receipt Generator</p>
 
         <form id="formRecibo">
-            <!-- ID / RESERVATION CODE -->
+            <!-- ID -->
             <div class="form-group">
                 <label class="lang-es">ID / Código de Reserva</label>
                 <label class="lang-en">ID / Reservation Code</label>
-                <input type="text" id="id">
+                <input type="text" id="id" class="lang-es" placeholder="Ej: BUG-5198">
+                <input type="text" id="idEn" class="lang-en" placeholder="e.g. BUG-5198" style="display:none;">
             </div>
 
-            <!-- CLIENT / CLIENT -->
+            <!-- CLIENTE -->
             <div class="form-group">
-                <label class="lang-es">Cliente</label>
-                <label class="lang-en">Client</label>
-                <input type="text" id="cliente">
+                <label class="lang-es">Cliente <span class="required">*</span></label>
+                <label class="lang-en">Client <span class="required">*</span></label>
+                <input type="text" id="cliente" class="lang-es" placeholder="Nombre completo">
+                <input type="text" id="clienteEn" class="lang-en" placeholder="Full name" style="display:none;">
             </div>
 
             <!-- WHATSAPP + EMAIL -->
@@ -297,30 +410,34 @@
                 <div class="form-group">
                     <label class="lang-es">WhatsApp</label>
                     <label class="lang-en">WhatsApp</label>
-                    <input type="text" id="whatsapp">
+                    <input type="text" id="whatsapp" class="lang-es" placeholder="Ej: 809-555-1234">
+                    <input type="text" id="whatsappEn" class="lang-en" placeholder="e.g. 809-555-1234" style="display:none;">
                 </div>
                 <div class="form-group">
                     <label class="lang-es">Correo</label>
                     <label class="lang-en">Email</label>
-                    <input type="email" id="correo">
+                    <input type="email" id="correo" class="lang-es" placeholder="correo@ejemplo.com">
+                    <input type="email" id="correoEn" class="lang-en" placeholder="example@email.com" style="display:none;">
                 </div>
             </div>
 
-            <!-- HOTEL + ROOM -->
+            <!-- HOTEL + HABITACION -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Hotel</label>
                     <label class="lang-en">Hotel</label>
-                    <input type="text" id="hotel">
+                    <input type="text" id="hotel" class="lang-es" placeholder="Nombre del hotel">
+                    <input type="text" id="hotelEn" class="lang-en" placeholder="Hotel name" style="display:none;">
                 </div>
                 <div class="form-group">
                     <label class="lang-es">Habitación</label>
                     <label class="lang-en">Room</label>
-                    <input type="text" id="habitacion">
+                    <input type="text" id="habitacion" class="lang-es" placeholder="Ej: 123">
+                    <input type="text" id="habitacionEn" class="lang-en" placeholder="e.g. 123" style="display:none;">
                 </div>
             </div>
 
-            <!-- TRANSPORT + DATE -->
+            <!-- TRANSPORTE + FECHA -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Transporte</label>
@@ -339,42 +456,47 @@
 
             <!-- EXCURSION -->
             <div class="form-group">
-                <label class="lang-es">Excursión</label>
-                <label class="lang-en">Excursion</label>
-                <input type="text" id="excursion">
+                <label class="lang-es">Excursión <span class="required">*</span></label>
+                <label class="lang-en">Excursion <span class="required">*</span></label>
+                <input type="text" id="excursion" class="lang-es" placeholder="Nombre de la excursión">
+                <input type="text" id="excursionEn" class="lang-en" placeholder="Excursion name" style="display:none;">
             </div>
 
-            <!-- ADULTS + CHILDREN -->
+            <!-- ADULTOS + NIÑOS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="lang-es">Adultos</label>
-                    <label class="lang-en">Adults</label>
-                    <input type="number" id="adultos" value="" min="0">
+                    <label class="lang-es">Adultos <span class="required">*</span></label>
+                    <label class="lang-en">Adults <span class="required">*</span></label>
+                    <input type="number" id="adultos" class="lang-es" placeholder="Cantidad" min="0">
+                    <input type="number" id="adultosEn" class="lang-en" placeholder="Quantity" min="0" style="display:none;">
                 </div>
                 <div class="form-group">
                     <label class="lang-es">Niños</label>
                     <label class="lang-en">Children</label>
-                    <input type="number" id="ninos" value="" min="0">
+                    <input type="number" id="ninos" class="lang-es" placeholder="Cantidad" min="0">
+                    <input type="number" id="ninosEn" class="lang-en" placeholder="Quantity" min="0" style="display:none;">
                 </div>
             </div>
 
-            <!-- PRICES -->
+            <!-- PRECIOS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="lang-es">Precio Adulto (USD)</label>
-                    <label class="lang-en">Adult Price (USD)</label>
-                    <input type="number" id="precioAdulto" value="" min="0" step="0.01">
+                    <label class="lang-es">Precio Adulto (USD) <span class="required">*</span></label>
+                    <label class="lang-en">Adult Price (USD) <span class="required">*</span></label>
+                    <input type="number" id="precioAdulto" class="lang-es" placeholder="Ej: 45" min="0" step="0.01">
+                    <input type="number" id="precioAdultoEn" class="lang-en" placeholder="e.g. 45" min="0" step="0.01" style="display:none;">
                 </div>
                 <div class="form-group">
                     <label class="lang-es">Precio Niño (USD)</label>
                     <label class="lang-en">Child Price (USD)</label>
-                    <input type="number" id="precioNino" value="" min="0" step="0.01">
+                    <input type="number" id="precioNino" class="lang-es" placeholder="Ej: 25" min="0" step="0.01">
+                    <input type="number" id="precioNinoEn" class="lang-en" placeholder="e.g. 25" min="0" step="0.01" style="display:none;">
                     <div class="small-hint lang-es">Si no aplica, dejar en 0.</div>
                     <div class="small-hint lang-en">If not applicable, leave as 0.</div>
                 </div>
             </div>
 
-            <!-- SUBTOTAL + DEPOSIT -->
+            <!-- SUBTOTAL + DEPOSITO -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Subtotal (USD)</label>
@@ -388,7 +510,7 @@
                 </div>
             </div>
 
-            <!-- DISCOUNT (hidden by default) -->
+            <!-- DESCUENTO -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label class="lang-es">Descuento (USD)</label>
                 <label class="lang-en">Discount (USD)</label>
@@ -397,22 +519,22 @@
                 <div class="small-hint lang-en">Amount to subtract from subtotal</div>
             </div>
 
-            <!-- TOTAL + DISCOUNT BUTTON -->
+            <!-- TOTAL + DESCUENTO -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Total (USD)</label>
                     <label class="lang-en">Total (USD)</label>
-                    <input type="number" id="total" value="" min="0" step="0.01" readonly style="background: #f0f0f0; font-weight: bold; color: #1a3c6e;">
+                    <input type="number" id="total" value="" min="0" step="0.01" readonly style="background: #f0f0f0; font-weight: 600; color: #1a2a4a;">
                 </div>
                 <div class="form-group" style="display: flex; align-items: flex-end;">
                     <button type="button" class="btn btn-descuento" id="btnDescuento" onclick="toggleDescuento()">
-                        <span class="lang-es">Agregar Descuento</span>
-                        <span class="lang-en">Add Discount</span>
+                        <span class="lang-es">+ Agregar Descuento</span>
+                        <span class="lang-en">+ Add Discount</span>
                     </button>
                 </div>
             </div>
 
-            <!-- PAYMENT STATUS -->
+            <!-- ESTADO DE PAGO -->
             <div class="form-group">
                 <label class="lang-es">Estado de Pago</label>
                 <label class="lang-en">Payment Status</label>
@@ -421,11 +543,11 @@
                     <label><input type="radio" name="estado" value="completo" onclick="ajustarDeposito()"> <span class="lang-es">Pago Completo</span><span class="lang-en">Full Payment</span></label>
                     <label><input type="radio" name="estado" value="pendiente" onclick="ajustarDeposito()"> <span class="lang-es">Pendiente</span><span class="lang-en">Pending</span></label>
                 </div>
-                <div class="small-hint lang-es" style="margin-top: 5px;">Al seleccionar "Pago Completo", el depósito se ajusta al total.</div>
-                <div class="small-hint lang-en" style="margin-top: 5px;">When selecting "Full Payment", the deposit adjusts to the total.</div>
+                <div class="small-hint lang-es" style="margin-top: 6px;">Al seleccionar "Pago Completo", el depósito se ajusta al total.</div>
+                <div class="small-hint lang-en" style="margin-top: 6px;">When selecting "Full Payment", the deposit adjusts to the total.</div>
             </div>
 
-            <!-- PAYMENT METHOD + NOTES -->
+            <!-- METODO PAGO + NOTAS -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Método de Pago</label>
@@ -440,7 +562,8 @@
                 <div class="form-group">
                     <label class="lang-es">Notas</label>
                     <label class="lang-en">Notes</label>
-                    <input type="text" id="notas">
+                    <input type="text" id="notas" class="lang-es" placeholder="Notas adicionales">
+                    <input type="text" id="notasEn" class="lang-en" placeholder="Additional notes" style="display:none;">
                 </div>
             </div>
 
@@ -474,9 +597,6 @@
                     <span class="lang-es">WhatsApp</span>
                     <span class="lang-en">WhatsApp</span>
                 </a>
-            </div>
-
-            <div style="text-align: center; margin-top: 15px;">
                 <a id="verRecibo" href="#" target="_blank" class="btn-ver-recibo">
                     <span class="lang-es">Ver Recibo</span>
                     <span class="lang-en">View Receipt</span>
@@ -495,9 +615,33 @@
             if (lang === 'en') {
                 document.body.classList.add('english');
                 document.getElementById('btnEn').classList.add('active');
+                // Sincronizar valores entre campos ES y EN
+                document.querySelectorAll('.lang-es').forEach(el => {
+                    if (el.tagName === 'INPUT' && el.type !== 'hidden') {
+                        const enId = el.id + 'En';
+                        const enEl = document.getElementById(enId);
+                        if (enEl) enEl.value = el.value;
+                    }
+                });
             } else {
                 document.getElementById('btnEs').classList.add('active');
+                // Sincronizar valores entre campos EN y ES
+                document.querySelectorAll('.lang-en').forEach(el => {
+                    if (el.tagName === 'INPUT' && el.type !== 'hidden') {
+                        const esId = el.id.replace('En', '');
+                        const esEl = document.getElementById(esId);
+                        if (esEl) esEl.value = el.value;
+                    }
+                });
             }
+        }
+
+        // ====== SINCRONIZAR CAMPOS ======
+        function syncFields() {
+            const isEn = document.body.classList.contains('english');
+            // Si está en inglés, los campos .lang-es son los que se usan
+            // Si está en español, los campos .lang-en son los que se usan
+            // Pero como los inputs tienen el mismo id, solo usamos los principales
         }
 
         // ====== GENERAR FECHA ======
@@ -516,22 +660,34 @@
             calcularSubtotal();
             calcularTotal();
             ajustarDeposito();
+            syncFieldToEn('adultos');
         });
         document.getElementById('ninos').addEventListener('input', function() {
             calcularSubtotal();
             calcularTotal();
             ajustarDeposito();
+            syncFieldToEn('ninos');
         });
         document.getElementById('precioAdulto').addEventListener('input', function() {
             calcularSubtotal();
             calcularTotal();
             ajustarDeposito();
+            syncFieldToEn('precioAdulto');
         });
         document.getElementById('precioNino').addEventListener('input', function() {
             calcularSubtotal();
             calcularTotal();
             ajustarDeposito();
+            syncFieldToEn('precioNino');
         });
+
+        function syncFieldToEn(id) {
+            const esEl = document.getElementById(id);
+            const enEl = document.getElementById(id + 'En');
+            if (esEl && enEl) {
+                enEl.value = esEl.value;
+            }
+        }
 
         function calcularSubtotal() {
             const adultos = parseInt(document.getElementById('adultos').value) || 0;
@@ -560,11 +716,11 @@
             group.classList.toggle('visible');
             
             if (group.classList.contains('visible')) {
-                btn.textContent = document.body.classList.contains('english') ? 'Remove Discount' : 'Quitar Descuento';
+                btn.innerHTML = document.body.classList.contains('english') ? 'Remove Discount' : 'Quitar Descuento';
                 btn.classList.add('activo');
             } else {
                 document.getElementById('descuento').value = '';
-                btn.textContent = document.body.classList.contains('english') ? 'Add Discount' : 'Agregar Descuento';
+                btn.innerHTML = document.body.classList.contains('english') ? '+ Add Discount' : '+ Agregar Descuento';
                 btn.classList.remove('activo');
                 calcularTotal();
             }
@@ -589,6 +745,9 @@
         document.getElementById('formRecibo').addEventListener('submit', function(e) {
             e.preventDefault();
 
+            // Obtener valores según idioma
+            const isEn = document.body.classList.contains('english');
+            
             const id = document.getElementById('id').value;
             const cliente = document.getElementById('cliente').value;
             const excursion = document.getElementById('excursion').value;
@@ -611,7 +770,7 @@
             const fechaExcursion = document.getElementById('fechaExcursion').value || '';
 
             if (!id || !cliente || !excursion || !adultos || !precioAdulto) {
-                alert(document.body.classList.contains('english') ? 'Please complete all required fields' : 'Por favor, completa los campos obligatorios');
+                alert(isEn ? 'Please complete all required fields' : 'Por favor, completa los campos obligatorios');
                 return;
             }
 
@@ -648,7 +807,7 @@
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(enlace)}&size=200x200`;
             document.getElementById('qrImg').src = qrUrl;
 
-            const mensaje = document.body.classList.contains('english') 
+            const mensaje = isEn 
                 ? `Hello ${cliente}, your receipt for ${excursion} is ready. Scan this QR or click the link: ${enlace}`
                 : `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlace}`;
             
