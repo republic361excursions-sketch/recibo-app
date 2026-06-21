@@ -11,24 +11,65 @@ app.get('/', (req, res) => {
 });
 
 app.get('/ver-recibo', (req, res) => {
-    const { id, recibo } = req.query;
-    
+    // Tomar todos los datos de la URL
+    const { 
+        id, recibo, cliente, excursion, 
+        adultos, ninos, precioAdulto, 
+        subtotal, deposito, balance, estado 
+    } = req.query;
+
+    // Validar parámetros obligatorios
     if (!id || !recibo) {
-        return res.status(400).send('❌ Faltan parámetros: id y recibo son obligatorios');
+        return res.status(400).send('❌ Faltan parámetros obligatorios: id y recibo');
     }
-    
-    res.render('recibo', {
+
+    // Construir los datos con valores por defecto si faltan
+    const datos = {
         idFactura: id,
         numeroRecibo: recibo,
+        cliente: cliente || 'Cliente no especificado',
+        excursion: excursion || 'Excursión no especificada',
+        adultos: parseInt(adultos) || 1,
+        ninos: parseInt(ninos) || 0,
+        precioAdulto: parseFloat(precioAdulto) || 75,
+        subtotal: parseFloat(subtotal) || 375,
+        depositoPagado: parseFloat(deposito) || 0,
+        totalPendiente: parseFloat(balance) || 375,
+        metodoPago: 'Efectivo',
         fecha: new Date().toLocaleDateString('es-ES', {
             year: 'numeric',
             month: 'long',
             day: 'numeric'
         }),
-        hora: new Date().toLocaleTimeString('es-ES', {
-            hour: '2-digit',
-            minute: '2-digit'
-        })
+        estado: estado || 'pendiente'
+    };
+
+    // Determinar estado visual
+    let estadoTexto = '';
+    let estadoColor = '';
+    
+    switch(datos.estado) {
+        case 'completo':
+            estadoTexto = '✅ PAGADO COMPLETO';
+            estadoColor = '#28a745';
+            break;
+        case 'deposito':
+            estadoTexto = '💳 DEPÓSITO PAGADO (25%)';
+            estadoColor = '#ffc107';
+            break;
+        case 'pendiente':
+            estadoTexto = '⏳ PENDIENTE DE PAGO';
+            estadoColor = '#dc3545';
+            break;
+        default:
+            estadoTexto = '❓ ESTADO DESCONOCIDO';
+            estadoColor = '#6c757d';
+    }
+
+    res.render('recibo', {
+        ...datos,
+        estadoTexto,
+        estadoColor
     });
 });
 
