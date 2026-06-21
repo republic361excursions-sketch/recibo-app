@@ -3,40 +3,38 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Configurar EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Servir archivos estáticos (CSS, JS, HTML)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Ruta principal: muestra el formulario
 app.get('/', (req, res) => {
-    res.send('✅ Servidor funcionando correctamente');
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Ruta para ver el recibo
 app.get('/ver-recibo', (req, res) => {
-    // Tomar todos los datos de la URL
     const { 
         id, recibo, cliente, excursion, 
         adultos, ninos, precioAdulto, 
-        subtotal, deposito, estado, metodoPago
+        subtotal, deposito, estado, metodoPago,
+        whatsapp, correo, hotel
     } = req.query;
 
-    // Validar parámetros obligatorios
     if (!id || !recibo) {
         return res.status(400).send('❌ Faltan parámetros obligatorios: id y recibo');
     }
 
-    // Convertir valores numéricos
     const numAdultos = parseInt(adultos) || 1;
     const numNinos = parseInt(ninos) || 0;
     const precioAdultoNum = parseFloat(precioAdulto) || 75;
     const subtotalNum = parseFloat(subtotal) || (numAdultos * precioAdultoNum);
     const depositoNum = parseFloat(deposito) || 0;
-
-    // ✅ CÁLCULO AUTOMÁTICO DEL BALANCE PENDIENTE
     const totalPendiente = subtotalNum - depositoNum;
 
-    // ✅ MÉTODO DE PAGO DESDE LA URL
-    const metodoPagoMostrar = metodoPago || 'Efectivo';
-
-    // Construir los datos
     const datos = {
         idFactura: id,
         numeroRecibo: recibo,
@@ -48,7 +46,10 @@ app.get('/ver-recibo', (req, res) => {
         subtotal: subtotalNum,
         depositoPagado: depositoNum,
         totalPendiente: totalPendiente,
-        metodoPago: metodoPagoMostrar, // ✅ AHORA USA EL PARÁMETRO DE LA URL
+        metodoPago: metodoPago || 'Efectivo',
+        whatsapp: whatsapp || '',
+        correo: correo || '',
+        hotel: hotel || '',
         fecha: new Date().toLocaleDateString('es-ES', {
             year: 'numeric',
             month: 'long',
@@ -57,12 +58,10 @@ app.get('/ver-recibo', (req, res) => {
         estado: estado || 'pendiente'
     };
 
-    // Determinar estado visual basado en el balance REAL
     let estadoTexto = '';
     let estadoColor = '';
     let estadoReal = datos.estado;
 
-    // Forzar estado 'completo' si el balance es 0
     if (totalPendiente <= 0) {
         estadoReal = 'completo';
     }
