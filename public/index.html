@@ -323,9 +323,12 @@
             <div class="form-group">
                 <label>Estado de Pago *</label>
                 <div class="estado-options">
-                    <label><input type="radio" name="estado" value="deposito" checked> Depósito (25%)</label>
-                    <label><input type="radio" name="estado" value="completo"> Pago Completo</label>
-                    <label><input type="radio" name="estado" value="pendiente"> Pendiente</label>
+                    <label><input type="radio" name="estado" value="deposito" checked onclick="ajustarDeposito()"> Depósito (25%)</label>
+                    <label><input type="radio" name="estado" value="completo" onclick="ajustarDeposito()"> Pago Completo</label>
+                    <label><input type="radio" name="estado" value="pendiente" onclick="ajustarDeposito()"> Pendiente</label>
+                </div>
+                <div class="small-hint" style="margin-top: 5px;">
+                    <strong>Nota:</strong> Al seleccionar "Pago Completo", el depósito se ajusta al total y no se muestra en el recibo.
                 </div>
             </div>
 
@@ -386,13 +389,28 @@
             const semana = new Date();
             semana.setDate(semana.getDate() + 7);
             document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
+            
+            calcularSubtotal();
+            ajustarDeposito();
         });
 
         // CALCULAR SUBTOTAL
-        document.getElementById('adultos').addEventListener('input', calcularSubtotal);
-        document.getElementById('ninos').addEventListener('input', calcularSubtotal);
-        document.getElementById('precioAdulto').addEventListener('input', calcularSubtotal);
-        document.getElementById('precioNino').addEventListener('input', calcularSubtotal);
+        document.getElementById('adultos').addEventListener('input', function() {
+            calcularSubtotal();
+            ajustarDeposito();
+        });
+        document.getElementById('ninos').addEventListener('input', function() {
+            calcularSubtotal();
+            ajustarDeposito();
+        });
+        document.getElementById('precioAdulto').addEventListener('input', function() {
+            calcularSubtotal();
+            ajustarDeposito();
+        });
+        document.getElementById('precioNino').addEventListener('input', function() {
+            calcularSubtotal();
+            ajustarDeposito();
+        });
 
         function calcularSubtotal() {
             const adultos = parseInt(document.getElementById('adultos').value) || 0;
@@ -402,9 +420,21 @@
             
             const subtotal = (adultos * precioAdulto) + (ninos * precioNino);
             document.getElementById('subtotal').value = subtotal.toFixed(2);
+        }
+
+        // AJUSTAR DEPÓSITO SEGÚN EL ESTADO
+        function ajustarDeposito() {
+            const estado = document.querySelector('input[name="estado"]:checked').value;
+            const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+            const depositoInput = document.getElementById('deposito');
             
-            const deposito = subtotal * 0.25;
-            document.getElementById('deposito').value = deposito.toFixed(2);
+            if (estado === 'completo') {
+                depositoInput.value = subtotal.toFixed(2);
+            } else if (estado === 'deposito') {
+                depositoInput.value = (subtotal * 0.25).toFixed(2);
+            } else if (estado === 'pendiente') {
+                depositoInput.value = '0.00';
+            }
         }
 
         // ENVIAR FORMULARIO
@@ -518,9 +548,6 @@
             link.href = qrImg.src;
             link.click();
         }
-
-        // CALCULAR AL CARGAR
-        calcularSubtotal();
     </script>
 </body>
 </html>
