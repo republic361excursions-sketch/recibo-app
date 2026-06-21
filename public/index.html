@@ -81,20 +81,6 @@
             background: #5563c1;
             transform: translateY(-2px);
         }
-        .btn-buscar {
-            background: #28a745;
-            padding: 12px 25px;
-            font-size: 16px;
-            width: auto;
-            margin-top: 0;
-        }
-        .btn-buscar:hover {
-            background: #218838;
-        }
-        .btn-buscar:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
-        }
         .resultado {
             margin-top: 30px;
             padding: 20px;
@@ -212,45 +198,6 @@
             font-size: 12px;
             margin-top: 4px;
         }
-        .buscar-row {
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        .buscar-row .form-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
-        .loading {
-            display: none;
-            color: #667eea;
-            font-size: 14px;
-            margin-left: 10px;
-        }
-        .loading.visible {
-            display: inline-block;
-        }
-        .mensaje-error {
-            display: none;
-            color: #dc3545;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        .mensaje-error.visible {
-            display: block;
-        }
-        .encontrado {
-            display: none;
-            color: #28a745;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        .encontrado.visible {
-            display: block;
-        }
         @media (max-width: 600px) {
             .form-row {
                 flex-direction: column;
@@ -258,13 +205,6 @@
             }
             .container {
                 padding: 20px;
-            }
-            .buscar-row {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .btn-buscar {
-                width: 100%;
             }
         }
     </style>
@@ -275,18 +215,6 @@
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
         <form id="formRecibo">
-            <!-- BUSCADOR POR ID -->
-            <div class="buscar-row">
-                <div class="form-group">
-                    <label>Buscar por ID / Código de Reserva</label>
-                    <input type="text" id="buscarId" placeholder="Ej: BUG-5198">
-                    <div class="mensaje-error" id="mensajeError">No se encontró ninguna reserva con ese ID</div>
-                    <div class="encontrado" id="mensajeEncontrado">Reserva encontrada. Los datos se han cargado automáticamente.</div>
-                </div>
-                <button type="button" class="btn btn-buscar" id="btnBuscar">Buscar Reserva</button>
-                <span class="loading" id="loading">Cargando...</span>
-            </div>
-
             <!-- DATOS DE LA RESERVA -->
             <div class="form-row">
                 <div class="form-group">
@@ -347,7 +275,7 @@
             <div class="form-group">
                 <label>Excursión *</label>
                 <input type="text" id="excursion" placeholder="Ej: Buggys + Playa Macao, Isla Saona, etc." required>
-                <div class="small-hint">Escribe el nombre de la excursión. Puedes agregar cualquier excursión nueva sin modificar el código.</div>
+                <div class="small-hint">Escribe el nombre de la excursión.</div>
             </div>
 
             <!-- PERSONAS -->
@@ -439,18 +367,10 @@
             <div style="text-align: center; margin-top: 15px;">
                 <a id="verRecibo" href="#" target="_blank" class="btn-ver-recibo">Ver Recibo</a>
             </div>
-
-            <div style="text-align: center; margin-top: 10px; font-size: 12px; color: #888;">
-                El recibo también se ha guardado en Google Sheets
-            </div>
         </div>
     </div>
 
     <script>
-        // ====== CONFIGURACIÓN ======
-        // ✅ URL CORREGIDA DE GOOGLE APPS SCRIPT
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1XMDrVmQbwTWzLBuahgC9Wq7vGcqvhIm6t8hVKNRN1rUjQlAzx4wE63KSMU/exec';
-
         // ====== GENERAR CÓDIGOS AUTOMÁTICAMENTE ======
         document.addEventListener('DOMContentLoaded', function() {
             const hoy = new Date();
@@ -465,115 +385,6 @@
             calcularSubtotal();
             ajustarDeposito();
         });
-
-        // ====== BUSCAR RESERVA EN GOOGLE SHEETS ======
-        document.getElementById('btnBuscar').addEventListener('click', buscarReserva);
-        document.getElementById('buscarId').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                buscarReserva();
-            }
-        });
-
-        function buscarReserva() {
-            const idBuscado = document.getElementById('buscarId').value.trim();
-            const mensajeError = document.getElementById('mensajeError');
-            const mensajeEncontrado = document.getElementById('mensajeEncontrado');
-            const loading = document.getElementById('loading');
-            
-            mensajeError.classList.remove('visible');
-            mensajeEncontrado.classList.remove('visible');
-            
-            if (!idBuscado) {
-                mensajeError.textContent = 'Por favor, escribe un ID para buscar.';
-                mensajeError.classList.add('visible');
-                return;
-            }
-
-            loading.classList.add('visible');
-            document.getElementById('btnBuscar').disabled = true;
-
-            const url = GOOGLE_SCRIPT_URL + '?accion=buscar&busqueda=' + encodeURIComponent(idBuscado);
-            
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    loading.classList.remove('visible');
-                    document.getElementById('btnBuscar').disabled = false;
-
-                    if (data.success && data.resultados && data.resultados.length > 0) {
-                        const reserva = data.resultados[0];
-                        cargarDatosReserva(reserva);
-                        mensajeEncontrado.textContent = 'Reserva encontrada: ' + reserva.id + ' - ' + reserva.cliente;
-                        mensajeEncontrado.classList.add('visible');
-                    } else {
-                        mensajeError.textContent = 'No se encontró ninguna reserva con el ID: ' + idBuscado;
-                        mensajeError.classList.add('visible');
-                    }
-                })
-                .catch(error => {
-                    loading.classList.remove('visible');
-                    document.getElementById('btnBuscar').disabled = false;
-                    mensajeError.textContent = 'Error al conectar con Google Sheets. Verifica la URL.';
-                    mensajeError.classList.add('visible');
-                    console.error('Error:', error);
-                });
-        }
-
-        function cargarDatosReserva(reserva) {
-            document.getElementById('id').value = reserva.id || '';
-            document.getElementById('recibo').value = 'REC-' + new Date().toISOString().split('T')[0] + '-' + Math.floor(Math.random() * 9000 + 1000);
-            document.getElementById('cliente').value = reserva.cliente || '';
-            document.getElementById('whatsapp').value = reserva.whatsapp || '';
-            document.getElementById('correo').value = reserva.correo || '';
-            document.getElementById('hotel').value = reserva.hotel || '';
-            document.getElementById('habitacion').value = reserva.habitacion || '';
-            document.getElementById('excursion').value = reserva.excursion || '';
-            document.getElementById('adultos').value = reserva.adultos || 1;
-            document.getElementById('ninos').value = reserva.ninos || 0;
-            document.getElementById('transporte').value = reserva.transporte || 'Sí';
-            document.getElementById('notas').value = reserva.notas || 'Sin notas adicionales';
-            
-            if (reserva.fecha) {
-                let fecha = reserva.fecha;
-                if (fecha.includes('/')) {
-                    const parts = fecha.split('/');
-                    if (parts.length === 3) {
-                        fecha = parts[2] + '-' + parts[1].padStart(2, '0') + '-' + parts[0].padStart(2, '0');
-                    }
-                }
-                if (fecha.includes('T')) {
-                    fecha = fecha.split('T')[0];
-                }
-                document.getElementById('fechaExcursion').value = fecha;
-            }
-            
-            const preciosPorExcursion = {
-                'dolphin': { adulto: 75, nino: 45 },
-                'saona': { adulto: 70, nino: 35 },
-                'buggy': { adulto: 45, nino: 25 },
-                'safari': { adulto: 65, nino: 30 },
-                'zip': { adulto: 70, nino: 35 },
-                'catamaran': { adulto: 65, nino: 35 },
-            };
-            
-            let precioAdulto = 45;
-            let precioNino = 25;
-            
-            const excursionLower = (reserva.excursion || '').toLowerCase();
-            for (const key in preciosPorExcursion) {
-                if (excursionLower.includes(key)) {
-                    precioAdulto = preciosPorExcursion[key].adulto;
-                    precioNino = preciosPorExcursion[key].nino;
-                    break;
-                }
-            }
-            
-            document.getElementById('precioAdulto').value = precioAdulto;
-            document.getElementById('precioNino').value = precioNino;
-            
-            calcularSubtotal();
-            ajustarDeposito();
-        }
 
         // ====== CALCULAR SUBTOTAL ======
         document.getElementById('adultos').addEventListener('input', function() {
@@ -684,23 +495,6 @@
             document.getElementById('whatsappLink').href = `https://wa.me/1${whatsapp ? '?text=' + encodeURIComponent(mensaje) : '?text=' + encodeURIComponent(mensaje)}`;
 
             document.getElementById('resultado').classList.add('visible');
-
-            // GUARDAR EN GOOGLE SHEETS
-            const datos = {
-                id, recibo, cliente, excursion,
-                adultos, ninos, precioAdulto, precioNino, subtotal, deposito,
-                estado, metodoPago, whatsapp, correo, hotel,
-                habitacion, transporte, notas, fechaExcursion
-            };
-
-            const googleScriptURL = 'https://script.google.com/macros/s/AKfycby1XMDrVmQbwTWzLBuahgC9Wq7vGcqvhIm6t8hVKNRN1rUjQlAzx4wE63KSMU/exec';
-            
-            fetch(googleScriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(datos)
-            }).catch(() => console.log('Datos enviados a Google Sheets'));
         });
 
         // ====== COPIAR ENLACE ======
