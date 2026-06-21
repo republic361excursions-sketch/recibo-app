@@ -243,8 +243,9 @@
         .btn-descuento.activo:hover {
             background: #c82333;
         }
-        .lang-en { display: none; }
+        /* IDIOMAS - SOLO UNO VISIBLE A LA VEZ */
         .lang-es { display: block; }
+        .lang-en { display: none; }
         body.english .lang-es { display: none; }
         body.english .lang-en { display: block; }
         @media (max-width: 600px) {
@@ -271,24 +272,27 @@
                 <button class="lang-btn" id="btnEn" onclick="setLang('en')">EN</button>
             </div>
         </div>
+
+        <!-- SUBTITULO -->
         <p class="subtitulo lang-es">Generador de Recibos de Pago</p>
         <p class="subtitulo lang-en">Payment Receipt Generator</p>
 
         <form id="formRecibo">
-            <!-- ID -->
+            <!-- ID / RESERVATION CODE -->
             <div class="form-group">
                 <label class="lang-es">ID / Código de Reserva</label>
                 <label class="lang-en">ID / Reservation Code</label>
                 <input type="text" id="id">
             </div>
 
-            <!-- CLIENTE -->
+            <!-- CLIENT / CLIENT -->
             <div class="form-group">
                 <label class="lang-es">Cliente</label>
                 <label class="lang-en">Client</label>
                 <input type="text" id="cliente">
             </div>
 
+            <!-- WHATSAPP + EMAIL -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">WhatsApp</label>
@@ -302,7 +306,7 @@
                 </div>
             </div>
 
-            <!-- HOTEL / HABITACION -->
+            <!-- HOTEL + ROOM -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Hotel</label>
@@ -316,7 +320,7 @@
                 </div>
             </div>
 
-            <!-- TRANSPORTE / FECHA -->
+            <!-- TRANSPORT + DATE -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Transporte</label>
@@ -340,7 +344,7 @@
                 <input type="text" id="excursion">
             </div>
 
-            <!-- PERSONAS -->
+            <!-- ADULTS + CHILDREN -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Adultos</label>
@@ -354,7 +358,7 @@
                 </div>
             </div>
 
-            <!-- PRECIOS -->
+            <!-- PRICES -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Precio Adulto (USD)</label>
@@ -370,7 +374,7 @@
                 </div>
             </div>
 
-            <!-- SUBTOTAL / DEPOSITO -->
+            <!-- SUBTOTAL + DEPOSIT -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Subtotal (USD)</label>
@@ -384,7 +388,7 @@
                 </div>
             </div>
 
-            <!-- DESCUENTO -->
+            <!-- DISCOUNT (hidden by default) -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label class="lang-es">Descuento (USD)</label>
                 <label class="lang-en">Discount (USD)</label>
@@ -393,7 +397,7 @@
                 <div class="small-hint lang-en">Amount to subtract from subtotal</div>
             </div>
 
-            <!-- TOTAL -->
+            <!-- TOTAL + DISCOUNT BUTTON -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Total (USD)</label>
@@ -408,7 +412,7 @@
                 </div>
             </div>
 
-            <!-- ESTADO -->
+            <!-- PAYMENT STATUS -->
             <div class="form-group">
                 <label class="lang-es">Estado de Pago</label>
                 <label class="lang-en">Payment Status</label>
@@ -421,7 +425,7 @@
                 <div class="small-hint lang-en" style="margin-top: 5px;">When selecting "Full Payment", the deposit adjusts to the total.</div>
             </div>
 
-            <!-- METODO PAGO / NOTAS -->
+            <!-- PAYMENT METHOD + NOTES -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Método de Pago</label>
