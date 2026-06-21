@@ -230,7 +230,7 @@
             </div>
         </div>
 
-        <!-- ⭐ AQUÍ ESTÁ EL CAMBIO IMPORTANTE -->
+        <!-- ⭐ MENSAJE CONDICIONAL: SOLO APARECE SI FALTA PAGAR -->
         <% if (totalPendiente > 0) { %>
             <div class="mensaje-proveedor pendiente">
                 ⚠️ Falta pagar: $<%= totalPendiente.toFixed(2) %>
