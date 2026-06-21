@@ -28,7 +28,6 @@
             border: 1px solid #edebe6;
         }
 
-        /* ===== HEADER ===== */
         .header-lang {
             display: flex;
             justify-content: space-between;
@@ -84,7 +83,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ===== FORM ===== */
         .form-group {
             margin-bottom: 18px;
         }
@@ -145,7 +143,6 @@
             font-weight: 300;
         }
 
-        /* ===== BUTTONS ===== */
         .btn {
             width: 100%;
             padding: 16px;
@@ -188,7 +185,6 @@
             background: #c0392b;
         }
 
-        /* ===== DESCUENTO ===== */
         .descuento-activo {
             display: none;
         }
@@ -197,7 +193,6 @@
             display: block;
         }
 
-        /* ===== RADIO ===== */
         .estado-options {
             display: flex;
             gap: 20px;
@@ -222,7 +217,6 @@
             cursor: pointer;
         }
 
-        /* ===== RESULTADO ===== */
         .resultado {
             margin-top: 30px;
             padding: 25px;
@@ -349,7 +343,6 @@
         body.english .lang-es { display: none; }
         body.english .lang-en { display: block; }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 600px) {
             .container {
                 padding: 25px 20px;
@@ -375,7 +368,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- HEADER CON IDIOMAS -->
         <div class="header-lang">
             <h1>Republic <span>Excursions</span></h1>
             <div class="lang-buttons">
@@ -384,7 +376,6 @@
             </div>
         </div>
 
-        <!-- SUBTITULO -->
         <p class="subtitulo lang-es">Generador de Recibos de Pago</p>
         <p class="subtitulo lang-en">Payment Receipt Generator</p>
 
@@ -394,15 +385,14 @@
                 <label class="lang-es">ID / Código de Reserva</label>
                 <label class="lang-en">ID / Reservation Code</label>
                 <input type="text" id="id" class="lang-es" placeholder="Ej: BUG-5198">
-                <input type="text" id="idEn" class="lang-en" placeholder="e.g. BUG-5198" style="display:none;">
+                <input type="text" id="id" class="lang-en" placeholder="e.g. BUG-5198">
             </div>
 
             <!-- CLIENTE -->
             <div class="form-group">
-                <label class="lang-es">Cliente <span class="required">*</span></label>
-                <label class="lang-en">Client <span class="required">*</span></label>
+                <label><span class="lang-es">Cliente <span class="required">*</span></span><span class="lang-en">Client <span class="required">*</span></span></label>
                 <input type="text" id="cliente" class="lang-es" placeholder="Nombre completo">
-                <input type="text" id="clienteEn" class="lang-en" placeholder="Full name" style="display:none;">
+                <input type="text" id="cliente" class="lang-en" placeholder="Full name">
             </div>
 
             <!-- WHATSAPP + EMAIL -->
@@ -411,13 +401,13 @@
                     <label class="lang-es">WhatsApp</label>
                     <label class="lang-en">WhatsApp</label>
                     <input type="text" id="whatsapp" class="lang-es" placeholder="Ej: 809-555-1234">
-                    <input type="text" id="whatsappEn" class="lang-en" placeholder="e.g. 809-555-1234" style="display:none;">
+                    <input type="text" id="whatsapp" class="lang-en" placeholder="e.g. 809-555-1234">
                 </div>
                 <div class="form-group">
                     <label class="lang-es">Correo</label>
                     <label class="lang-en">Email</label>
                     <input type="email" id="correo" class="lang-es" placeholder="correo@ejemplo.com">
-                    <input type="email" id="correoEn" class="lang-en" placeholder="example@email.com" style="display:none;">
+                    <input type="email" id="correo" class="lang-en" placeholder="example@email.com">
                 </div>
             </div>
 
@@ -427,13 +417,13 @@
                     <label class="lang-es">Hotel</label>
                     <label class="lang-en">Hotel</label>
                     <input type="text" id="hotel" class="lang-es" placeholder="Nombre del hotel">
-                    <input type="text" id="hotelEn" class="lang-en" placeholder="Hotel name" style="display:none;">
+                    <input type="text" id="hotel" class="lang-en" placeholder="Hotel name">
                 </div>
                 <div class="form-group">
                     <label class="lang-es">Habitación</label>
                     <label class="lang-en">Room</label>
                     <input type="text" id="habitacion" class="lang-es" placeholder="Ej: 123">
-                    <input type="text" id="habitacionEn" class="lang-en" placeholder="e.g. 123" style="display:none;">
+                    <input type="text" id="habitacion" class="lang-en" placeholder="e.g. 123">
                 </div>
             </div>
 
@@ -442,8 +432,12 @@
                 <div class="form-group">
                     <label class="lang-es">Transporte</label>
                     <label class="lang-en">Transport</label>
-                    <select id="transporte">
+                    <select id="transporte" class="lang-es">
                         <option value="Sí">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                    <select id="transporte" class="lang-en">
+                        <option value="Sí">Yes</option>
                         <option value="No">No</option>
                     </select>
                 </div>
@@ -456,41 +450,38 @@
 
             <!-- EXCURSION -->
             <div class="form-group">
-                <label class="lang-es">Excursión <span class="required">*</span></label>
-                <label class="lang-en">Excursion <span class="required">*</span></label>
+                <label><span class="lang-es">Excursión <span class="required">*</span></span><span class="lang-en">Excursion <span class="required">*</span></span></label>
                 <input type="text" id="excursion" class="lang-es" placeholder="Nombre de la excursión">
-                <input type="text" id="excursionEn" class="lang-en" placeholder="Excursion name" style="display:none;">
+                <input type="text" id="excursion" class="lang-en" placeholder="Excursion name">
             </div>
 
             <!-- ADULTOS + NIÑOS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="lang-es">Adultos <span class="required">*</span></label>
-                    <label class="lang-en">Adults <span class="required">*</span></label>
+                    <label><span class="lang-es">Adultos <span class="required">*</span></span><span class="lang-en">Adults <span class="required">*</span></span></label>
                     <input type="number" id="adultos" class="lang-es" placeholder="Cantidad" min="0">
-                    <input type="number" id="adultosEn" class="lang-en" placeholder="Quantity" min="0" style="display:none;">
+                    <input type="number" id="adultos" class="lang-en" placeholder="Quantity" min="0">
                 </div>
                 <div class="form-group">
                     <label class="lang-es">Niños</label>
                     <label class="lang-en">Children</label>
                     <input type="number" id="ninos" class="lang-es" placeholder="Cantidad" min="0">
-                    <input type="number" id="ninosEn" class="lang-en" placeholder="Quantity" min="0" style="display:none;">
+                    <input type="number" id="ninos" class="lang-en" placeholder="Quantity" min="0">
                 </div>
             </div>
 
             <!-- PRECIOS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="lang-es">Precio Adulto (USD) <span class="required">*</span></label>
-                    <label class="lang-en">Adult Price (USD) <span class="required">*</span></label>
+                    <label><span class="lang-es">Precio Adulto (USD) <span class="required">*</span></span><span class="lang-en">Adult Price (USD) <span class="required">*</span></span></label>
                     <input type="number" id="precioAdulto" class="lang-es" placeholder="Ej: 45" min="0" step="0.01">
-                    <input type="number" id="precioAdultoEn" class="lang-en" placeholder="e.g. 45" min="0" step="0.01" style="display:none;">
+                    <input type="number" id="precioAdulto" class="lang-en" placeholder="e.g. 45" min="0" step="0.01">
                 </div>
                 <div class="form-group">
                     <label class="lang-es">Precio Niño (USD)</label>
                     <label class="lang-en">Child Price (USD)</label>
                     <input type="number" id="precioNino" class="lang-es" placeholder="Ej: 25" min="0" step="0.01">
-                    <input type="number" id="precioNinoEn" class="lang-en" placeholder="e.g. 25" min="0" step="0.01" style="display:none;">
+                    <input type="number" id="precioNino" class="lang-en" placeholder="e.g. 25" min="0" step="0.01">
                     <div class="small-hint lang-es">Si no aplica, dejar en 0.</div>
                     <div class="small-hint lang-en">If not applicable, leave as 0.</div>
                 </div>
@@ -501,12 +492,12 @@
                 <div class="form-group">
                     <label class="lang-es">Subtotal (USD)</label>
                     <label class="lang-en">Subtotal (USD)</label>
-                    <input type="number" id="subtotal" value="" min="0" step="0.01">
+                    <input type="number" id="subtotal" min="0" step="0.01">
                 </div>
                 <div class="form-group">
                     <label class="lang-es">Depósito (USD)</label>
                     <label class="lang-en">Deposit (USD)</label>
-                    <input type="number" id="deposito" value="" min="0" step="0.01">
+                    <input type="number" id="deposito" min="0" step="0.01">
                 </div>
             </div>
 
@@ -514,7 +505,7 @@
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label class="lang-es">Descuento (USD)</label>
                 <label class="lang-en">Discount (USD)</label>
-                <input type="number" id="descuento" value="" min="0" step="0.01" oninput="calcularTotal()">
+                <input type="number" id="descuento" min="0" step="0.01" oninput="calcularTotal()">
                 <div class="small-hint lang-es">Monto a descontar del subtotal</div>
                 <div class="small-hint lang-en">Amount to subtract from subtotal</div>
             </div>
@@ -524,7 +515,7 @@
                 <div class="form-group">
                     <label class="lang-es">Total (USD)</label>
                     <label class="lang-en">Total (USD)</label>
-                    <input type="number" id="total" value="" min="0" step="0.01" readonly style="background: #f0f0f0; font-weight: 600; color: #1a2a4a;">
+                    <input type="number" id="total" min="0" step="0.01" readonly style="background: #f0f0f0; font-weight: 600; color: #1a2a4a;">
                 </div>
                 <div class="form-group" style="display: flex; align-items: flex-end;">
                     <button type="button" class="btn btn-descuento" id="btnDescuento" onclick="toggleDescuento()">
@@ -552,18 +543,24 @@
                 <div class="form-group">
                     <label class="lang-es">Método de Pago</label>
                     <label class="lang-en">Payment Method</label>
-                    <select id="metodoPago">
-                        <option value="Efectivo"><span class="lang-es">Efectivo</span><span class="lang-en">Cash</span></option>
+                    <select id="metodoPago" class="lang-es">
+                        <option value="Efectivo">Efectivo</option>
                         <option value="PayPal">PayPal</option>
-                        <option value="Tarjeta de Crédito"><span class="lang-es">Tarjeta de Crédito</span><span class="lang-en">Credit Card</span></option>
-                        <option value="Transferencia Bancaria"><span class="lang-es">Transferencia</span><span class="lang-en">Bank Transfer</span></option>
+                        <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+                        <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                    </select>
+                    <select id="metodoPago" class="lang-en">
+                        <option value="Efectivo">Cash</option>
+                        <option value="PayPal">PayPal</option>
+                        <option value="Tarjeta de Crédito">Credit Card</option>
+                        <option value="Transferencia Bancaria">Bank Transfer</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="lang-es">Notas</label>
                     <label class="lang-en">Notes</label>
                     <input type="text" id="notas" class="lang-es" placeholder="Notas adicionales">
-                    <input type="text" id="notasEn" class="lang-en" placeholder="Additional notes" style="display:none;">
+                    <input type="text" id="notas" class="lang-en" placeholder="Additional notes">
                 </div>
             </div>
 
@@ -615,33 +612,9 @@
             if (lang === 'en') {
                 document.body.classList.add('english');
                 document.getElementById('btnEn').classList.add('active');
-                // Sincronizar valores entre campos ES y EN
-                document.querySelectorAll('.lang-es').forEach(el => {
-                    if (el.tagName === 'INPUT' && el.type !== 'hidden') {
-                        const enId = el.id + 'En';
-                        const enEl = document.getElementById(enId);
-                        if (enEl) enEl.value = el.value;
-                    }
-                });
             } else {
                 document.getElementById('btnEs').classList.add('active');
-                // Sincronizar valores entre campos EN y ES
-                document.querySelectorAll('.lang-en').forEach(el => {
-                    if (el.tagName === 'INPUT' && el.type !== 'hidden') {
-                        const esId = el.id.replace('En', '');
-                        const esEl = document.getElementById(esId);
-                        if (esEl) esEl.value = el.value;
-                    }
-                });
             }
-        }
-
-        // ====== SINCRONIZAR CAMPOS ======
-        function syncFields() {
-            const isEn = document.body.classList.contains('english');
-            // Si está en inglés, los campos .lang-es son los que se usan
-            // Si está en español, los campos .lang-en son los que se usan
-            // Pero como los inputs tienen el mismo id, solo usamos los principales
         }
 
         // ====== GENERAR FECHA ======
@@ -660,34 +633,22 @@
             calcularSubtotal();
             calcularTotal();
             ajustarDeposito();
-            syncFieldToEn('adultos');
         });
         document.getElementById('ninos').addEventListener('input', function() {
             calcularSubtotal();
             calcularTotal();
             ajustarDeposito();
-            syncFieldToEn('ninos');
         });
         document.getElementById('precioAdulto').addEventListener('input', function() {
             calcularSubtotal();
             calcularTotal();
             ajustarDeposito();
-            syncFieldToEn('precioAdulto');
         });
         document.getElementById('precioNino').addEventListener('input', function() {
             calcularSubtotal();
             calcularTotal();
             ajustarDeposito();
-            syncFieldToEn('precioNino');
         });
-
-        function syncFieldToEn(id) {
-            const esEl = document.getElementById(id);
-            const enEl = document.getElementById(id + 'En');
-            if (esEl && enEl) {
-                enEl.value = esEl.value;
-            }
-        }
 
         function calcularSubtotal() {
             const adultos = parseInt(document.getElementById('adultos').value) || 0;
@@ -745,7 +706,6 @@
         document.getElementById('formRecibo').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // Obtener valores según idioma
             const isEn = document.body.classList.contains('english');
             
             const id = document.getElementById('id').value;
