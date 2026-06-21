@@ -448,9 +448,8 @@
 
     <script>
         // ====== CONFIGURACIÓN ======
-        // URL de Google Apps Script (CAMBIA ESTA URL POR LA TUYA)
-        // Debes publicar el script como aplicación web y copiar la URL aquí
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/TU_ID_AQUI/exec';
+        // URL de Google Apps Script - YA CONFIGURADA
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1XMDrVmQbwTWzLBuahgC9Wq7vGcqvhIm/exec';
 
         // ====== GENERAR CÓDIGOS AUTOMÁTICAMENTE ======
         document.addEventListener('DOMContentLoaded', function() {
@@ -481,7 +480,6 @@
             const mensajeEncontrado = document.getElementById('mensajeEncontrado');
             const loading = document.getElementById('loading');
             
-            // Ocultar mensajes anteriores
             mensajeError.classList.remove('visible');
             mensajeEncontrado.classList.remove('visible');
             
@@ -491,12 +489,10 @@
                 return;
             }
 
-            // Mostrar loading
             loading.classList.add('visible');
             document.getElementById('btnBuscar').disabled = true;
 
-            // Buscar en Google Sheets
-            const url = GOOGLE_SCRIPT_URL + '?id=' + encodeURIComponent(idBuscado);
+            const url = GOOGLE_SCRIPT_URL + '?accion=buscar&busqueda=' + encodeURIComponent(idBuscado);
             
             fetch(url)
                 .then(response => response.json())
@@ -504,15 +500,10 @@
                     loading.classList.remove('visible');
                     document.getElementById('btnBuscar').disabled = false;
 
-                    if (data.error) {
-                        mensajeError.textContent = '❌ ' + data.error;
-                        mensajeError.classList.add('visible');
-                        return;
-                    }
-
-                    if (data.found) {
-                        // Cargar los datos en el formulario
-                        cargarDatosReserva(data.datos);
+                    if (data.success && data.resultados && data.resultados.length > 0) {
+                        const reserva = data.resultados[0];
+                        cargarDatosReserva(reserva);
+                        mensajeEncontrado.textContent = '✅ Reserva encontrada: ' + reserva.id + ' - ' + reserva.cliente;
                         mensajeEncontrado.classList.add('visible');
                     } else {
                         mensajeError.textContent = '❌ No se encontró ninguna reserva con el ID: ' + idBuscado;
@@ -528,41 +519,58 @@
                 });
         }
 
-        function cargarDatosReserva(datos) {
-            // Mapeo de campos de Google Sheets a los campos del formulario
-            // Ajusta estos índices según el orden de tus columnas en Google Sheets
-            // Ejemplo: datos[0] = ID, datos[1] = Recibo, datos[2] = Cliente, etc.
+        function cargarDatosReserva(reserva) {
+            document.getElementById('id').value = reserva.id || '';
+            document.getElementById('recibo').value = 'REC-' + new Date().toISOString().split('T')[0] + '-' + Math.floor(Math.random() * 9000 + 1000);
+            document.getElementById('cliente').value = reserva.cliente || '';
+            document.getElementById('whatsapp').value = reserva.whatsapp || '';
+            document.getElementById('correo').value = reserva.correo || '';
+            document.getElementById('hotel').value = reserva.hotel || '';
+            document.getElementById('habitacion').value = reserva.habitacion || '';
+            document.getElementById('excursion').value = reserva.excursion || '';
+            document.getElementById('adultos').value = reserva.adultos || 1;
+            document.getElementById('ninos').value = reserva.ninos || 0;
+            document.getElementById('transporte').value = reserva.transporte || 'Sí';
+            document.getElementById('notas').value = reserva.notas || 'Sin notas adicionales';
             
-            document.getElementById('id').value = datos.id || '';
-            document.getElementById('recibo').value = datos.recibo || '';
-            document.getElementById('cliente').value = datos.cliente || '';
-            document.getElementById('excursion').value = datos.excursion || '';
-            document.getElementById('adultos').value = datos.adultos || 1;
-            document.getElementById('ninos').value = datos.ninos || 0;
-            document.getElementById('precioAdulto').value = datos.precioAdulto || 45;
-            document.getElementById('precioNino').value = datos.precioNino || 25;
-            document.getElementById('subtotal').value = datos.subtotal || 0;
-            document.getElementById('deposito').value = datos.deposito || 0;
-            document.getElementById('whatsapp').value = datos.whatsapp || '';
-            document.getElementById('correo').value = datos.correo || '';
-            document.getElementById('hotel').value = datos.hotel || '';
-            document.getElementById('habitacion').value = datos.habitacion || '';
-            document.getElementById('transporte').value = datos.transporte || 'Sí';
-            document.getElementById('metodoPago').value = datos.metodoPago || 'Efectivo';
-            document.getElementById('notas').value = datos.notas || 'Sin notas adicionales';
-            
-            // Fecha de excursión
-            if (datos.fechaExcursion) {
-                document.getElementById('fechaExcursion').value = datos.fechaExcursion;
+            if (reserva.fecha) {
+                let fecha = reserva.fecha;
+                if (fecha.includes('/')) {
+                    const parts = fecha.split('/');
+                    if (parts.length === 3) {
+                        fecha = parts[2] + '-' + parts[1].padStart(2, '0') + '-' + parts[0].padStart(2, '0');
+                    }
+                }
+                if (fecha.includes('T')) {
+                    fecha = fecha.split('T')[0];
+                }
+                document.getElementById('fechaExcursion').value = fecha;
             }
             
-            // Estado de pago
-            const estado = datos.estado || 'deposito';
-            document.querySelectorAll('input[name="estado"]').forEach(el => {
-                el.checked = (el.value === estado);
-            });
+            const preciosPorExcursion = {
+                'dolphin': { adulto: 75, nino: 45 },
+                'saona': { adulto: 70, nino: 35 },
+                'buggy': { adulto: 45, nino: 25 },
+                'safari': { adulto: 65, nino: 30 },
+                'zip': { adulto: 70, nino: 35 },
+                'catamaran': { adulto: 65, nino: 35 },
+            };
             
-            // Recalcular
+            let precioAdulto = 45;
+            let precioNino = 25;
+            
+            const excursionLower = (reserva.excursion || '').toLowerCase();
+            for (const key in preciosPorExcursion) {
+                if (excursionLower.includes(key)) {
+                    precioAdulto = preciosPorExcursion[key].adulto;
+                    precioNino = preciosPorExcursion[key].nino;
+                    break;
+                }
+            }
+            
+            document.getElementById('precioAdulto').value = precioAdulto;
+            document.getElementById('precioNino').value = precioNino;
+            
             calcularSubtotal();
             ajustarDeposito();
         }
@@ -685,7 +693,7 @@
                 habitacion, transporte, notas, fechaExcursion
             };
 
-            const googleScriptURL = 'https://script.google.com/macros/s/TU_ID_AQUI/exec';
+            const googleScriptURL = 'https://script.google.com/macros/s/AKfycby1XMDrVmQbwTWzLBuahgC9Wq7vGcqvhIm/exec';
             
             fetch(googleScriptURL, {
                 method: 'POST',
