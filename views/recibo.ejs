@@ -6,11 +6,7 @@
     <title>Recibo <%= numeroRecibo %></title>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -48,9 +44,7 @@
             text-transform: uppercase;
         }
 
-        .header .logo span {
-            color: #c9a84c;
-        }
+        .header .logo span { color: #c9a84c; }
 
         .header .titulo {
             font-size: 24px;
@@ -96,20 +90,9 @@
             border-bottom: 1px solid #f0efeb;
         }
 
-        .info-cliente .fila:last-child {
-            border-bottom: none;
-        }
-
-        .info-cliente .label {
-            font-weight: 500;
-            color: #6b7a8f;
-        }
-
-        .info-cliente .valor {
-            font-weight: 400;
-            text-align: right;
-            color: #1a2a4a;
-        }
+        .info-cliente .fila:last-child { border-bottom: none; }
+        .info-cliente .label { font-weight: 500; color: #6b7a8f; }
+        .info-cliente .valor { font-weight: 400; text-align: right; color: #1a2a4a; }
 
         .tabla {
             width: 100%;
@@ -136,15 +119,8 @@
             color: #2c3e50;
         }
 
-        .tabla .monto {
-            text-align: right;
-            font-weight: 500;
-        }
-
-        .tabla .total {
-            font-weight: 600;
-            font-size: 15px;
-        }
+        .tabla .monto { text-align: right; font-weight: 500; }
+        .tabla .total { font-weight: 600; font-size: 15px; }
 
         .estado-unico {
             text-align: center;
@@ -174,9 +150,7 @@
             color: #922b21;
         }
 
-        .estado-unico .monto {
-            font-size: 26px;
-        }
+        .estado-unico .monto { font-size: 26px; }
 
         .resumen-pago {
             background: #f8f7f4;
@@ -193,28 +167,11 @@
             font-size: 14px;
         }
 
-        .resumen-pago .fila:last-child {
-            border-bottom: none;
-        }
-
-        .resumen-pago .label {
-            font-weight: 500;
-            color: #6b7a8f;
-        }
-
-        .resumen-pago .value {
-            font-weight: 600;
-            color: #1a2a4a;
-        }
-
-        .resumen-pago .value.pendiente {
-            color: #e74c3c;
-        }
-
-        .resumen-pago .value.pagado {
-            color: #27ae60;
-        }
-
+        .resumen-pago .fila:last-child { border-bottom: none; }
+        .resumen-pago .label { font-weight: 500; color: #6b7a8f; }
+        .resumen-pago .value { font-weight: 600; color: #1a2a4a; }
+        .resumen-pago .value.pendiente { color: #e74c3c; }
+        .resumen-pago .value.pagado { color: #27ae60; }
         .resumen-pago .fila.total {
             border-top: 2px solid #1a2a4a;
             padding-top: 8px;
@@ -262,11 +219,9 @@
             color: #8e9aaf;
         }
 
-        .qr-info span {
-            font-weight: 600;
-            color: #1a2a4a;
-        }
+        .qr-info span { font-weight: 600; color: #1a2a4a; }
 
+        /* ===== BOTONES (SOLO VISIBLES PARA ADMIN) ===== */
         .acciones-recibo {
             display: none;
             flex-wrap: wrap;
@@ -277,9 +232,7 @@
             margin-top: 10px;
         }
 
-        .acciones-recibo.visible {
-            display: flex;
-        }
+        .acciones-recibo.visible { display: flex; }
 
         .btn-accion {
             padding: 12px 28px;
@@ -297,79 +250,29 @@
             color: white;
         }
 
-        .btn-accion:hover {
-            background: #2c3e6e;
-        }
-
-        .btn-accion.whatsapp {
-            background: #25D366;
-        }
-
-        .btn-accion.whatsapp:hover {
-            background: #1da851;
-        }
-
-        .btn-accion.imagen {
-            background: #c9a84c;
-        }
-
-        .btn-accion.imagen:hover {
-            background: #b8973a;
-        }
-
-        .btn-accion.volver {
-            background: #8e9aaf;
-        }
-
-        .btn-accion.volver:hover {
-            background: #6b7a8f;
-        }
+        .btn-accion:hover { background: #2c3e6e; }
+        .btn-accion.whatsapp { background: #25D366; }
+        .btn-accion.whatsapp:hover { background: #1da851; }
+        .btn-accion.imagen { background: #c9a84c; }
+        .btn-accion.imagen:hover { background: #b8973a; }
+        .btn-accion.volver { background: #8e9aaf; }
+        .btn-accion.volver:hover { background: #6b7a8f; }
 
         @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            .recibo {
-                box-shadow: none;
-                border: 1px solid #ddd;
-                padding: 30px;
-            }
-            .acciones-recibo {
-                display: none !important;
-            }
+            body { background: white; padding: 0; }
+            .recibo { box-shadow: none; border: 1px solid #ddd; padding: 30px; }
+            .acciones-recibo { display: none !important; }
         }
 
         @media (max-width: 600px) {
-            .recibo {
-                padding: 25px 20px;
-            }
-            .info-cliente .fila {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .info-cliente .valor {
-                text-align: left;
-                width: 100%;
-            }
-            .tabla {
-                font-size: 13px;
-            }
-            .estado-unico {
-                font-size: 18px;
-                padding: 12px;
-            }
-            .estado-unico .monto {
-                font-size: 20px;
-            }
-            .acciones-recibo {
-                flex-direction: column;
-                align-items: center;
-            }
-            .btn-accion {
-                width: 100%;
-                text-align: center;
-            }
+            .recibo { padding: 25px 20px; }
+            .info-cliente .fila { flex-direction: column; align-items: flex-start; }
+            .info-cliente .valor { text-align: left; width: 100%; }
+            .tabla { font-size: 13px; }
+            .estado-unico { font-size: 18px; padding: 12px; }
+            .estado-unico .monto { font-size: 20px; }
+            .acciones-recibo { flex-direction: column; align-items: center; }
+            .btn-accion { width: 100%; text-align: center; }
         }
     </style>
 </head>
@@ -383,158 +286,70 @@
 
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
-
-            <div class="fila">
-                <span class="label">Factura / Reserva</span>
-                <span class="valor"><%= idFactura %></span>
-            </div>
-            <div class="fila">
-                <span class="label">Cliente</span>
-                <span class="valor"><%= cliente %></span>
-            </div>
+            <div class="fila"><span class="label">Factura / Reserva</span><span class="valor"><%= idFactura %></span></div>
+            <div class="fila"><span class="label">Cliente</span><span class="valor"><%= cliente %></span></div>
             <% if (whatsapp) { %>
-            <div class="fila">
-                <span class="label">WhatsApp</span>
-                <span class="valor"><%= whatsapp %></span>
-            </div>
+            <div class="fila"><span class="label">WhatsApp</span><span class="valor"><%= whatsapp %></span></div>
             <% } %>
             <% if (correo) { %>
-            <div class="fila">
-                <span class="label">Correo Electrónico</span>
-                <span class="valor"><%= correo %></span>
-            </div>
+            <div class="fila"><span class="label">Correo Electrónico</span><span class="valor"><%= correo %></span></div>
             <% } %>
             <% if (hotel) { %>
-            <div class="fila">
-                <span class="label">Hotel</span>
-                <span class="valor"><%= hotel %></span>
-            </div>
+            <div class="fila"><span class="label">Hotel</span><span class="valor"><%= hotel %></span></div>
             <% } %>
             <% if (habitacion) { %>
-            <div class="fila">
-                <span class="label">Habitación</span>
-                <span class="valor"><%= habitacion %></span>
-            </div>
+            <div class="fila"><span class="label">Habitación</span><span class="valor"><%= habitacion %></span></div>
             <% } %>
-            <div class="fila">
-                <span class="label">Excursión</span>
-                <span class="valor"><%= excursion %></span>
-            </div>
-            <div class="fila">
-                <span class="label">Fecha</span>
-                <span class="valor"><%= fechaExcursion %></span>
-            </div>
-            <div class="fila">
-                <span class="label">Personas</span>
-                <span class="valor"><%= adultos %> Adultos, <%= ninos %> Niños</span>
-            </div>
-            <div class="fila">
-                <span class="label">Transporte</span>
-                <span class="valor"><%= transporte %></span>
-            </div>
-            <div class="fila">
-                <span class="label">Método de Pago</span>
-                <span class="valor"><%= metodoPago %></span>
-            </div>
+            <div class="fila"><span class="label">Excursión</span><span class="valor"><%= excursion %></span></div>
+            <div class="fila"><span class="label">Fecha</span><span class="valor"><%= fechaExcursion %></span></div>
+            <div class="fila"><span class="label">Personas</span><span class="valor"><%= adultos %> Adultos, <%= ninos %> Niños</span></div>
+            <div class="fila"><span class="label">Transporte</span><span class="valor"><%= transporte %></span></div>
+            <div class="fila"><span class="label">Método de Pago</span><span class="valor"><%= metodoPago %></span></div>
             <% if (notas && notas !== 'Sin notas adicionales') { %>
-            <div class="fila">
-                <span class="label">Notas</span>
-                <span class="valor"><%= notas %></span>
-            </div>
+            <div class="fila"><span class="label">Notas</span><span class="valor"><%= notas %></span></div>
             <% } %>
         </div>
 
         <table class="tabla">
-            <thead>
-                <tr>
-                    <th>Concepto</th>
-                    <th class="monto">Monto (USD)</th>
-                </tr>
-            </thead>
+            <thead><tr><th>Concepto</th><th class="monto">Monto (USD)</th></tr></thead>
             <tbody>
-                <tr>
-                    <td><strong><%= excursion %></strong></td>
-                    <td class="monto"></td>
-                </tr>
-                <tr>
-                    <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
-                    <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
-                </tr>
+                <tr><td><strong><%= excursion %></strong></td><td class="monto"></td></tr>
+                <tr><td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td><td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td></tr>
                 <% if (ninos > 0) { %>
-                <tr>
-                    <td>Niños: <%= ninos %> × $<%= precioNino.toFixed(2) %></td>
-                    <td class="monto">$<%= (ninos * precioNino).toFixed(2) %></td>
-                </tr>
+                <tr><td>Niños: <%= ninos %> × $<%= precioNino.toFixed(2) %></td><td class="monto">$<%= (ninos * precioNino).toFixed(2) %></td></tr>
                 <% } %>
-                <tr>
-                    <td><strong>Subtotal</strong></td>
-                    <td class="monto total">$<%= subtotal.toFixed(2) %></td>
-                </tr>
+                <tr><td><strong>Subtotal</strong></td><td class="monto total">$<%= subtotal.toFixed(2) %></td></tr>
                 <% if (descuento > 0) { %>
-                <tr>
-                    <td style="color: #27ae60;"><strong>Descuento</strong></td>
-                    <td class="monto">-$<%= descuento.toFixed(2) %></td>
-                </tr>
-                <tr>
-                    <td><strong>Total</strong></td>
-                    <td class="monto total">$<%= total.toFixed(2) %></td>
-                </tr>
+                <tr><td style="color:#27ae60;"><strong>Descuento</strong></td><td class="monto">-$<%= descuento.toFixed(2) %></td></tr>
+                <tr><td><strong>Total</strong></td><td class="monto total">$<%= total.toFixed(2) %></td></tr>
                 <% } %>
                 <% if (depositoPagado > 0 && totalPendiente > 0) { %>
-                <tr>
-                    <td>Depósito Pagado (25%)</td>
-                    <td class="monto">$<%= depositoPagado.toFixed(2) %></td>
-                </tr>
+                <tr><td>Depósito Pagado (25%)</td><td class="monto">$<%= depositoPagado.toFixed(2) %></td></tr>
                 <% } %>
             </tbody>
         </table>
 
         <% if (totalPendiente <= 0) { %>
-            <div class="estado-unico pagado">
-                Pagado Completo
-            </div>
+            <div class="estado-unico pagado">Pagado Completo</div>
         <% } else if (estado === 'deposito') { %>
-            <div class="estado-unico falta">
-                Falta Pagar: <span class="monto">$<%= totalPendiente.toFixed(2) %></span>
-            </div>
+            <div class="estado-unico falta">Falta Pagar: <span class="monto">$<%= totalPendiente.toFixed(2) %></span></div>
         <% } else { %>
-            <div class="estado-unico pendiente">
-                Pendiente de Pago: <span class="monto">$<%= totalPendiente.toFixed(2) %></span>
-            </div>
+            <div class="estado-unico pendiente">Pendiente de Pago: <span class="monto">$<%= totalPendiente.toFixed(2) %></span></div>
         <% } %>
 
         <div class="resumen-pago">
-            <div class="fila">
-                <span class="label">Subtotal</span>
-                <span class="value">$<%= subtotal.toFixed(2) %></span>
-            </div>
+            <div class="fila"><span class="label">Subtotal</span><span class="value">$<%= subtotal.toFixed(2) %></span></div>
             <% if (descuento > 0) { %>
-            <div class="fila">
-                <span class="label">Descuento</span>
-                <span class="value" style="color:#27ae60;">-$<%= descuento.toFixed(2) %></span>
-            </div>
-            <div class="fila">
-                <span class="label">Total</span>
-                <span class="value">$<%= total.toFixed(2) %></span>
-            </div>
+            <div class="fila"><span class="label">Descuento</span><span class="value" style="color:#27ae60;">-$<%= descuento.toFixed(2) %></span></div>
+            <div class="fila"><span class="label">Total</span><span class="value">$<%= total.toFixed(2) %></span></div>
             <% } %>
             <% if (depositoPagado > 0 && totalPendiente > 0) { %>
-            <div class="fila">
-                <span class="label">Depósito Pagado</span>
-                <span class="value">$<%= depositoPagado.toFixed(2) %></span>
-            </div>
+            <div class="fila"><span class="label">Depósito Pagado</span><span class="value">$<%= depositoPagado.toFixed(2) %></span></div>
             <% } %>
-            <div class="fila total">
-                <span class="label">Balance Pendiente</span>
-                <span class="value pendiente <%= totalPendiente === 0 ? 'pagado' : '' %>">
-                    $<%= totalPendiente.toFixed(2) %>
-                </span>
-            </div>
+            <div class="fila total"><span class="label">Balance Pendiente</span><span class="value pendiente <%= totalPendiente === 0 ? 'pagado' : '' %>">$<%= totalPendiente.toFixed(2) %></span></div>
         </div>
 
-        <div class="qr-info">
-            <span>Documento de verificación</span> &mdash; Código <%= numeroRecibo %>
-        </div>
+        <div class="qr-info"><span>Documento de verificación</span> &mdash; Código <%= numeroRecibo %></div>
 
         <div class="footer">
             <p class="empresa">Republic Excursions</p>
@@ -544,17 +359,14 @@
         </div>
     </div>
 
-    <div class="acciones-recibo <%= mostrarBotones ? 'visible' : '' %>">
-        <button class="btn-accion imagen" onclick="descargarImagen()">
-            Descargar Imagen
-        </button>
-        <a href="#" class="btn-accion whatsapp" id="whatsappBtn">
-            Enviar por WhatsApp
-        </a>
-        <a href="/" class="btn-accion volver">
-            Volver al inicio
-        </a>
+    <!-- ===== BOTONES: SOLO SE RENDERIZAN SI mostrarBotones = true ===== -->
+    <% if (mostrarBotones) { %>
+    <div class="acciones-recibo visible">
+        <button class="btn-accion imagen" onclick="descargarImagen()">Descargar Imagen</button>
+        <a href="#" class="btn-accion whatsapp" id="whatsappBtn">Enviar por WhatsApp</a>
+        <a href="/" class="btn-accion volver">Volver al inicio</a>
     </div>
+    <% } %>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -570,7 +382,6 @@
 
         function descargarImagen() {
             const elemento = document.getElementById('reciboContainer');
-            
             const btn = document.querySelector('.btn-accion.imagen');
             const textoOriginal = btn.innerHTML;
             btn.innerHTML = 'Generando...';
@@ -594,9 +405,7 @@
                 console.error('Error al generar la imagen:', error);
                 btn.innerHTML = 'Error';
                 btn.disabled = false;
-                setTimeout(() => {
-                    btn.innerHTML = textoOriginal;
-                }, 3000);
+                setTimeout(() => { btn.innerHTML = textoOriginal; }, 3000);
             });
         }
     </script>
