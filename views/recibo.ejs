@@ -8,7 +8,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f0f2f5;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -20,41 +20,47 @@
             max-width: 700px;
             width: 100%;
             padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
         .header {
             text-align: center;
-            border-bottom: 3px solid #667eea;
+            border-bottom: 2px solid #1a3c6e;
             padding-bottom: 20px;
             margin-bottom: 25px;
         }
         .header h1 {
-            color: #333;
-            font-size: 28px;
+            color: #1a3c6e;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
         }
         .header h2 {
-            color: #555;
-            font-size: 22px;
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 5px;
         }
         .header .recibo-numero {
-            color: #667eea;
-            font-weight: bold;
-            font-size: 16px;
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
         }
         
         .info-cliente {
             background: #f8f9fa;
             padding: 15px 20px;
-            border-radius: 12px;
+            border-radius: 6px;
             margin-bottom: 20px;
         }
         .info-cliente .titulo {
-            font-weight: bold;
-            color: #667eea;
-            font-size: 14px;
+            font-weight: 700;
+            color: #1a3c6e;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 8px;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 2px solid #1a3c6e;
             padding-bottom: 5px;
         }
         .info-cliente .fila {
@@ -69,25 +75,25 @@
         .info-cliente .label {
             font-weight: 600;
             color: #555;
-            font-size: 14px;
+            font-size: 13px;
         }
         .info-cliente .valor {
             color: #333;
             text-align: right;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .estado-pago {
             text-align: center;
-            padding: 18px;
-            border-radius: 12px;
+            padding: 15px;
+            border-radius: 6px;
             margin: 20px 0;
-            border: 3px solid #28a745;
+            border: 2px solid #28a745;
             background: #d4edda;
         }
         .estado-pago .texto {
-            font-size: 26px;
-            font-weight: bold;
+            font-size: 20px;
+            font-weight: 700;
             color: #155724;
         }
 
@@ -95,12 +101,14 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
+            font-size: 14px;
         }
         .tabla th {
             text-align: left;
             padding: 10px;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 2px solid #1a3c6e;
             color: #333;
+            font-weight: 700;
         }
         .tabla td {
             padding: 10px;
@@ -108,57 +116,93 @@
         }
         .tabla .monto {
             text-align: right;
+            font-weight: 600;
         }
         .tabla .total {
-            font-weight: bold;
-            font-size: 18px;
+            font-weight: 700;
+            font-size: 16px;
         }
 
-        /* === BALANCE PENDIENTE === */
         .balance-pendiente {
             text-align: center;
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 20px;
+            font-weight: 700;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 6px;
             margin: 15px 0;
             background: #fff3cd;
             border: 2px solid #ffc107;
         }
         .balance-pendiente .importe {
             color: #dc3545;
-            font-size: 28px;
+            font-size: 24px;
         }
         .balance-pendiente .importe.pagado {
             color: #28a745;
         }
         .balance-pendiente .label {
             display: block;
-            font-size: 16px;
+            font-size: 14px;
             color: #856404;
+            font-weight: 600;
         }
 
-        /* === FALTA PAGAR (mensaje grande para el proveedor) === */
         .mensaje-falta-pagar {
             text-align: center;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 18px;
+            border-radius: 6px;
             margin: 15px 0;
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 22px;
+            font-weight: 700;
         }
         .mensaje-falta-pagar.pendiente {
             background: #fff3cd;
-            border: 3px solid #ffc107;
+            border: 2px solid #ffc107;
             color: #856404;
         }
         .mensaje-falta-pagar.pagado {
             background: #d4edda;
-            border: 3px solid #28a745;
+            border: 2px solid #28a745;
             color: #155724;
         }
         .mensaje-falta-pagar .monto {
-            font-size: 32px;
+            font-size: 28px;
+        }
+
+        .resumen-pago {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        .resumen-pago .fila {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 14px;
+        }
+        .resumen-pago .fila:last-child {
+            border-bottom: none;
+        }
+        .resumen-pago .label {
+            font-weight: 600;
+            color: #555;
+        }
+        .resumen-pago .value {
+            font-weight: 700;
+        }
+        .resumen-pago .value.pendiente {
+            color: #dc3545;
+        }
+        .resumen-pago .value.pagado {
+            color: #28a745;
+        }
+        .resumen-pago .fila.total {
+            border-top: 2px solid #1a3c6e;
+            padding-top: 10px;
+            margin-top: 5px;
+            font-size: 16px;
         }
 
         .footer {
@@ -167,58 +211,45 @@
             padding-top: 20px;
             border-top: 2px solid #e9ecef;
             color: #999;
+            font-size: 11px;
+        }
+        .footer .empresa {
+            color: #1a3c6e;
+            font-weight: 700;
             font-size: 12px;
         }
-        .btn {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 10px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            margin-top: 15px;
-        }
-        .btn:hover {
-            background: #5563c1;
-        }
-        .badge {
-            display: inline-block;
-            background: #28a745;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
+
+        .qr-info {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
             font-size: 12px;
-            font-weight: bold;
+            color: #666;
         }
-        .resumen-pago {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #e9ecef;
-            font-size: 16px;
+        .qr-info span {
+            font-weight: 700;
+            color: #1a3c6e;
         }
-        .resumen-pago:last-child {
-            border-bottom: none;
-        }
-        .resumen-pago .total-label {
-            font-weight: 600;
-        }
-        .resumen-pago .total-value {
-            font-weight: bold;
+
+        @media print {
+            body { background: white; padding: 0; }
+            .recibo { box-shadow: none; border: 1px solid #ddd; }
+            .no-print { display: none; }
         }
     </style>
 </head>
 <body>
     <div class="recibo">
         <div class="header">
-            <h1>🧾 REPUBLIC EXCURSIONS</h1>
+            <h1>REPUBLIC EXCURSIONS</h1>
             <h2>RECIBO DE PAGO</h2>
             <p class="recibo-numero">Recibo #: <%= numeroRecibo %></p>
         </div>
 
-        <!-- ====== DATOS DEL CLIENTE ====== -->
         <div class="info-cliente">
-            <div class="titulo">📋 DATOS DE LA RESERVA</div>
+            <div class="titulo">Datos de la Reserva</div>
             <div class="fila">
                 <span class="label">Factura / Reserva:</span>
                 <span class="valor"><%= idFactura %></span>
@@ -243,6 +274,12 @@
             <div class="fila">
                 <span class="label">Hotel:</span>
                 <span class="valor"><%= hotel %></span>
+            </div>
+            <% } %>
+            <% if (habitacion) { %>
+            <div class="fila">
+                <span class="label">Habitación:</span>
+                <span class="valor"><%= habitacion %></span>
             </div>
             <% } %>
             <div class="fila">
@@ -273,7 +310,6 @@
             <% } %>
         </div>
 
-        <!-- ====== TABLA DE CONCEPTOS ====== -->
         <table class="tabla">
             <thead>
                 <tr>
@@ -307,51 +343,55 @@
             </tbody>
         </table>
 
-        <!-- ====== BALANCE PENDIENTE (DESTACADO) ====== -->
         <div class="balance-pendiente">
-            <span class="label">💰 BALANCE PENDIENTE</span>
+            <span class="label">BALANCE PENDIENTE</span>
             <span class="importe <%= totalPendiente === 0 ? 'pagado' : '' %>">
                 $<%= totalPendiente.toFixed(2) %>
             </span>
         </div>
 
-        <!-- ====== MENSAJE "FALTA PAGAR" (GRANDE Y CLARO) ====== -->
         <% if (totalPendiente > 0) { %>
             <div class="mensaje-falta-pagar pendiente">
-                ⚠️ FALTA PAGAR: <span class="monto">$<%= totalPendiente.toFixed(2) %></span>
+                FALTA PAGAR: <span class="monto">$<%= totalPendiente.toFixed(2) %></span>
             </div>
         <% } else { %>
             <div class="mensaje-falta-pagar pagado">
-                ✅ TODO PAGADO - Saldo: $0.00
+                TODO PAGADO - Saldo: $0.00
             </div>
         <% } %>
 
-        <!-- ====== ESTADO DE PAGO ====== -->
         <div class="estado-pago" style="border-color: <%= estadoColor %>; background: <%= estadoColor %>15;">
             <div class="texto" style="color: <%= estadoColor %>;">
                 <%= estadoTexto %>
             </div>
         </div>
 
-        <!-- ====== RESUMEN DE PAGO ====== -->
-        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0;">
-            <div class="resumen-pago">
-                <span class="total-label">Subtotal</span>
-                <span class="total-value">$<%= subtotal.toFixed(2) %></span>
+        <div class="resumen-pago">
+            <div class="fila">
+                <span class="label">Subtotal</span>
+                <span class="value">$<%= subtotal.toFixed(2) %></span>
             </div>
-            <div class="resumen-pago">
-                <span class="total-label">Depósito Pagado</span>
-                <span class="total-value">$<%= depositoPagado.toFixed(2) %></span>
+            <div class="fila">
+                <span class="label">Depósito Pagado</span>
+                <span class="value">$<%= depositoPagado.toFixed(2) %></span>
             </div>
-            <div class="resumen-pago" style="border-bottom: 2px solid #667eea; padding-bottom: 10px;">
-                <span class="total-label" style="font-size: 18px;">🔴 Falta Pagar</span>
-                <span class="total-value" style="font-size: 20px; color: #dc3545;">$<%= totalPendiente.toFixed(2) %></span>
+            <div class="fila total">
+                <span class="label">Falta Pagar</span>
+                <span class="value pendiente <%= totalPendiente === 0 ? 'pagado' : '' %>">
+                    $<%= totalPendiente.toFixed(2) %>
+                </span>
             </div>
         </div>
 
+        <div class="qr-info">
+            <span>Documento de verificación</span> - Código: <%= numeroRecibo %>
+        </div>
+
         <div class="footer">
-            <p>© 2026 - Republic Excursions - <%= fecha %></p>
-            <a href="/" class="btn">Volver al inicio</a>
+            <p class="empresa">Republic Excursions</p>
+            <p>Punta Cana, República Dominicana</p>
+            <p><%= fecha %></p>
+            <p style="margin-top: 5px; font-size: 10px; color: #bbb;">Este documento es un comprobante de pago válido</p>
         </div>
     </div>
 </body>
