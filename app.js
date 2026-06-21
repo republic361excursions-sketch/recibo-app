@@ -16,7 +16,7 @@ app.get('/ver-recibo', (req, res) => {
         id, recibo, cliente, excursion, 
         adultos, ninos, precioAdulto, precioNino,
         subtotal, deposito, estado, metodoPago,
-        whatsapp, correo, hotel, habitacion, transporte, notas, totalPagado, fechaExcursion
+        whatsapp, correo, hotel, habitacion, transporte, notas, fechaExcursion
     } = req.query;
 
     if (!id || !recibo) {
@@ -50,7 +50,6 @@ app.get('/ver-recibo', (req, res) => {
         habitacion: habitacion || '',
         transporte: transporte || 'Sí',
         notas: notas || 'Sin notas adicionales',
-        totalPagado: totalPagado || '0',
         fechaExcursion: fechaExcursion || new Date().toLocaleDateString('es-ES'),
         fecha: new Date().toLocaleDateString('es-ES', {
             year: 'numeric',
