@@ -114,39 +114,51 @@
             font-size: 18px;
         }
 
+        /* === BALANCE PENDIENTE === */
         .balance-pendiente {
-            text-align: right;
-            font-size: 22px;
+            text-align: center;
+            font-size: 24px;
             font-weight: bold;
             padding: 15px;
-            background: #f8f9fa;
             border-radius: 10px;
             margin: 15px 0;
+            background: #fff3cd;
+            border: 2px solid #ffc107;
         }
         .balance-pendiente .importe {
             color: #dc3545;
+            font-size: 28px;
         }
         .balance-pendiente .importe.pagado {
             color: #28a745;
         }
+        .balance-pendiente .label {
+            display: block;
+            font-size: 16px;
+            color: #856404;
+        }
 
-        .mensaje-proveedor {
+        /* === FALTA PAGAR (mensaje grande para el proveedor) === */
+        .mensaje-falta-pagar {
             text-align: center;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 20px;
+            border-radius: 12px;
             margin: 15px 0;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: bold;
         }
-        .mensaje-proveedor.pagado {
+        .mensaje-falta-pagar.pendiente {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            color: #856404;
+        }
+        .mensaje-falta-pagar.pagado {
             background: #d4edda;
-            border: 2px solid #28a745;
+            border: 3px solid #28a745;
             color: #155724;
         }
-        .mensaje-proveedor.pendiente {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            color: #856404;
+        .mensaje-falta-pagar .monto {
+            font-size: 32px;
         }
 
         .footer {
@@ -178,6 +190,22 @@
             font-size: 12px;
             font-weight: bold;
         }
+        .resumen-pago {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 16px;
+        }
+        .resumen-pago:last-child {
+            border-bottom: none;
+        }
+        .resumen-pago .total-label {
+            font-weight: 600;
+        }
+        .resumen-pago .total-value {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -188,6 +216,7 @@
             <p class="recibo-numero">Recibo #: <%= numeroRecibo %></p>
         </div>
 
+        <!-- ====== DATOS DEL CLIENTE ====== -->
         <div class="info-cliente">
             <div class="titulo">📋 DATOS DE LA RESERVA</div>
             <div class="fila">
@@ -244,6 +273,7 @@
             <% } %>
         </div>
 
+        <!-- ====== TABLA DE CONCEPTOS ====== -->
         <table class="tabla">
             <thead>
                 <tr>
@@ -277,28 +307,47 @@
             </tbody>
         </table>
 
+        <!-- ====== BALANCE PENDIENTE (DESTACADO) ====== -->
         <div class="balance-pendiente">
-            <span>Balance Pendiente:</span>
+            <span class="label">💰 BALANCE PENDIENTE</span>
             <span class="importe <%= totalPendiente === 0 ? 'pagado' : '' %>">
                 $<%= totalPendiente.toFixed(2) %>
             </span>
         </div>
 
+        <!-- ====== MENSAJE "FALTA PAGAR" (GRANDE Y CLARO) ====== -->
+        <% if (totalPendiente > 0) { %>
+            <div class="mensaje-falta-pagar pendiente">
+                ⚠️ FALTA PAGAR: <span class="monto">$<%= totalPendiente.toFixed(2) %></span>
+            </div>
+        <% } else { %>
+            <div class="mensaje-falta-pagar pagado">
+                ✅ TODO PAGADO - Saldo: $0.00
+            </div>
+        <% } %>
+
+        <!-- ====== ESTADO DE PAGO ====== -->
         <div class="estado-pago" style="border-color: <%= estadoColor %>; background: <%= estadoColor %>15;">
             <div class="texto" style="color: <%= estadoColor %>;">
                 <%= estadoTexto %>
             </div>
         </div>
 
-        <% if (totalPendiente > 0) { %>
-            <div class="mensaje-proveedor pendiente">
-                ⚠️ Falta pagar: $<%= totalPendiente.toFixed(2) %>
+        <!-- ====== RESUMEN DE PAGO ====== -->
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0;">
+            <div class="resumen-pago">
+                <span class="total-label">Subtotal</span>
+                <span class="total-value">$<%= subtotal.toFixed(2) %></span>
             </div>
-        <% } else { %>
-            <div class="mensaje-proveedor pagado">
-                ✅ Saldo: $0.00 - Todo pagado
+            <div class="resumen-pago">
+                <span class="total-label">Depósito Pagado</span>
+                <span class="total-value">$<%= depositoPagado.toFixed(2) %></span>
             </div>
-        <% } %>
+            <div class="resumen-pago" style="border-bottom: 2px solid #667eea; padding-bottom: 10px;">
+                <span class="total-label" style="font-size: 18px;">🔴 Falta Pagar</span>
+                <span class="total-value" style="font-size: 20px; color: #dc3545;">$<%= totalPendiente.toFixed(2) %></span>
+            </div>
+        </div>
 
         <div class="footer">
             <p>© 2026 - Republic Excursions - <%= fecha %></p>
