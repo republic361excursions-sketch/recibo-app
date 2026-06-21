@@ -275,14 +275,14 @@
         <p class="subtitulo lang-en">Payment Receipt Generator</p>
 
         <form id="formRecibo">
-            <!-- DATOS DE LA RESERVA -->
+            <!-- ID -->
             <div class="form-group">
                 <label class="lang-es">ID / Código de Reserva</label>
                 <label class="lang-en">ID / Reservation Code</label>
                 <input type="text" id="id">
             </div>
 
-            <!-- DATOS DEL CLIENTE -->
+            <!-- CLIENTE -->
             <div class="form-group">
                 <label class="lang-es">Cliente</label>
                 <label class="lang-en">Client</label>
@@ -302,7 +302,7 @@
                 </div>
             </div>
 
-            <!-- HOTEL Y HABITACION -->
+            <!-- HOTEL / HABITACION -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Hotel</label>
@@ -310,13 +310,13 @@
                     <input type="text" id="hotel">
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Número de Habitación</label>
-                    <label class="lang-en">Room Number</label>
+                    <label class="lang-es">Habitación</label>
+                    <label class="lang-en">Room</label>
                     <input type="text" id="habitacion">
                 </div>
             </div>
 
-            <!-- TRANSPORTE Y FECHA -->
+            <!-- TRANSPORTE / FECHA -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Transporte</label>
@@ -327,13 +327,13 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Fecha de la Excursión</label>
+                    <label class="lang-es">Fecha Excursión</label>
                     <label class="lang-en">Excursion Date</label>
                     <input type="date" id="fechaExcursion">
                 </div>
             </div>
 
-            <!-- EXCURSIÓN -->
+            <!-- EXCURSION -->
             <div class="form-group">
                 <label class="lang-es">Excursión</label>
                 <label class="lang-en">Excursion</label>
@@ -357,20 +357,20 @@
             <!-- PRECIOS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="lang-es">Precio por Adulto (USD)</label>
-                    <label class="lang-en">Price per Adult (USD)</label>
+                    <label class="lang-es">Precio Adulto (USD)</label>
+                    <label class="lang-en">Adult Price (USD)</label>
                     <input type="number" id="precioAdulto" value="" min="0" step="0.01">
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Precio por Niño (USD)</label>
-                    <label class="lang-en">Price per Child (USD)</label>
+                    <label class="lang-es">Precio Niño (USD)</label>
+                    <label class="lang-en">Child Price (USD)</label>
                     <input type="number" id="precioNino" value="" min="0" step="0.01">
                     <div class="small-hint lang-es">Si no aplica, dejar en 0.</div>
                     <div class="small-hint lang-en">If not applicable, leave as 0.</div>
                 </div>
             </div>
 
-            <!-- FINANCIERO Y DESCUENTO -->
+            <!-- SUBTOTAL / DEPOSITO -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Subtotal (USD)</label>
@@ -378,8 +378,8 @@
                     <input type="number" id="subtotal" value="" min="0" step="0.01">
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Depósito Pagado (USD)</label>
-                    <label class="lang-en">Deposit Paid (USD)</label>
+                    <label class="lang-es">Depósito (USD)</label>
+                    <label class="lang-en">Deposit (USD)</label>
                     <input type="number" id="deposito" value="" min="0" step="0.01">
                 </div>
             </div>
@@ -393,7 +393,7 @@
                 <div class="small-hint lang-en">Amount to subtract from subtotal</div>
             </div>
 
-            <!-- TOTAL Y BOTON DESCUENTO -->
+            <!-- TOTAL -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Total (USD)</label>
@@ -408,7 +408,7 @@
                 </div>
             </div>
 
-            <!-- ESTADO DE PAGO -->
+            <!-- ESTADO -->
             <div class="form-group">
                 <label class="lang-es">Estado de Pago</label>
                 <label class="lang-en">Payment Status</label>
@@ -421,7 +421,7 @@
                 <div class="small-hint lang-en" style="margin-top: 5px;">When selecting "Full Payment", the deposit adjusts to the total.</div>
             </div>
 
-            <!-- METODO DE PAGO Y NOTAS -->
+            <!-- METODO PAGO / NOTAS -->
             <div class="form-row">
                 <div class="form-group">
                     <label class="lang-es">Método de Pago</label>
@@ -430,12 +430,12 @@
                         <option value="Efectivo"><span class="lang-es">Efectivo</span><span class="lang-en">Cash</span></option>
                         <option value="PayPal">PayPal</option>
                         <option value="Tarjeta de Crédito"><span class="lang-es">Tarjeta de Crédito</span><span class="lang-en">Credit Card</span></option>
-                        <option value="Transferencia Bancaria"><span class="lang-es">Transferencia Bancaria</span><span class="lang-en">Bank Transfer</span></option>
+                        <option value="Transferencia Bancaria"><span class="lang-es">Transferencia</span><span class="lang-en">Bank Transfer</span></option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="lang-es">Notas Adicionales</label>
-                    <label class="lang-en">Additional Notes</label>
+                    <label class="lang-es">Notas</label>
+                    <label class="lang-en">Notes</label>
                     <input type="text" id="notas">
                 </div>
             </div>
@@ -448,8 +448,8 @@
 
         <!-- RESULTADO -->
         <div id="resultado" class="resultado">
-            <h3 class="lang-es">Recibo Generado Exitosamente</h3>
-            <h3 class="lang-en">Receipt Generated Successfully</h3>
+            <h3 class="lang-es">Recibo Generado</h3>
+            <h3 class="lang-en">Receipt Generated</h3>
             
             <div class="qr-container">
                 <img id="qrImg" src="" alt="QR Code">
@@ -467,8 +467,8 @@
                     <span class="lang-en">Download QR</span>
                 </button>
                 <a id="whatsappLink" href="#" target="_blank" class="btn-whatsapp">
-                    <span class="lang-es">Enviar por WhatsApp</span>
-                    <span class="lang-en">Send via WhatsApp</span>
+                    <span class="lang-es">WhatsApp</span>
+                    <span class="lang-en">WhatsApp</span>
                 </a>
             </div>
 
@@ -496,7 +496,7 @@
             }
         }
 
-        // ====== GENERAR FECHA AUTOMÁTICAMENTE ======
+        // ====== GENERAR FECHA ======
         document.addEventListener('DOMContentLoaded', function() {
             const semana = new Date();
             semana.setDate(semana.getDate() + 7);
@@ -539,7 +539,7 @@
             document.getElementById('subtotal').value = subtotal.toFixed(2);
         }
 
-        // ====== CALCULAR TOTAL CON DESCUENTO ======
+        // ====== CALCULAR TOTAL ======
         function calcularTotal() {
             const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
             const descuento = parseFloat(document.getElementById('descuento').value) || 0;
@@ -548,7 +548,7 @@
             ajustarDeposito();
         }
 
-        // ====== MOSTRAR/OCULTAR CAMPO DE DESCUENTO ======
+        // ====== DESCUENTO ======
         function toggleDescuento() {
             const group = document.getElementById('descuentoGroup');
             const btn = document.getElementById('btnDescuento');
@@ -566,7 +566,7 @@
             }
         }
 
-        // ====== AJUSTAR DEPÓSITO SEGÚN EL ESTADO ======
+        // ====== AJUSTAR DEPOSITO ======
         function ajustarDeposito() {
             const estado = document.querySelector('input[name="estado"]:checked').value;
             const total = parseFloat(document.getElementById('total').value) || 0;
@@ -581,7 +581,7 @@
             }
         }
 
-        // ====== ENVIAR FORMULARIO ======
+        // ====== ENVIAR ======
         document.getElementById('formRecibo').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -656,7 +656,7 @@
         function copiarEnlace() {
             const enlace = document.getElementById('enlaceGenerado').textContent;
             navigator.clipboard.writeText(enlace).then(() => {
-                alert(document.body.classList.contains('english') ? 'Link copied to clipboard' : 'Enlace copiado al portapapeles');
+                alert(document.body.classList.contains('english') ? 'Link copied' : 'Enlace copiado');
             }).catch(() => {
                 const textarea = document.createElement('textarea');
                 textarea.value = enlace;
@@ -664,7 +664,7 @@
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                alert(document.body.classList.contains('english') ? 'Link copied to clipboard' : 'Enlace copiado al portapapeles');
+                alert(document.body.classList.contains('english') ? 'Link copied' : 'Enlace copiado');
             });
         }
 
