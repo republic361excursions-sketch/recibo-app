@@ -17,7 +17,7 @@
         }
         .recibo {
             background: white;
-            max-width: 600px;
+            max-width: 700px;
             width: 100%;
             padding: 40px;
             border-radius: 20px;
@@ -31,23 +31,36 @@
         }
         .header h1 {
             color: #333;
-            font-size: 26px;
+            font-size: 28px;
         }
-        .header p {
-            color: #666;
-            font-size: 14px;
+        .header h2 {
+            color: #555;
+            font-size: 22px;
+        }
+        .header .recibo-numero {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 16px;
         }
         
         .info-cliente {
             background: #f8f9fa;
             padding: 15px 20px;
             border-radius: 12px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+        }
+        .info-cliente .titulo {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
         }
         .info-cliente .fila {
             display: flex;
             justify-content: space-between;
-            padding: 5px 0;
+            padding: 4px 0;
             border-bottom: 1px solid #e9ecef;
         }
         .info-cliente .fila:last-child {
@@ -56,10 +69,26 @@
         .info-cliente .label {
             font-weight: 600;
             color: #555;
+            font-size: 14px;
         }
         .info-cliente .valor {
             color: #333;
             text-align: right;
+            font-size: 14px;
+        }
+
+        .estado-pago {
+            text-align: center;
+            padding: 18px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 3px solid #28a745;
+            background: #d4edda;
+        }
+        .estado-pago .texto {
+            font-size: 26px;
+            font-weight: bold;
+            color: #155724;
         }
 
         .tabla {
@@ -101,20 +130,6 @@
             color: #28a745;
         }
 
-        .estado-pago {
-            text-align: center;
-            padding: 18px;
-            border-radius: 12px;
-            margin: 20px 0;
-            border: 3px solid #28a745;
-            background: #d4edda;
-        }
-        .estado-pago .texto {
-            font-size: 26px;
-            font-weight: bold;
-            color: #155724;
-        }
-
         .mensaje-proveedor {
             text-align: center;
             padding: 15px;
@@ -154,40 +169,79 @@
         .btn:hover {
             background: #5563c1;
         }
+        .badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="recibo">
         <div class="header">
             <h1>🧾 REPUBLIC EXCURSIONS</h1>
-            <p>Comprobante de pago</p>
+            <h2>RECIBO DE PAGO</h2>
+            <p class="recibo-numero">Recibo #: <%= numeroRecibo %></p>
         </div>
 
         <div class="info-cliente">
+            <div class="titulo">📋 DATOS DE LA RESERVA</div>
             <div class="fila">
-                <span class="label">Factura:</span>
+                <span class="label">Factura / Reserva:</span>
                 <span class="valor"><%= idFactura %></span>
             </div>
             <div class="fila">
                 <span class="label">Cliente:</span>
                 <span class="valor"><%= cliente %></span>
             </div>
+            <% if (whatsapp) { %>
+            <div class="fila">
+                <span class="label">WhatsApp:</span>
+                <span class="valor"><%= whatsapp %></span>
+            </div>
+            <% } %>
+            <% if (correo) { %>
+            <div class="fila">
+                <span class="label">Correo:</span>
+                <span class="valor"><%= correo %></span>
+            </div>
+            <% } %>
+            <% if (hotel) { %>
+            <div class="fila">
+                <span class="label">Hotel:</span>
+                <span class="valor"><%= hotel %></span>
+            </div>
+            <% } %>
             <div class="fila">
                 <span class="label">Excursión:</span>
                 <span class="valor"><%= excursion %></span>
             </div>
             <div class="fila">
                 <span class="label">Fecha:</span>
-                <span class="valor"><%= fecha %></span>
+                <span class="valor"><%= fechaExcursion %></span>
             </div>
             <div class="fila">
                 <span class="label">Personas:</span>
                 <span class="valor"><%= adultos %> Adultos, <%= ninos %> Niños</span>
             </div>
             <div class="fila">
+                <span class="label">Transporte:</span>
+                <span class="valor"><%= transporte %></span>
+            </div>
+            <div class="fila">
                 <span class="label">Método de Pago:</span>
                 <span class="valor"><%= metodoPago %></span>
             </div>
+            <% if (notas && notas !== 'Sin notas adicionales') { %>
+            <div class="fila">
+                <span class="label">Notas:</span>
+                <span class="valor"><%= notas %></span>
+            </div>
+            <% } %>
         </div>
 
         <table class="tabla">
@@ -206,6 +260,12 @@
                     <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
                     <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
                 </tr>
+                <% if (ninos > 0) { %>
+                <tr>
+                    <td>Niños: <%= ninos %> × $<%= precioNino.toFixed(2) %></td>
+                    <td class="monto">$<%= (ninos * precioNino).toFixed(2) %></td>
+                </tr>
+                <% } %>
                 <tr>
                     <td><strong>Subtotal</strong></td>
                     <td class="monto"><strong>$<%= subtotal.toFixed(2) %></strong></td>
@@ -230,7 +290,6 @@
             </div>
         </div>
 
-        <!-- ⭐ MENSAJE CONDICIONAL -->
         <% if (totalPendiente > 0) { %>
             <div class="mensaje-proveedor pendiente">
                 ⚠️ Falta pagar: $<%= totalPendiente.toFixed(2) %>
@@ -242,7 +301,7 @@
         <% } %>
 
         <div class="footer">
-            <p>© 2026 - Republic Excursions</p>
+            <p>© 2026 - Republic Excursions - <%= fecha %></p>
             <a href="/" class="btn">Volver al inicio</a>
         </div>
     </div>
