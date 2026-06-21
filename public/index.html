@@ -23,6 +23,12 @@
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
+        .header-lang {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
         h1 {
             text-align: center;
             color: #333;
@@ -34,6 +40,23 @@
             color: #666;
             margin-bottom: 30px;
             font-size: 16px;
+        }
+        .lang-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .lang-btn:hover {
+            background: #5563c1;
+        }
+        .lang-btn.active {
+            background: #1a3c6e;
         }
         .form-group {
             margin-bottom: 15px;
@@ -220,6 +243,10 @@
         .btn-descuento.activo:hover {
             background: #c82333;
         }
+        .lang-en { display: none; }
+        .lang-es { display: block; }
+        body.english .lang-es { display: none; }
+        body.english .lang-en { display: block; }
         @media (max-width: 600px) {
             .form-row {
                 flex-direction: column;
@@ -228,36 +255,49 @@
             .container {
                 padding: 20px;
             }
+            .header-lang {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>REPUBLIC EXCURSIONS</h1>
-        <p class="subtitulo">Generador de Recibos de Pago</p>
+        <div class="header-lang">
+            <h1>REPUBLIC EXCURSIONS</h1>
+            <div>
+                <button class="lang-btn active" id="btnEs" onclick="setLang('es')">ES</button>
+                <button class="lang-btn" id="btnEn" onclick="setLang('en')">EN</button>
+            </div>
+        </div>
+        <p class="subtitulo lang-es">Generador de Recibos de Pago</p>
+        <p class="subtitulo lang-en">Payment Receipt Generator</p>
 
         <form id="formRecibo">
             <!-- DATOS DE LA RESERVA -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label>ID / Código de Reserva</label>
-                    <input type="text" id="id">
-                </div>
+            <div class="form-group">
+                <label class="lang-es">ID / Código de Reserva</label>
+                <label class="lang-en">ID / Reservation Code</label>
+                <input type="text" id="id">
             </div>
 
             <!-- DATOS DEL CLIENTE -->
             <div class="form-group">
-                <label>Cliente</label>
+                <label class="lang-es">Cliente</label>
+                <label class="lang-en">Client</label>
                 <input type="text" id="cliente">
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label>WhatsApp</label>
+                    <label class="lang-es">WhatsApp</label>
+                    <label class="lang-en">WhatsApp</label>
                     <input type="text" id="whatsapp">
                 </div>
                 <div class="form-group">
-                    <label>Correo</label>
+                    <label class="lang-es">Correo</label>
+                    <label class="lang-en">Email</label>
                     <input type="email" id="correo">
                 </div>
             </div>
@@ -265,11 +305,13 @@
             <!-- HOTEL Y HABITACION -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Hotel</label>
+                    <label class="lang-es">Hotel</label>
+                    <label class="lang-en">Hotel</label>
                     <input type="text" id="hotel">
                 </div>
                 <div class="form-group">
-                    <label>Número de Habitación</label>
+                    <label class="lang-es">Número de Habitación</label>
+                    <label class="lang-en">Room Number</label>
                     <input type="text" id="habitacion">
                 </div>
             </div>
@@ -277,32 +319,37 @@
             <!-- TRANSPORTE Y FECHA -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Transporte</label>
+                    <label class="lang-es">Transporte</label>
+                    <label class="lang-en">Transport</label>
                     <select id="transporte">
                         <option value="Sí">Sí</option>
                         <option value="No">No</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Fecha de la Excursión</label>
+                    <label class="lang-es">Fecha de la Excursión</label>
+                    <label class="lang-en">Excursion Date</label>
                     <input type="date" id="fechaExcursion">
                 </div>
             </div>
 
             <!-- EXCURSIÓN -->
             <div class="form-group">
-                <label>Excursión</label>
+                <label class="lang-es">Excursión</label>
+                <label class="lang-en">Excursion</label>
                 <input type="text" id="excursion">
             </div>
 
             <!-- PERSONAS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Adultos</label>
+                    <label class="lang-es">Adultos</label>
+                    <label class="lang-en">Adults</label>
                     <input type="number" id="adultos" value="" min="0">
                 </div>
                 <div class="form-group">
-                    <label>Niños</label>
+                    <label class="lang-es">Niños</label>
+                    <label class="lang-en">Children</label>
                     <input type="number" id="ninos" value="" min="0">
                 </div>
             </div>
@@ -310,82 +357,99 @@
             <!-- PRECIOS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Precio por Adulto (USD)</label>
+                    <label class="lang-es">Precio por Adulto (USD)</label>
+                    <label class="lang-en">Price per Adult (USD)</label>
                     <input type="number" id="precioAdulto" value="" min="0" step="0.01">
                 </div>
                 <div class="form-group">
-                    <label>Precio por Niño (USD)</label>
+                    <label class="lang-es">Precio por Niño (USD)</label>
+                    <label class="lang-en">Price per Child (USD)</label>
                     <input type="number" id="precioNino" value="" min="0" step="0.01">
-                    <div class="small-hint">Si no aplica, dejar en 0.</div>
+                    <div class="small-hint lang-es">Si no aplica, dejar en 0.</div>
+                    <div class="small-hint lang-en">If not applicable, leave as 0.</div>
                 </div>
             </div>
 
             <!-- FINANCIERO Y DESCUENTO -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Subtotal (USD)</label>
+                    <label class="lang-es">Subtotal (USD)</label>
+                    <label class="lang-en">Subtotal (USD)</label>
                     <input type="number" id="subtotal" value="" min="0" step="0.01">
                 </div>
                 <div class="form-group">
-                    <label>Depósito Pagado (USD)</label>
+                    <label class="lang-es">Depósito Pagado (USD)</label>
+                    <label class="lang-en">Deposit Paid (USD)</label>
                     <input type="number" id="deposito" value="" min="0" step="0.01">
                 </div>
             </div>
 
-            <!-- DESCUENTO (OCULTO POR DEFECTO) -->
+            <!-- DESCUENTO -->
             <div class="form-group descuento-activo" id="descuentoGroup">
-                <label>Descuento (USD)</label>
+                <label class="lang-es">Descuento (USD)</label>
+                <label class="lang-en">Discount (USD)</label>
                 <input type="number" id="descuento" value="" min="0" step="0.01" oninput="calcularTotal()">
-                <div class="small-hint">Monto a descontar del subtotal</div>
+                <div class="small-hint lang-es">Monto a descontar del subtotal</div>
+                <div class="small-hint lang-en">Amount to subtract from subtotal</div>
             </div>
 
             <!-- TOTAL Y BOTON DESCUENTO -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Total (USD)</label>
+                    <label class="lang-es">Total (USD)</label>
+                    <label class="lang-en">Total (USD)</label>
                     <input type="number" id="total" value="" min="0" step="0.01" readonly style="background: #f0f0f0; font-weight: bold; color: #1a3c6e;">
                 </div>
                 <div class="form-group" style="display: flex; align-items: flex-end;">
-                    <button type="button" class="btn btn-descuento" id="btnDescuento" onclick="toggleDescuento()">Agregar Descuento</button>
+                    <button type="button" class="btn btn-descuento" id="btnDescuento" onclick="toggleDescuento()">
+                        <span class="lang-es">Agregar Descuento</span>
+                        <span class="lang-en">Add Discount</span>
+                    </button>
                 </div>
             </div>
 
             <!-- ESTADO DE PAGO -->
             <div class="form-group">
-                <label>Estado de Pago</label>
+                <label class="lang-es">Estado de Pago</label>
+                <label class="lang-en">Payment Status</label>
                 <div class="estado-options">
-                    <label><input type="radio" name="estado" value="deposito" checked onclick="ajustarDeposito()"> Depósito (25%)</label>
-                    <label><input type="radio" name="estado" value="completo" onclick="ajustarDeposito()"> Pago Completo</label>
-                    <label><input type="radio" name="estado" value="pendiente" onclick="ajustarDeposito()"> Pendiente</label>
+                    <label><input type="radio" name="estado" value="deposito" checked onclick="ajustarDeposito()"> <span class="lang-es">Depósito (25%)</span><span class="lang-en">Deposit (25%)</span></label>
+                    <label><input type="radio" name="estado" value="completo" onclick="ajustarDeposito()"> <span class="lang-es">Pago Completo</span><span class="lang-en">Full Payment</span></label>
+                    <label><input type="radio" name="estado" value="pendiente" onclick="ajustarDeposito()"> <span class="lang-es">Pendiente</span><span class="lang-en">Pending</span></label>
                 </div>
-                <div class="small-hint" style="margin-top: 5px;">
-                    Al seleccionar "Pago Completo", el depósito se ajusta al total y no se muestra en el recibo.
-                </div>
+                <div class="small-hint lang-es" style="margin-top: 5px;">Al seleccionar "Pago Completo", el depósito se ajusta al total.</div>
+                <div class="small-hint lang-en" style="margin-top: 5px;">When selecting "Full Payment", the deposit adjusts to the total.</div>
             </div>
 
             <!-- METODO DE PAGO Y NOTAS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Método de Pago</label>
+                    <label class="lang-es">Método de Pago</label>
+                    <label class="lang-en">Payment Method</label>
                     <select id="metodoPago">
-                        <option value="Efectivo">Efectivo</option>
+                        <option value="Efectivo"><span class="lang-es">Efectivo</span><span class="lang-en">Cash</span></option>
                         <option value="PayPal">PayPal</option>
-                        <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
-                        <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                        <option value="Tarjeta de Crédito"><span class="lang-es">Tarjeta de Crédito</span><span class="lang-en">Credit Card</span></option>
+                        <option value="Transferencia Bancaria"><span class="lang-es">Transferencia Bancaria</span><span class="lang-en">Bank Transfer</span></option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Notas Adicionales</label>
+                    <label class="lang-es">Notas Adicionales</label>
+                    <label class="lang-en">Additional Notes</label>
                     <input type="text" id="notas">
                 </div>
             </div>
 
-            <button type="submit" class="btn">GENERAR RECIBO</button>
+            <button type="submit" class="btn">
+                <span class="lang-es">GENERAR RECIBO</span>
+                <span class="lang-en">GENERATE RECEIPT</span>
+            </button>
         </form>
 
         <!-- RESULTADO -->
         <div id="resultado" class="resultado">
-            <h3>Recibo Generado Exitosamente</h3>
+            <h3 class="lang-es">Recibo Generado Exitosamente</h3>
+            <h3 class="lang-en">Receipt Generated Successfully</h3>
             
             <div class="qr-container">
                 <img id="qrImg" src="" alt="QR Code">
@@ -394,18 +458,44 @@
             <div class="enlace" id="enlaceGenerado"></div>
 
             <div class="acciones">
-                <button class="btn-copiar" onclick="copiarEnlace()">Copiar Enlace</button>
-                <button class="btn-qr" onclick="descargarQR()">Descargar QR</button>
-                <a id="whatsappLink" href="#" target="_blank" class="btn-whatsapp">Enviar por WhatsApp</a>
+                <button class="btn-copiar" onclick="copiarEnlace()">
+                    <span class="lang-es">Copiar Enlace</span>
+                    <span class="lang-en">Copy Link</span>
+                </button>
+                <button class="btn-qr" onclick="descargarQR()">
+                    <span class="lang-es">Descargar QR</span>
+                    <span class="lang-en">Download QR</span>
+                </button>
+                <a id="whatsappLink" href="#" target="_blank" class="btn-whatsapp">
+                    <span class="lang-es">Enviar por WhatsApp</span>
+                    <span class="lang-en">Send via WhatsApp</span>
+                </a>
             </div>
 
             <div style="text-align: center; margin-top: 15px;">
-                <a id="verRecibo" href="#" target="_blank" class="btn-ver-recibo">Ver Recibo</a>
+                <a id="verRecibo" href="#" target="_blank" class="btn-ver-recibo">
+                    <span class="lang-es">Ver Recibo</span>
+                    <span class="lang-en">View Receipt</span>
+                </a>
             </div>
         </div>
     </div>
 
     <script>
+        // ====== IDIOMA ======
+        function setLang(lang) {
+            document.body.classList.remove('english');
+            document.getElementById('btnEs').classList.remove('active');
+            document.getElementById('btnEn').classList.remove('active');
+            
+            if (lang === 'en') {
+                document.body.classList.add('english');
+                document.getElementById('btnEn').classList.add('active');
+            } else {
+                document.getElementById('btnEs').classList.add('active');
+            }
+        }
+
         // ====== GENERAR FECHA AUTOMÁTICAMENTE ======
         document.addEventListener('DOMContentLoaded', function() {
             const semana = new Date();
@@ -466,11 +556,11 @@
             group.classList.toggle('visible');
             
             if (group.classList.contains('visible')) {
-                btn.textContent = 'Quitar Descuento';
+                btn.textContent = document.body.classList.contains('english') ? 'Remove Discount' : 'Quitar Descuento';
                 btn.classList.add('activo');
             } else {
                 document.getElementById('descuento').value = '';
-                btn.textContent = 'Agregar Descuento';
+                btn.textContent = document.body.classList.contains('english') ? 'Add Discount' : 'Agregar Descuento';
                 btn.classList.remove('activo');
                 calcularTotal();
             }
@@ -517,7 +607,7 @@
             const fechaExcursion = document.getElementById('fechaExcursion').value || '';
 
             if (!id || !cliente || !excursion || !adultos || !precioAdulto) {
-                alert('Por favor, completa los campos obligatorios');
+                alert(document.body.classList.contains('english') ? 'Please complete all required fields' : 'Por favor, completa los campos obligatorios');
                 return;
             }
 
@@ -554,7 +644,10 @@
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(enlace)}&size=200x200`;
             document.getElementById('qrImg').src = qrUrl;
 
-            const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlace}`;
+            const mensaje = document.body.classList.contains('english') 
+                ? `Hello ${cliente}, your receipt for ${excursion} is ready. Scan this QR or click the link: ${enlace}`
+                : `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlace}`;
+            
             document.getElementById('whatsappLink').href = `https://wa.me/1${whatsapp ? '?text=' + encodeURIComponent(mensaje) : '?text=' + encodeURIComponent(mensaje)}`;
 
             document.getElementById('resultado').classList.add('visible');
@@ -563,7 +656,7 @@
         function copiarEnlace() {
             const enlace = document.getElementById('enlaceGenerado').textContent;
             navigator.clipboard.writeText(enlace).then(() => {
-                alert('Enlace copiado al portapapeles');
+                alert(document.body.classList.contains('english') ? 'Link copied to clipboard' : 'Enlace copiado al portapapeles');
             }).catch(() => {
                 const textarea = document.createElement('textarea');
                 textarea.value = enlace;
@@ -571,7 +664,7 @@
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                alert('Enlace copiado al portapapeles');
+                alert(document.body.classList.contains('english') ? 'Link copied to clipboard' : 'Enlace copiado al portapapeles');
             });
         }
 
