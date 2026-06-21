@@ -758,18 +758,24 @@
                 fechaExcursion: fechaExcursion
             });
 
-            // ✅ ESTA ES LA LÍNEA CLAVE - AGREGA admin=true
-            const enlace = base + '?' + params.toString() + '&admin=true';
+            // ✅ Enlace SIN admin para el QR (lo escanea el cliente)
+            const enlaceQR = base + '?' + params.toString();
+            
+            // ✅ Enlace CON admin para el administrador
+            const enlaceAdmin = base + '?' + params.toString() + '&admin=true';
 
-            document.getElementById('enlaceGenerado').textContent = enlace;
-            document.getElementById('verRecibo').href = enlace;
+            // Mostramos el enlace CON admin (para que tú puedas ver los botones)
+            document.getElementById('enlaceGenerado').textContent = enlaceAdmin;
+            document.getElementById('verRecibo').href = enlaceAdmin;
 
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(enlace)}&size=200x200`;
+            // El QR se genera con el enlace SIN admin
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(enlaceQR)}&size=200x200`;
             document.getElementById('qrImg').src = qrUrl;
 
+            // El mensaje de WhatsApp usa el enlace SIN admin
             const mensaje = isEn 
-                ? `Hello ${cliente}, your receipt for ${excursion} is ready. Scan this QR or click the link: ${enlace}`
-                : `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlace}`;
+                ? `Hello ${cliente}, your receipt for ${excursion} is ready. Scan this QR or click the link: ${enlaceQR}`
+                : `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlaceQR}`;
             
             document.getElementById('whatsappLink').href = `https://wa.me/1${whatsapp ? '?text=' + encodeURIComponent(mensaje) : '?text=' + encodeURIComponent(mensaje)}`;
 
