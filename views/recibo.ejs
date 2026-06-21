@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recibo</title>
+    <title>Recibo <%= numeroRecibo %></title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -31,35 +31,107 @@
         }
         .header h1 {
             color: #333;
-            font-size: 28px;
+            font-size: 26px;
         }
         .header p {
             color: #666;
             font-size: 14px;
         }
-        .info {
+        
+        /* DATOS DEL CLIENTE */
+        .info-cliente {
             background: #f8f9fa;
-            padding: 20px;
+            padding: 15px 20px;
             border-radius: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
-        .info-item {
+        .info-cliente .fila {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 5px 0;
             border-bottom: 1px solid #e9ecef;
         }
-        .info-item:last-child {
+        .info-cliente .fila:last-child {
             border-bottom: none;
         }
-        .badge {
-            display: inline-block;
-            background: #d4edda;
-            color: #155724;
-            padding: 8px 20px;
-            border-radius: 50px;
+        .info-cliente .label {
             font-weight: 600;
+            color: #555;
         }
+        .info-cliente .valor {
+            color: #333;
+            text-align: right;
+        }
+
+        /* TABLA DE CONCEPTOS */
+        .tabla {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .tabla th {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 2px solid #667eea;
+            color: #333;
+        }
+        .tabla td {
+            padding: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .tabla .monto {
+            text-align: right;
+        }
+        .tabla .total {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* BALANCE PENDIENTE */
+        .balance-pendiente {
+            text-align: right;
+            font-size: 22px;
+            font-weight: bold;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .balance-pendiente .importe {
+            color: #dc3545;
+        }
+        .balance-pendiente .importe.pagado {
+            color: #28a745;
+        }
+
+        /* ESTADO DE PAGO */
+        .estado-pago {
+            text-align: center;
+            padding: 18px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 3px solid #28a745;
+            background: #d4edda;
+        }
+        .estado-pago .texto {
+            font-size: 26px;
+            font-weight: bold;
+            color: #155724;
+        }
+
+        /* FALTA PAGAR */
+        .mensaje-proveedor {
+            text-align: center;
+            padding: 15px;
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: #856404;
+        }
+
         .footer {
             text-align: center;
             margin-top: 20px;
@@ -84,38 +156,91 @@
 </head>
 <body>
     <div class="recibo">
+        <!-- HEADER -->
         <div class="header">
-            <h1>🧾 RECIBO DE PAGO</h1>
+            <h1>🧾 REPUBLIC EXCURSIONS</h1>
             <p>Comprobante de pago</p>
         </div>
 
-        <div class="info">
-            <div class="info-item">
-                <span><strong>Factura:</strong></span>
-                <span><%= idFactura %></span>
+        <!-- DATOS DEL CLIENTE -->
+        <div class="info-cliente">
+            <div class="fila">
+                <span class="label">Factura:</span>
+                <span class="valor"><%= idFactura %></span>
             </div>
-            <div class="info-item">
-                <span><strong>Número de Recibo:</strong></span>
-                <span><%= numeroRecibo %></span>
+            <div class="fila">
+                <span class="label">Cliente:</span>
+                <span class="valor"><%= cliente %></span>
             </div>
-            <div class="info-item">
-                <span><strong>Fecha:</strong></span>
-                <span><%= fecha %></span>
+            <div class="fila">
+                <span class="label">Excursión:</span>
+                <span class="valor"><%= excursion %></span>
             </div>
-            <div class="info-item">
-                <span><strong>Hora:</strong></span>
-                <span><%= hora %></span>
+            <div class="fila">
+                <span class="label">Fecha:</span>
+                <span class="valor"><%= fecha %></span>
+            </div>
+            <div class="fila">
+                <span class="label">Personas:</span>
+                <span class="valor"><%= adultos %> Adultos, <%= ninos %> Niños</span>
+            </div>
+            <div class="fila">
+                <span class="label">Método de Pago:</span>
+                <span class="valor"><%= metodoPago %></span>
             </div>
         </div>
 
-        <div style="text-align: center;">
-            <span class="badge">✅ PAGADO</span>
-            <p style="margin-top: 15px; color: #333;">Este recibo es válido</p>
+        <!-- TABLA DE CONCEPTOS -->
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>Concepto</th>
+                    <th class="monto">Monto (USD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong><%= excursion %></strong></td>
+                    <td class="monto"></td>
+                </tr>
+                <tr>
+                    <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
+                    <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
+                </tr>
+                <tr>
+                    <td><strong>Subtotal</strong></td>
+                    <td class="monto"><strong>$<%= subtotal.toFixed(2) %></strong></td>
+                </tr>
+                <tr>
+                    <td>Depósito Pagado (25%)</td>
+                    <td class="monto">$<%= depositoPagado.toFixed(2) %></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- BALANCE PENDIENTE -->
+        <div class="balance-pendiente">
+            <span>Balance Pendiente:</span>
+            <span class="importe <%= totalPendiente === 0 ? 'pagado' : '' %>">
+                $<%= totalPendiente.toFixed(2) %>
+            </span>
         </div>
 
+        <!-- ESTADO DE PAGO -->
+        <div class="estado-pago" style="border-color: <%= estadoColor %>; background: <%= estadoColor %>15;">
+            <div class="texto" style="color: <%= estadoColor %>;">
+                <%= estadoTexto %>
+            </div>
+        </div>
+
+        <!-- FALTA PAGAR -->
+        <div class="mensaje-proveedor">
+            Falta pagar: $<%= totalPendiente.toFixed(2) %>
+        </div>
+
+        <!-- FOOTER -->
         <div class="footer">
-            <p>© 2026 - Todos los derechos reservados</p>
-            <p>Código: <%= numeroRecibo %></p>
+            <p>© 2026 - Republic Excursions</p>
             <a href="/" class="btn">Volver al inicio</a>
         </div>
     </div>
