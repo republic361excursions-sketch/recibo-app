@@ -81,6 +81,20 @@
             background: #5563c1;
             transform: translateY(-2px);
         }
+        .btn-buscar {
+            background: #28a745;
+            padding: 12px 25px;
+            font-size: 16px;
+            width: auto;
+            margin-top: 0;
+        }
+        .btn-buscar:hover {
+            background: #218838;
+        }
+        .btn-buscar:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
         .resultado {
             margin-top: 30px;
             padding: 20px;
@@ -198,6 +212,45 @@
             font-size: 12px;
             margin-top: 4px;
         }
+        .buscar-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .buscar-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        .loading {
+            display: none;
+            color: #667eea;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .loading.visible {
+            display: inline-block;
+        }
+        .mensaje-error {
+            display: none;
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .mensaje-error.visible {
+            display: block;
+        }
+        .encontrado {
+            display: none;
+            color: #28a745;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .encontrado.visible {
+            display: block;
+        }
         @media (max-width: 600px) {
             .form-row {
                 flex-direction: column;
@@ -205,6 +258,13 @@
             }
             .container {
                 padding: 20px;
+            }
+            .buscar-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-buscar {
+                width: 100%;
             }
         }
     </style>
@@ -215,6 +275,18 @@
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
         <form id="formRecibo">
+            <!-- BUSCADOR POR ID -->
+            <div class="buscar-row">
+                <div class="form-group">
+                    <label>🔍 Buscar por ID / Código de Reserva</label>
+                    <input type="text" id="buscarId" placeholder="Ej: BUG-5198">
+                    <div class="mensaje-error" id="mensajeError">❌ No se encontró ninguna reserva con ese ID</div>
+                    <div class="encontrado" id="mensajeEncontrado">✅ Reserva encontrada. Los datos se han cargado automáticamente.</div>
+                </div>
+                <button type="button" class="btn btn-buscar" id="btnBuscar">🔍 Buscar Reserva</button>
+                <span class="loading" id="loading">⏳ Cargando...</span>
+            </div>
+
             <!-- DATOS DE LA RESERVA -->
             <div class="form-row">
                 <div class="form-group">
@@ -271,7 +343,7 @@
                 </div>
             </div>
 
-            <!-- EXCURSIÓN (INPUT DE TEXTO) -->
+            <!-- EXCURSIÓN -->
             <div class="form-group">
                 <label>Excursión *</label>
                 <input type="text" id="excursion" placeholder="Ej: Buggys + Playa Macao, Isla Saona, etc." required>
@@ -375,7 +447,12 @@
     </div>
 
     <script>
-        // GENERAR CÓDIGOS AUTOMÁTICAMENTE
+        // ====== CONFIGURACIÓN ======
+        // URL de Google Apps Script (CAMBIA ESTA URL POR LA TUYA)
+        // Debes publicar el script como aplicación web y copiar la URL aquí
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/TU_ID_AQUI/exec';
+
+        // ====== GENERAR CÓDIGOS AUTOMÁTICAMENTE ======
         document.addEventListener('DOMContentLoaded', function() {
             const hoy = new Date();
             const fechaStr = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
@@ -390,7 +467,107 @@
             ajustarDeposito();
         });
 
-        // CALCULAR SUBTOTAL
+        // ====== BUSCAR RESERVA EN GOOGLE SHEETS ======
+        document.getElementById('btnBuscar').addEventListener('click', buscarReserva);
+        document.getElementById('buscarId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                buscarReserva();
+            }
+        });
+
+        function buscarReserva() {
+            const idBuscado = document.getElementById('buscarId').value.trim();
+            const mensajeError = document.getElementById('mensajeError');
+            const mensajeEncontrado = document.getElementById('mensajeEncontrado');
+            const loading = document.getElementById('loading');
+            
+            // Ocultar mensajes anteriores
+            mensajeError.classList.remove('visible');
+            mensajeEncontrado.classList.remove('visible');
+            
+            if (!idBuscado) {
+                mensajeError.textContent = '⚠️ Por favor, escribe un ID para buscar.';
+                mensajeError.classList.add('visible');
+                return;
+            }
+
+            // Mostrar loading
+            loading.classList.add('visible');
+            document.getElementById('btnBuscar').disabled = true;
+
+            // Buscar en Google Sheets
+            const url = GOOGLE_SCRIPT_URL + '?id=' + encodeURIComponent(idBuscado);
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    loading.classList.remove('visible');
+                    document.getElementById('btnBuscar').disabled = false;
+
+                    if (data.error) {
+                        mensajeError.textContent = '❌ ' + data.error;
+                        mensajeError.classList.add('visible');
+                        return;
+                    }
+
+                    if (data.found) {
+                        // Cargar los datos en el formulario
+                        cargarDatosReserva(data.datos);
+                        mensajeEncontrado.classList.add('visible');
+                    } else {
+                        mensajeError.textContent = '❌ No se encontró ninguna reserva con el ID: ' + idBuscado;
+                        mensajeError.classList.add('visible');
+                    }
+                })
+                .catch(error => {
+                    loading.classList.remove('visible');
+                    document.getElementById('btnBuscar').disabled = false;
+                    mensajeError.textContent = '❌ Error al conectar con Google Sheets. Verifica la URL.';
+                    mensajeError.classList.add('visible');
+                    console.error('Error:', error);
+                });
+        }
+
+        function cargarDatosReserva(datos) {
+            // Mapeo de campos de Google Sheets a los campos del formulario
+            // Ajusta estos índices según el orden de tus columnas en Google Sheets
+            // Ejemplo: datos[0] = ID, datos[1] = Recibo, datos[2] = Cliente, etc.
+            
+            document.getElementById('id').value = datos.id || '';
+            document.getElementById('recibo').value = datos.recibo || '';
+            document.getElementById('cliente').value = datos.cliente || '';
+            document.getElementById('excursion').value = datos.excursion || '';
+            document.getElementById('adultos').value = datos.adultos || 1;
+            document.getElementById('ninos').value = datos.ninos || 0;
+            document.getElementById('precioAdulto').value = datos.precioAdulto || 45;
+            document.getElementById('precioNino').value = datos.precioNino || 25;
+            document.getElementById('subtotal').value = datos.subtotal || 0;
+            document.getElementById('deposito').value = datos.deposito || 0;
+            document.getElementById('whatsapp').value = datos.whatsapp || '';
+            document.getElementById('correo').value = datos.correo || '';
+            document.getElementById('hotel').value = datos.hotel || '';
+            document.getElementById('habitacion').value = datos.habitacion || '';
+            document.getElementById('transporte').value = datos.transporte || 'Sí';
+            document.getElementById('metodoPago').value = datos.metodoPago || 'Efectivo';
+            document.getElementById('notas').value = datos.notas || 'Sin notas adicionales';
+            
+            // Fecha de excursión
+            if (datos.fechaExcursion) {
+                document.getElementById('fechaExcursion').value = datos.fechaExcursion;
+            }
+            
+            // Estado de pago
+            const estado = datos.estado || 'deposito';
+            document.querySelectorAll('input[name="estado"]').forEach(el => {
+                el.checked = (el.value === estado);
+            });
+            
+            // Recalcular
+            calcularSubtotal();
+            ajustarDeposito();
+        }
+
+        // ====== CALCULAR SUBTOTAL ======
         document.getElementById('adultos').addEventListener('input', function() {
             calcularSubtotal();
             ajustarDeposito();
@@ -418,7 +595,7 @@
             document.getElementById('subtotal').value = subtotal.toFixed(2);
         }
 
-        // AJUSTAR DEPÓSITO SEGÚN EL ESTADO
+        // ====== AJUSTAR DEPÓSITO SEGÚN EL ESTADO ======
         function ajustarDeposito() {
             const estado = document.querySelector('input[name="estado"]:checked').value;
             const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
@@ -433,7 +610,7 @@
             }
         }
 
-        // ENVIAR FORMULARIO
+        // ====== ENVIAR FORMULARIO ======
         document.getElementById('formRecibo').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -518,7 +695,7 @@
             }).catch(() => console.log('Datos enviados a Google Sheets'));
         });
 
-        // COPIAR ENLACE
+        // ====== COPIAR ENLACE ======
         function copiarEnlace() {
             const enlace = document.getElementById('enlaceGenerado').textContent;
             navigator.clipboard.writeText(enlace).then(() => {
@@ -534,7 +711,7 @@
             });
         }
 
-        // DESCARGAR QR
+        // ====== DESCARGAR QR ======
         function descargarQR() {
             const qrImg = document.getElementById('qrImg');
             const link = document.createElement('a');
