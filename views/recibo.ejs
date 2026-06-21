@@ -336,10 +336,12 @@
                     <td><strong>Subtotal</strong></td>
                     <td class="monto"><strong>$<%= subtotal.toFixed(2) %></strong></td>
                 </tr>
+                <% if (depositoPagado > 0 && totalPendiente > 0) { %>
                 <tr>
                     <td>Depósito Pagado (25%)</td>
                     <td class="monto">$<%= depositoPagado.toFixed(2) %></td>
                 </tr>
+                <% } %>
             </tbody>
         </table>
 
@@ -371,10 +373,12 @@
                 <span class="label">Subtotal</span>
                 <span class="value">$<%= subtotal.toFixed(2) %></span>
             </div>
+            <% if (depositoPagado > 0 && totalPendiente > 0) { %>
             <div class="fila">
                 <span class="label">Depósito Pagado</span>
                 <span class="value">$<%= depositoPagado.toFixed(2) %></span>
             </div>
+            <% } %>
             <div class="fila total">
                 <span class="label">Falta Pagar</span>
                 <span class="value pendiente <%= totalPendiente === 0 ? 'pagado' : '' %>">
