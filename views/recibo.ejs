@@ -33,7 +33,6 @@
             margin-bottom: 30px;
         }
 
-        /* ===== HEADER ===== */
         .header {
             text-align: center;
             border-bottom: 2px solid #1a2a4a;
@@ -69,7 +68,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ===== DATOS DE LA RESERVA ===== */
         .info-cliente {
             margin-bottom: 28px;
             padding: 16px 22px;
@@ -113,7 +111,6 @@
             color: #1a2a4a;
         }
 
-        /* ===== TABLA ===== */
         .tabla {
             width: 100%;
             border-collapse: collapse;
@@ -149,7 +146,6 @@
             font-size: 15px;
         }
 
-        /* ===== ESTADO DE PAGO ===== */
         .estado-unico {
             text-align: center;
             padding: 16px 20px;
@@ -182,7 +178,6 @@
             font-size: 26px;
         }
 
-        /* ===== RESUMEN ===== */
         .resumen-pago {
             background: #f8f7f4;
             padding: 16px 24px;
@@ -227,7 +222,6 @@
             font-size: 15px;
         }
 
-        /* ===== FOOTER ===== */
         .footer {
             text-align: center;
             margin-top: 28px;
@@ -273,15 +267,18 @@
             color: #1a2a4a;
         }
 
-        /* ===== BOTONES DE ACCIÓN ===== */
         .acciones-recibo {
-            display: flex;
+            display: none;
             flex-wrap: wrap;
             gap: 12px;
             justify-content: center;
             max-width: 700px;
             width: 100%;
             margin-top: 10px;
+        }
+
+        .acciones-recibo.visible {
+            display: flex;
         }
 
         .btn-accion {
@@ -377,16 +374,13 @@
     </style>
 </head>
 <body>
-    <!-- RECIBO -->
     <div id="reciboContainer" class="recibo">
-        <!-- HEADER -->
         <div class="header">
             <div class="logo">Republic <span>Excursions</span></div>
             <div class="titulo">Recibo de Pago</div>
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
 
-        <!-- DATOS DE LA RESERVA -->
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
 
@@ -450,7 +444,6 @@
             <% } %>
         </div>
 
-        <!-- TABLA DE CONCEPTOS -->
         <table class="tabla">
             <thead>
                 <tr>
@@ -480,7 +473,7 @@
                 <% if (descuento > 0) { %>
                 <tr>
                     <td style="color: #27ae60;"><strong>Descuento</strong></td>
-                    <td class="monto descuento">-$<%= descuento.toFixed(2) %></td>
+                    <td class="monto">-$<%= descuento.toFixed(2) %></td>
                 </tr>
                 <tr>
                     <td><strong>Total</strong></td>
@@ -496,7 +489,6 @@
             </tbody>
         </table>
 
-        <!-- ESTADO DE PAGO -->
         <% if (totalPendiente <= 0) { %>
             <div class="estado-unico pagado">
                 Pagado Completo
@@ -511,7 +503,6 @@
             </div>
         <% } %>
 
-        <!-- RESUMEN -->
         <div class="resumen-pago">
             <div class="fila">
                 <span class="label">Subtotal</span>
@@ -541,12 +532,10 @@
             </div>
         </div>
 
-        <!-- CÓDIGO DE VERIFICACIÓN -->
         <div class="qr-info">
             <span>Documento de verificación</span> &mdash; Código <%= numeroRecibo %>
         </div>
 
-        <!-- FOOTER -->
         <div class="footer">
             <p class="empresa">Republic Excursions</p>
             <p class="direccion">Punta Cana, República Dominicana</p>
@@ -555,38 +544,36 @@
         </div>
     </div>
 
-    <!-- BOTONES DE ACCIÓN -->
-    <div class="acciones-recibo">
+    <div class="acciones-recibo <%= mostrarBotones ? 'visible' : '' %>">
         <button class="btn-accion imagen" onclick="descargarImagen()">
-            📷 Descargar Imagen
+            Descargar Imagen
         </button>
         <a href="#" class="btn-accion whatsapp" id="whatsappBtn">
-            📲 Enviar por WhatsApp
+            Enviar por WhatsApp
         </a>
         <a href="/" class="btn-accion volver">
-            ← Volver al inicio
+            Volver al inicio
         </a>
     </div>
 
     <script>
-        // ====== GENERAR ENLACE DE WHATSAPP ======
         document.addEventListener('DOMContentLoaded', function() {
             const cliente = '<%= cliente %>';
             const excursion = '<%= excursion %>';
             const enlace = window.location.href;
             const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Puedes verlo aquí: ${enlace}`;
             const whatsappBtn = document.getElementById('whatsappBtn');
-            whatsappBtn.href = `https://wa.me/1?text=${encodeURIComponent(mensaje)}`;
+            if (whatsappBtn) {
+                whatsappBtn.href = `https://wa.me/1?text=${encodeURIComponent(mensaje)}`;
+            }
         });
 
-        // ====== DESCARGAR IMAGEN ======
         function descargarImagen() {
             const elemento = document.getElementById('reciboContainer');
             
-            // Mostrar loading
             const btn = document.querySelector('.btn-accion.imagen');
             const textoOriginal = btn.innerHTML;
-            btn.innerHTML = '⏳ Generando...';
+            btn.innerHTML = 'Generando...';
             btn.disabled = true;
 
             html2canvas(elemento, {
@@ -597,14 +584,15 @@
                 logging: false
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `recibo-${document.querySelector('.recibo-numero').textContent.trim().replace(/\s/g, '')}.png`;
+                const reciboNum = document.querySelector('.recibo-numero').textContent.trim().replace(/\s/g, '');
+                link.download = `recibo-${reciboNum}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 btn.innerHTML = textoOriginal;
                 btn.disabled = false;
             }).catch(error => {
                 console.error('Error al generar la imagen:', error);
-                btn.innerHTML = '❌ Error';
+                btn.innerHTML = 'Error';
                 btn.disabled = false;
                 setTimeout(() => {
                     btn.innerHTML = textoOriginal;
