@@ -297,18 +297,17 @@
             <div class="form-group">
                 <label>Excursión</label>
                 <input type="text" id="excursion">
-                <div class="small-hint">Escribe el nombre de la excursión.</div>
             </div>
 
             <!-- PERSONAS -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Adultos</label>
-                    <input type="number" id="adultos" value="1" min="0">
+                    <input type="number" id="adultos" value="" min="0">
                 </div>
                 <div class="form-group">
                     <label>Niños</label>
-                    <input type="number" id="ninos" value="0" min="0">
+                    <input type="number" id="ninos" value="" min="0">
                 </div>
             </div>
 
@@ -316,11 +315,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Precio por Adulto (USD)</label>
-                    <input type="number" id="precioAdulto" value="45" min="0" step="0.01">
+                    <input type="number" id="precioAdulto" value="" min="0" step="0.01">
                 </div>
                 <div class="form-group">
                     <label>Precio por Niño (USD)</label>
-                    <input type="number" id="precioNino" value="25" min="0" step="0.01">
+                    <input type="number" id="precioNino" value="" min="0" step="0.01">
                     <div class="small-hint">Si no aplica, dejar en 0.</div>
                 </div>
             </div>
@@ -329,18 +328,18 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Subtotal (USD)</label>
-                    <input type="number" id="subtotal" value="0" min="0" step="0.01">
+                    <input type="number" id="subtotal" value="" min="0" step="0.01">
                 </div>
                 <div class="form-group">
                     <label>Depósito Pagado (USD)</label>
-                    <input type="number" id="deposito" value="0" min="0" step="0.01">
+                    <input type="number" id="deposito" value="" min="0" step="0.01">
                 </div>
             </div>
 
             <!-- DESCUENTO (OCULTO POR DEFECTO) -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label>Descuento (USD)</label>
-                <input type="number" id="descuento" value="0" min="0" step="0.01" oninput="calcularTotal()">
+                <input type="number" id="descuento" value="" min="0" step="0.01" oninput="calcularTotal()">
                 <div class="small-hint">Monto a descontar del subtotal</div>
             </div>
 
@@ -348,7 +347,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Total (USD)</label>
-                    <input type="number" id="total" value="0" min="0" step="0.01" readonly style="background: #f0f0f0; font-weight: bold; color: #1a3c6e;">
+                    <input type="number" id="total" value="" min="0" step="0.01" readonly style="background: #f0f0f0; font-weight: bold; color: #1a3c6e;">
                 </div>
                 <div class="form-group" style="display: flex; align-items: flex-end;">
                     <button type="button" class="btn btn-descuento" id="btnDescuento" onclick="toggleDescuento()">Agregar Descuento</button>
@@ -415,9 +414,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             const hoy = new Date();
             const fechaStr = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
+            
+            // Generar ID y Recibo automáticamente
             document.getElementById('recibo').value = 'REC-' + fechaStr + '-' + Math.floor(Math.random() * 9000 + 1000);
             document.getElementById('id').value = 'BUG-' + Math.floor(Math.random() * 9000 + 1000);
             
+            // Fecha por defecto: hoy + 7 días
             const semana = new Date();
             semana.setDate(semana.getDate() + 7);
             document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
@@ -479,7 +481,7 @@
                 btn.textContent = 'Quitar Descuento';
                 btn.classList.add('activo');
             } else {
-                document.getElementById('descuento').value = 0;
+                document.getElementById('descuento').value = '';
                 btn.textContent = 'Agregar Descuento';
                 btn.classList.remove('activo');
                 calcularTotal();
