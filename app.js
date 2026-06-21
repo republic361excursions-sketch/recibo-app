@@ -16,7 +16,8 @@ app.get('/ver-recibo', (req, res) => {
         id, recibo, cliente, excursion, 
         adultos, ninos, precioAdulto, precioNino,
         subtotal, descuento, total, deposito, estado, metodoPago,
-        whatsapp, correo, hotel, habitacion, transporte, notas, fechaExcursion
+        whatsapp, correo, hotel, habitacion, transporte, notas, fechaExcursion,
+        admin
     } = req.query;
 
     if (!id || !recibo) {
@@ -60,7 +61,8 @@ app.get('/ver-recibo', (req, res) => {
             month: 'long',
             day: 'numeric'
         }),
-        estado: estado || 'pendiente'
+        estado: estado || 'pendiente',
+        mostrarBotones: admin === 'true'
     };
 
     let estadoTexto = '';
