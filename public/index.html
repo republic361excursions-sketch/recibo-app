@@ -323,8 +323,8 @@
                     <label id="labelHabitacion">Habitación</label>
                     <input type="text" id="habitacion" placeholder="Ej: 123, Villa B12" oninput="actualizarVistaPrevia()">
                 </div>
-                <div class="form-group">
-                    <label>Hora de Recogida</label>
+                <div class="form-group" id="horaRecogidaGroup">
+                    <label id="labelHoraRecogida">Hora de Recogida</label>
                     <input type="time" id="horaRecogida" onchange="actualizarVistaPrevia()">
                 </div>
             </div>
@@ -473,7 +473,7 @@
                     <span class="valor" id="vpHabitacion">---</span>
                 </div>
                 <div class="fila">
-                    <span class="label">Hora de Recogida</span>
+                    <span class="label" id="vpLabelHora">Hora de Recogida</span>
                     <span class="valor" id="vpHoraRecogida">---</span>
                 </div>
                 <div class="fila">
@@ -555,18 +555,20 @@
             actualizarVistaPrevia();
         }
 
-        // ====== CAMBIAR ETIQUETA HABITACION Y LUGAR DE RECOGIDA ======
+        // ====== CAMBIAR ETIQUETA HABITACION, LUGAR DE RECOGIDA Y HORA ======
         function cambiarEtiquetaHabitacion() {
             const label = document.getElementById('labelHabitacion');
             const input = document.getElementById('habitacion');
             const tipo = document.getElementById('tipoRecogida').value;
             const labelLugar = document.getElementById('labelLugarRecogida');
             const inputLugar = document.getElementById('lugarRecogida');
+            const labelHora = document.getElementById('labelHoraRecogida');
             
             if (tipo === 'Sin Recogida') {
-                // Cuando es SIN RECOGIDA, cambiamos la etiqueta a "Lugar de la Excursión"
+                // Cuando es SIN RECOGIDA
                 labelLugar.textContent = 'Lugar de la Excursión';
                 inputLugar.placeholder = 'Ej: Muelle de Punta Cana, Puerto de Bayahíbe';
+                labelHora.textContent = 'Hora de la Excursión';
                 label.textContent = '---';
                 input.placeholder = 'No aplica';
                 document.getElementById('habitacion').value = '';
@@ -574,6 +576,7 @@
                 // Cuando hay recogida (Hotel, Airbnb, Punto de Encuentro)
                 labelLugar.textContent = 'Lugar de Recogida';
                 inputLugar.placeholder = 'Ej: Riu Bavaro, Villa Sol, Parque Central';
+                labelHora.textContent = 'Hora de Recogida';
                 if (tipo === 'Hotel') {
                     label.textContent = 'Habitación';
                     input.placeholder = 'Ej: 123';
@@ -657,6 +660,13 @@
             const transporte = document.getElementById('transporte').value || '---';
             document.getElementById('vpTransporte').textContent = transporte;
             
+            // Cambiar label de hora en vista previa
+            const vpLabelHora = document.getElementById('vpLabelHora');
+            if (tipoRecogida === 'Sin Recogida') {
+                vpLabelHora.textContent = 'Hora de la Excursión';
+            } else {
+                vpLabelHora.textContent = 'Hora de Recogida';
+            }
             document.getElementById('vpHoraRecogida').textContent = document.getElementById('horaRecogida').value || '---';
             
             document.getElementById('vpExcursion').textContent = document.getElementById('excursion').value || '---';
