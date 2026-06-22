@@ -37,11 +37,20 @@
         }
 
         .header .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             font-size: 20px;
             font-weight: 700;
             color: #1a2a4a;
             letter-spacing: 3px;
             text-transform: uppercase;
+        }
+
+        .header .logo .logo-img {
+            max-height: 40px;
+            width: auto;
         }
 
         .header .logo span { color: #c9a84c; }
@@ -272,13 +281,18 @@
             .estado-unico .monto { font-size: 20px; }
             .acciones-recibo { flex-direction: column; align-items: center; }
             .btn-accion { width: 100%; text-align: center; }
+            .header .logo { flex-direction: column; gap: 5px; }
         }
     </style>
 </head>
 <body>
     <div id="reciboContainer" class="recibo">
+        <!-- HEADER CON LOGO -->
         <div class="header">
-            <div class="logo">Republic <span>Excursions</span></div>
+            <div class="logo">
+                <img src="/logo.png" alt="Republic Excursions" class="logo-img">
+                <span>Republic <span>Excursions</span></span>
+            </div>
             <div class="titulo">Recibo de Pago</div>
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
