@@ -256,19 +256,16 @@
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
         <form id="formRecibo">
-            <!-- ID -->
             <div class="form-group">
                 <label>ID / Código de Reserva</label>
                 <input type="text" id="id" name="id" placeholder="Ej: BUG-5198" oninput="actualizarVistaPrevia()">
             </div>
 
-            <!-- CLIENTE -->
             <div class="form-group">
                 <label>Cliente <span class="required">*</span></label>
                 <input type="text" id="cliente" name="cliente" placeholder="Nombre completo" required oninput="actualizarVistaPrevia()">
             </div>
 
-            <!-- WHATSAPP + CORREO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>WhatsApp <span class="required">*</span></label>
@@ -280,7 +277,6 @@
                 </div>
             </div>
 
-            <!-- TIPO DE EXCURSIÓN + GRUPO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Excursión</label>
@@ -302,7 +298,6 @@
                 </div>
             </div>
 
-            <!-- RECOGIDA -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Recogida</label>
@@ -329,7 +324,6 @@
                 </div>
             </div>
 
-            <!-- TRANSPORTE -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Transporte</label>
@@ -340,7 +334,6 @@
                 </div>
             </div>
 
-            <!-- FECHA + EXCURSION -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Fecha de la Excursión</label>
@@ -352,7 +345,6 @@
                 </div>
             </div>
 
-            <!-- ADULTOS + NIÑOS -->
             <div class="form-row">
                 <div class="form-group">
                     <label id="labelAdultos">Adultos <span class="required">*</span></label>
@@ -364,7 +356,6 @@
                 </div>
             </div>
 
-            <!-- PRECIOS -->
             <div class="form-row">
                 <div class="form-group">
                     <label id="labelPrecioAdulto">Precio por Adulto (USD) <span class="required">*</span></label>
@@ -377,7 +368,6 @@
                 </div>
             </div>
 
-            <!-- SUBTOTAL + DEPOSITO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Subtotal (USD)</label>
@@ -389,14 +379,12 @@
                 </div>
             </div>
 
-            <!-- DESCUENTO -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label>Descuento (USD)</label>
                 <input type="number" id="descuento" name="descuento" min="0" step="0.01" oninput="calcularSubtotal()">
                 <div class="small-hint">Monto a descontar del subtotal</div>
             </div>
 
-            <!-- TOTAL + DESCUENTO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Total (USD)</label>
@@ -409,7 +397,6 @@
                 </div>
             </div>
 
-            <!-- ESTADO DE PAGO -->
             <div class="form-group">
                 <label>Estado de Pago</label>
                 <div class="estado-options">
@@ -420,7 +407,6 @@
                 <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta a $0.00.</div>
             </div>
 
-            <!-- METODO PAGO + NOTAS -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Método de Pago</label>
@@ -440,7 +426,6 @@
             <button type="button" class="btn" onclick="generarQRYEnlace()">GENERAR RECIBO</button>
         </form>
 
-        <!-- VISTA PREVIA -->
         <div class="vista-previa">
             <h4>VISTA PREVIA DEL RECIBO</h4>
             <div class="recibo-mini" id="vistaPrevia">
@@ -505,7 +490,6 @@
             </div>
         </div>
 
-        <!-- RESULTADO -->
         <div id="resultado" class="resultado">
             <h3>Recibo Generado</h3>
             <div class="qr-container">
@@ -522,7 +506,6 @@
     </div>
 
     <script>
-        // ====== CAMBIAR TIPO DE EXCURSIÓN ======
         function cambiarTipoExcursion() {
             const tipo = document.getElementById('tipoExcursion').value;
             const privadoGroup = document.getElementById('privadoGroup');
@@ -555,7 +538,6 @@
             actualizarVistaPrevia();
         }
 
-        // ====== CAMBIAR ETIQUETA HABITACION, LUGAR DE RECOGIDA Y HORA ======
         function cambiarEtiquetaHabitacion() {
             const label = document.getElementById('labelHabitacion');
             const input = document.getElementById('habitacion');
@@ -591,7 +573,6 @@
             actualizarVistaPrevia();
         }
 
-        // ====== CALCULAR SUBTOTAL ======
         function calcularSubtotal() {
             const tipo = document.getElementById('tipoExcursion').value;
             const adultos = parseInt(document.getElementById('adultos').value) || 0;
@@ -627,7 +608,6 @@
             actualizarVistaPrevia();
         }
 
-        // ====== ACTUALIZAR VISTA PREVIA ======
         function actualizarVistaPrevia() {
             document.getElementById('vpId').textContent = document.getElementById('id').value || '---';
             document.getElementById('vpCliente').textContent = document.getElementById('cliente').value || '---';
@@ -707,7 +687,6 @@
             document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
         }
 
-        // ====== DESCUENTO ======
         function toggleDescuento() {
             const group = document.getElementById('descuentoGroup');
             const btn = document.getElementById('btnDescuento');
@@ -723,9 +702,7 @@
             }
         }
 
-        // ====== GENERAR QR Y ENLACE ======
         function generarQRYEnlace() {
-            // Validar campos obligatorios
             const cliente = document.getElementById('cliente').value.trim();
             const excursion = document.getElementById('excursion').value.trim();
             
@@ -734,12 +711,10 @@
                 return;
             }
             
-            // Obtener todos los valores del formulario
             const form = document.getElementById('formRecibo');
             const formData = new FormData(form);
             const params = new URLSearchParams(formData);
             
-            // Asegurar que id y recibo tengan valores
             const idField = document.getElementById('id').value.trim();
             if (!idField) {
                 const nuevoId = 'REC-' + Date.now();
@@ -747,42 +722,32 @@
                 params.set('id', nuevoId);
             }
             
-            // Recibo usa el mismo ID si no existe
-            const reciboField = document.getElementById('recibo') ? document.getElementById('recibo').value : '';
-            if (!reciboField) {
+            if (!params.has('recibo') || !params.get('recibo')) {
                 params.set('recibo', params.get('id'));
             }
             
-            // Añadir admin=true para mostrar botones en el recibo
-            params.set('admin', 'true');
+            const ADMIN_KEY = 'admin2026';
+            params.set('admin', ADMIN_KEY);
             
-            // Construir enlace
             const base = '/ver-recibo';
             const enlaceQR = base + '?' + params.toString();
             const urlCompleta = window.location.origin + enlaceQR;
             
-            // Mostrar enlace
             document.getElementById('enlaceGenerado').textContent = urlCompleta;
             
-            // Generar QR
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(urlCompleta)}&size=200x200`;
             document.getElementById('qrImg').src = qrUrl;
             
-            // Configurar WhatsApp
             const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${urlCompleta}`;
             document.getElementById('whatsappLink').href = `https://wa.me/1?text=${encodeURIComponent(mensaje)}`;
             
-            // Configurar Ver Recibo
-            document.getElementById('verRecibo').href = urlCompleta + '&admin=true';
+            document.getElementById('verRecibo').href = urlCompleta;
             
-            // Mostrar resultado
             document.getElementById('resultado').classList.add('visible');
             
-            // Abrir el recibo en una nueva pestaña
-            window.open(urlCompleta + '&admin=true', '_blank');
+            window.open(urlCompleta, '_blank');
         }
 
-        // ====== COPIAR ENLACE ======
         function copiarEnlace() {
             const enlace = document.getElementById('enlaceGenerado').textContent;
             navigator.clipboard.writeText(enlace).then(() => alert('Enlace copiado'))
@@ -797,7 +762,6 @@
                 });
         }
 
-        // ====== DESCARGAR QR ======
         function descargarQR() {
             const qrImg = document.getElementById('qrImg');
             const link = document.createElement('a');
@@ -806,7 +770,6 @@
             link.click();
         }
 
-        // ====== FECHA POR DEFECTO ======
         document.addEventListener('DOMContentLoaded', function() {
             const semana = new Date();
             semana.setDate(semana.getDate() + 7);
