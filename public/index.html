@@ -48,6 +48,10 @@
         .form-row { display: flex; gap: 20px; }
         .form-row .form-group { flex: 1; }
         .small-hint { color: #b5c0d0; font-size: 12px; margin-top: 4px; font-weight: 300; }
+        .punto-salida { display: none; }
+        .punto-salida.visible { display: block; }
+        .privado-group { display: none; }
+        .privado-group.visible { display: block; }
         .btn {
             width: 100%;
             padding: 16px;
@@ -278,6 +282,28 @@
                 </div>
             </div>
 
+            <!-- TIPO DE EXCURSIÓN + GRUPO -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tipo de Excursión</label>
+                    <select id="tipoExcursion" onchange="cambiarTipoExcursion(); actualizarVistaPrevia();">
+                        <option value="compartido">Compartido</option>
+                        <option value="privado">Privado</option>
+                    </select>
+                </div>
+                <div class="form-group privado-group" id="privadoGroup">
+                    <label>Grupo / Empresa</label>
+                    <input type="text" id="grupo" placeholder="Ej: Familia Pérez, Grupo 10" oninput="actualizarVistaPrevia()">
+                </div>
+            </div>
+            <div class="form-row privado-group" id="privadoPrecioGroup">
+                <div class="form-group">
+                    <label>Capacidad Máxima</label>
+                    <input type="number" id="capacidadMaxima" placeholder="Ej: 10" min="0" oninput="actualizarVistaPrevia()">
+                    <div class="small-hint">Número máximo de personas</div>
+                </div>
+            </div>
+
             <!-- RECOGIDA -->
             <div class="form-row">
                 <div class="form-group">
@@ -438,6 +464,14 @@
                     <span class="valor" id="vpWhatsapp">---</span>
                 </div>
                 <div class="fila">
+                    <span class="label">Tipo</span>
+                    <span class="valor" id="vpTipo">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Grupo</span>
+                    <span class="valor" id="vpGrupo">---</span>
+                </div>
+                <div class="fila">
                     <span class="label">Recogida</span>
                     <span class="valor" id="vpRecogida">---</span>
                 </div>
@@ -468,6 +502,10 @@
                 <div class="fila">
                     <span class="label">Personas</span>
                     <span class="valor" id="vpPersonas">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Capacidad</span>
+                    <span class="valor" id="vpCapacidad">---</span>
                 </div>
                 <div class="fila">
                     <span class="label">Método de Pago</span>
@@ -508,12 +546,34 @@
             actualizarVistaPrevia();
         }
 
+        // ====== CAMBIAR TIPO DE EXCURSIÓN ======
+        function cambiarTipoExcursion() {
+            const tipo = document.getElementById('tipoExcursion').value;
+            const privadoGroup = document.getElementById('privadoGroup');
+            const privadoPrecioGroup = document.getElementById('privadoPrecioGroup');
+            
+            if (tipo === 'privado') {
+                privadoGroup.classList.add('visible');
+                privadoPrecioGroup.classList.add('visible');
+            } else {
+                privadoGroup.classList.remove('visible');
+                privadoPrecioGroup.classList.remove('visible');
+                document.getElementById('grupo').value = '';
+                document.getElementById('capacidadMaxima').value = '';
+            }
+            actualizarVistaPrevia();
+        }
+
         // ====== ACTUALIZAR VISTA PREVIA ======
         function actualizarVistaPrevia() {
             // Datos del cliente
             document.getElementById('vpId').textContent = document.getElementById('id').value || '---';
             document.getElementById('vpCliente').textContent = document.getElementById('cliente').value || '---';
             document.getElementById('vpWhatsapp').textContent = document.getElementById('whatsapp').value || '---';
+            
+            const tipo = document.getElementById('tipoExcursion').value || 'compartido';
+            document.getElementById('vpTipo').textContent = tipo === 'privado' ? 'Privado' : 'Compartido';
+            document.getElementById('vpGrupo').textContent = document.getElementById('grupo').value || '---';
             
             const tipoRecogida = document.getElementById('tipoRecogida').value || '';
             const lugarRecogida = document.getElementById('lugarRecogida').value || '';
@@ -544,6 +604,7 @@
             const adultos = document.getElementById('adultos').value || 0;
             const ninos = document.getElementById('ninos').value || 0;
             document.getElementById('vpPersonas').textContent = adultos + ' Adultos, ' + ninos + ' Niños';
+            document.getElementById('vpCapacidad').textContent = document.getElementById('capacidadMaxima').value || '---';
             
             document.getElementById('vpMetodoPago').textContent = document.getElementById('metodoPago').value || '---';
 
@@ -642,9 +703,14 @@
             const excursion = document.getElementById('excursion').value;
             const adultos = document.getElementById('adultos').value;
             const precioAdulto = document.getElementById('precioAdulto').value;
+            const tipo = document.getElementById('tipoExcursion').value;
 
-            if (!cliente || !excursion || !adultos || !precioAdulto) {
-                alert('⚠️ Los campos Cliente, Excursión, Adultos y Precio por Adulto son obligatorios.');
+            if (tipo === 'compartido' && (!adultos || !precioAdulto)) {
+                alert('⚠️ Para excursiones compartidas, completa Adultos y Precio por Adulto.');
+                return;
+            }
+            if (!cliente || !excursion) {
+                alert('⚠️ Los campos Cliente y Excursión son obligatorios.');
                 return;
             }
 
@@ -653,11 +719,15 @@
             const horaRecogida = document.getElementById('horaRecogida').value || '';
             const transporte = document.getElementById('transporte').value || 'Sí';
             const puntoSalida = document.getElementById('puntoSalida').value || '';
+            const grupo = document.getElementById('grupo').value || '';
+            const capacidadMaxima = document.getElementById('capacidadMaxima').value || '';
 
             const params = new URLSearchParams({
                 id: id,
                 recibo: id,
                 cliente: cliente,
+                tipoExcursion: tipo,
+                grupo: grupo,
                 excursion: excursion,
                 adultos: adultos,
                 ninos: document.getElementById('ninos').value || 0,
@@ -676,6 +746,7 @@
                 horaRecogida: horaRecogida,
                 transporte: transporte,
                 puntoSalida: puntoSalida,
+                capacidadMaxima: capacidadMaxima,
                 notas: document.getElementById('notas').value || 'Sin notas adicionales',
                 fechaExcursion: document.getElementById('fechaExcursion').value || ''
             });
