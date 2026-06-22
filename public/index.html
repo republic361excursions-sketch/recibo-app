@@ -313,8 +313,8 @@
                         <option value="Sin Recogida">Sin Recogida</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Lugar de Recogida</label>
+                <div class="form-group" id="lugarRecogidaGroup">
+                    <label id="labelLugarRecogida">Lugar de Recogida</label>
                     <input type="text" id="lugarRecogida" placeholder="Ej: Riu Bavaro, Villa Sol, Parque Central" oninput="actualizarVistaPrevia()">
                 </div>
             </div>
@@ -329,11 +329,11 @@
                 </div>
             </div>
 
-            <!-- TRANSPORTE (SIN LUGAR DE LA EXCURSIÓN) -->
+            <!-- TRANSPORTE -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Transporte</label>
-                    <select id="transporte" onchange="actualizarVistaPrevia(); cambiarLabelHora();">
+                    <select id="transporte" onchange="actualizarVistaPrevia();">
                         <option value="Sí">Sí</option>
                         <option value="No">No</option>
                     </select>
@@ -473,7 +473,7 @@
                     <span class="valor" id="vpHabitacion">---</span>
                 </div>
                 <div class="fila">
-                    <span class="label" id="vpLabelHora">Hora de Recogida</span>
+                    <span class="label">Hora de Recogida</span>
                     <span class="valor" id="vpHoraRecogida">---</span>
                 </div>
                 <div class="fila">
@@ -522,18 +522,6 @@
     </div>
 
     <script>
-        // ====== CAMBIAR LABEL DE HORA ======
-        function cambiarLabelHora() {
-            const transporte = document.getElementById('transporte').value;
-            const labelHora = document.getElementById('vpLabelHora');
-            if (transporte === 'No') {
-                labelHora.textContent = 'Hora de la Excursión';
-            } else {
-                labelHora.textContent = 'Hora de Recogida';
-            }
-            actualizarVistaPrevia();
-        }
-
         // ====== CAMBIAR TIPO DE EXCURSIÓN ======
         function cambiarTipoExcursion() {
             const tipo = document.getElementById('tipoExcursion').value;
@@ -567,25 +555,35 @@
             actualizarVistaPrevia();
         }
 
-        // ====== CAMBIAR ETIQUETA HABITACION ======
+        // ====== CAMBIAR ETIQUETA HABITACION Y LUGAR DE RECOGIDA ======
         function cambiarEtiquetaHabitacion() {
             const label = document.getElementById('labelHabitacion');
             const input = document.getElementById('habitacion');
             const tipo = document.getElementById('tipoRecogida').value;
-            if (tipo === 'Hotel') {
-                label.textContent = 'Habitación';
-                input.placeholder = 'Ej: 123';
-            } else if (tipo === 'Airbnb') {
-                label.textContent = 'Apartamento';
-                input.placeholder = 'Ej: Villa B12, Casa 5';
-            } else if (tipo === 'Punto de Encuentro') {
-                label.textContent = 'Referencia';
-                input.placeholder = 'Ej: Parque Central, Esquina calle 5';
-            } else if (tipo === 'Sin Recogida') {
+            const labelLugar = document.getElementById('labelLugarRecogida');
+            const inputLugar = document.getElementById('lugarRecogida');
+            
+            if (tipo === 'Sin Recogida') {
+                // Cuando es SIN RECOGIDA, cambiamos la etiqueta a "Lugar de la Excursión"
+                labelLugar.textContent = 'Lugar de la Excursión';
+                inputLugar.placeholder = 'Ej: Muelle de Punta Cana, Puerto de Bayahíbe';
                 label.textContent = '---';
                 input.placeholder = 'No aplica';
-                document.getElementById('lugarRecogida').value = '';
                 document.getElementById('habitacion').value = '';
+            } else {
+                // Cuando hay recogida (Hotel, Airbnb, Punto de Encuentro)
+                labelLugar.textContent = 'Lugar de Recogida';
+                inputLugar.placeholder = 'Ej: Riu Bavaro, Villa Sol, Parque Central';
+                if (tipo === 'Hotel') {
+                    label.textContent = 'Habitación';
+                    input.placeholder = 'Ej: 123';
+                } else if (tipo === 'Airbnb') {
+                    label.textContent = 'Apartamento';
+                    input.placeholder = 'Ej: Villa B12, Casa 5';
+                } else if (tipo === 'Punto de Encuentro') {
+                    label.textContent = 'Referencia';
+                    input.placeholder = 'Ej: Parque Central, Esquina calle 5';
+                }
             }
             actualizarVistaPrevia();
         }
@@ -638,7 +636,14 @@
             
             const tipoRecogida = document.getElementById('tipoRecogida').value || '';
             const lugarRecogida = document.getElementById('lugarRecogida').value || '';
-            const recogidaTexto = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '');
+            
+            // Si es Sin Recogida, mostrar "Lugar de la Excursión" en la vista previa
+            let recogidaTexto = '';
+            if (tipoRecogida === 'Sin Recogida') {
+                recogidaTexto = 'Lugar de la Excursión: ' + (lugarRecogida || '---');
+            } else {
+                recogidaTexto = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '');
+            }
             document.getElementById('vpRecogida').textContent = recogidaTexto || '---';
             
             const vpLabel = document.getElementById('vpLabelHabitacion');
@@ -652,12 +657,6 @@
             const transporte = document.getElementById('transporte').value || '---';
             document.getElementById('vpTransporte').textContent = transporte;
             
-            const vpLabelHora = document.getElementById('vpLabelHora');
-            if (transporte === 'No') {
-                vpLabelHora.textContent = 'Hora de la Excursión';
-            } else {
-                vpLabelHora.textContent = 'Hora de Recogida';
-            }
             document.getElementById('vpHoraRecogida').textContent = document.getElementById('horaRecogida').value || '---';
             
             document.getElementById('vpExcursion').textContent = document.getElementById('excursion').value || '---';
@@ -704,6 +703,8 @@
             
             document.querySelector('input[name="estado"][value="completo"]').checked = true;
             
+            // Inicializar etiquetas
+            cambiarEtiquetaHabitacion();
             actualizarVistaPrevia();
         });
 
