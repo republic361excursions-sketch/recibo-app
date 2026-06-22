@@ -277,12 +277,14 @@
 </head>
 <body>
     <div id="reciboContainer" class="recibo">
+        <!-- HEADER -->
         <div class="header">
             <div class="logo">Republic <span>Excursions</span></div>
             <div class="titulo">Recibo de Pago</div>
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
 
+        <!-- INFORMACIÓN DE LA RESERVA -->
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
 
@@ -294,6 +296,16 @@
                 <span class="label">Cliente</span>
                 <span class="valor"><%= cliente %></span>
             </div>
+            <div class="fila">
+                <span class="label">Tipo de Excursión</span>
+                <span class="valor"><%= tipoExcursion === 'privado' ? 'Privado' : 'Compartido' %></span>
+            </div>
+            <% if (grupo) { %>
+            <div class="fila">
+                <span class="label">Grupo / Empresa</span>
+                <span class="valor"><%= grupo %></span>
+            </div>
+            <% } %>
             <% if (whatsapp) { %>
             <div class="fila">
                 <span class="label">WhatsApp</span>
@@ -316,6 +328,8 @@
                         Apartamento
                     <% } else if (hotel && hotel.toLowerCase().includes('punto de encuentro')) { %>
                         Referencia
+                    <% } else if (hotel && hotel.toLowerCase().includes('sin recogida')) { %>
+                        ---
                     <% } else { %>
                         Habitación
                     <% } %>
@@ -326,6 +340,16 @@
             <div class="fila">
                 <span class="label">Hora de Recogida</span>
                 <span class="valor"><%= horaRecogida %></span>
+            </div>
+            <% } %>
+            <div class="fila">
+                <span class="label">Transporte</span>
+                <span class="valor"><%= transporte %></span>
+            </div>
+            <% if (transporte === 'No' && puntoSalida) { %>
+            <div class="fila">
+                <span class="label">Punto de Salida</span>
+                <span class="valor"><%= puntoSalida %></span>
             </div>
             <% } %>
             <div class="fila">
@@ -340,10 +364,12 @@
                 <span class="label">Personas</span>
                 <span class="valor"><%= adultos %> Adultos, <%= ninos %> Niños</span>
             </div>
+            <% if (capacidadMaxima) { %>
             <div class="fila">
-                <span class="label">Transporte</span>
-                <span class="valor"><%= transporte %></span>
+                <span class="label">Capacidad Máxima</span>
+                <span class="valor"><%= capacidadMaxima %></span>
             </div>
+            <% } %>
             <div class="fila">
                 <span class="label">Método de Pago</span>
                 <span class="valor"><%= metodoPago %></span>
@@ -356,6 +382,7 @@
             <% } %>
         </div>
 
+        <!-- TABLA DE CONCEPTOS -->
         <table class="tabla">
             <thead>
                 <tr>
@@ -369,7 +396,7 @@
                     <td class="monto"></td>
                 </tr>
                 <tr>
-                    <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
+                    <td><%= tipoExcursion === 'privado' ? 'Privado' : 'Compartido' %> - Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
                     <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
                 </tr>
                 <% if (ninos > 0) { %>
@@ -401,6 +428,7 @@
             </tbody>
         </table>
 
+        <!-- ESTADO DE PAGO -->
         <%
             let estadoClase = '';
             let estadoTexto = '';
@@ -419,6 +447,7 @@
             <%= estadoTexto %>
         </div>
 
+        <!-- RESUMEN DE PAGO -->
         <div class="resumen-pago">
             <div class="fila">
                 <span class="label">Subtotal</span>
@@ -448,10 +477,12 @@
             </div>
         </div>
 
+        <!-- CÓDIGO DE VERIFICACIÓN -->
         <div class="qr-info">
             <span>Documento de verificación</span> &mdash; Código <%= numeroRecibo %>
         </div>
 
+        <!-- FOOTER -->
         <div class="footer">
             <p class="empresa">Republic Excursions</p>
             <p class="direccion">Punta Cana, República Dominicana</p>
@@ -460,6 +491,7 @@
         </div>
     </div>
 
+    <!-- BOTONES ADMIN -->
     <% if (mostrarBotones) { %>
     <div class="acciones-recibo visible">
         <button class="btn-accion imagen" onclick="descargarImagen()">Descargar Imagen</button>
