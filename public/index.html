@@ -518,7 +518,7 @@
                 </div>
                 <div class="form-group">
                     <label>Depósito (USD)</label>
-                    <input type="number" id="deposito" min="0" step="0.01">
+                    <input type="number" id="deposito" min="0" step="0.01" readonly style="background:#f0f0f0; font-weight:600; color:#1a2a4a;">
                 </div>
             </div>
 
@@ -550,7 +550,7 @@
                     <label><input type="radio" name="estado" value="completo" onclick="ajustarDeposito(); actualizarVistaPrevia();"> Pago Completo</label>
                     <label><input type="radio" name="estado" value="pendiente" onclick="ajustarDeposito(); actualizarVistaPrevia();"> Pendiente</label>
                 </div>
-                <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta al total.</div>
+                <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta a $0.00.</div>
             </div>
 
             <!-- METODO PAGO + NOTAS -->
@@ -781,16 +781,18 @@
             }
         }
 
+        // ====== AJUSTAR DEPÓSITO ======
         function ajustarDeposito() {
             const estado = document.querySelector('input[name="estado"]:checked').value;
             const total = parseFloat(document.getElementById('total').value) || 0;
             const depositoInput = document.getElementById('deposito');
+            
             if (estado === 'completo') {
-                depositoInput.value = total.toFixed(2);
+                depositoInput.value = '0.00';  // ✅ Pago completo = depósito $0
             } else if (estado === 'deposito') {
-                depositoInput.value = (total * 0.25).toFixed(2);
+                depositoInput.value = (total * 0.25).toFixed(2);  // ✅ 25% del total
             } else if (estado === 'pendiente') {
-                depositoInput.value = '0.00';
+                depositoInput.value = '0.00';  // ✅ Pendiente = depósito $0
             }
         }
 
@@ -820,7 +822,6 @@
             const notas = document.getElementById('notas').value || 'Sin notas adicionales';
             const fechaExcursion = document.getElementById('fechaExcursion').value || '';
 
-            // ✅ VALIDACIÓN: Cliente, Excursión, Adultos y Precio Adulto son obligatorios
             if (!cliente || !excursion || !adultos || !precioAdulto) {
                 alert('⚠️ Los campos Cliente, Excursión, Adultos y Precio por Adulto son obligatorios.');
                 return;
