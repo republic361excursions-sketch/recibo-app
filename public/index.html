@@ -725,9 +725,13 @@
             
             calcularSubtotal();
             calcularTotal();
-            ajustarDeposito();
-            actualizarVistaPrevia();
-
+            
+            // ✅ Forzar ajuste de depósito al cargar la página
+            setTimeout(function() {
+                ajustarDeposito();
+                actualizarVistaPrevia();
+            }, 100);
+            
             document.querySelectorAll('#formRecibo input, #formRecibo select').forEach(el => {
                 el.addEventListener('input', actualizarVistaPrevia);
                 el.addEventListener('change', actualizarVistaPrevia);
@@ -762,6 +766,8 @@
             const descuento = parseFloat(document.getElementById('descuento').value) || 0;
             const total = subtotal - descuento;
             document.getElementById('total').value = total.toFixed(2);
+            
+            // ✅ Forzar ajuste de depósito después de calcular el total
             ajustarDeposito();
         }
 
@@ -787,13 +793,22 @@
             const total = parseFloat(document.getElementById('total').value) || 0;
             const depositoInput = document.getElementById('deposito');
             
+            console.log('Estado seleccionado:', estado);
+            console.log('Total:', total);
+            
             if (estado === 'completo') {
-                depositoInput.value = '0.00';  // ✅ Pago completo = depósito $0
+                depositoInput.value = '0.00';
+                console.log('Depósito ajustado a: 0.00 (Pago Completo)');
             } else if (estado === 'deposito') {
-                depositoInput.value = (total * 0.25).toFixed(2);  // ✅ 25% del total
+                depositoInput.value = (total * 0.25).toFixed(2);
+                console.log('Depósito ajustado a: ' + depositoInput.value + ' (25%)');
             } else if (estado === 'pendiente') {
-                depositoInput.value = '0.00';  // ✅ Pendiente = depósito $0
+                depositoInput.value = '0.00';
+                console.log('Depósito ajustado a: 0.00 (Pendiente)');
             }
+            
+            // Forzar actualización de la vista previa
+            actualizarVistaPrevia();
         }
 
         // ====== ENVIAR ======
