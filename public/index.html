@@ -48,6 +48,8 @@
         .form-row { display: flex; gap: 20px; }
         .form-row .form-group { flex: 1; }
         .small-hint { color: #b5c0d0; font-size: 12px; margin-top: 4px; font-weight: 300; }
+        .punto-salida { display: none; }
+        .punto-salida.visible { display: block; }
         .btn {
             width: 100%;
             padding: 16px;
@@ -286,6 +288,7 @@
                         <option value="Hotel">Hotel</option>
                         <option value="Airbnb">Airbnb</option>
                         <option value="Punto de Encuentro">Punto de Encuentro</option>
+                        <option value="Sin Recogida">Sin Recogida</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -304,15 +307,24 @@
                 </div>
             </div>
 
-            <!-- TRANSPORTE + FECHA -->
+            <!-- TRANSPORTE + PUNTO DE SALIDA -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Transporte</label>
-                    <select id="transporte" onchange="actualizarVistaPrevia()">
+                    <select id="transporte" onchange="mostrarPuntoSalida(); actualizarVistaPrevia();">
                         <option value="Sí">Sí</option>
                         <option value="No">No</option>
                     </select>
                 </div>
+                <div class="form-group punto-salida" id="puntoSalidaGroup">
+                    <label>Punto de Salida</label>
+                    <input type="text" id="puntoSalida" placeholder="Ej: Muelle de Punta Cana, Puerto de Bayahíbe" oninput="actualizarVistaPrevia()">
+                    <div class="small-hint">Lugar donde comienza la excursión</div>
+                </div>
+            </div>
+
+            <!-- FECHA -->
+            <div class="form-row">
                 <div class="form-group">
                     <label>Fecha de la Excursión</label>
                     <input type="date" id="fechaExcursion" onchange="actualizarVistaPrevia()">
@@ -442,6 +454,14 @@
                     <span class="valor" id="vpHoraRecogida">---</span>
                 </div>
                 <div class="fila">
+                    <span class="label">Transporte</span>
+                    <span class="valor" id="vpTransporte">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Punto de Salida</span>
+                    <span class="valor" id="vpPuntoSalida">---</span>
+                </div>
+                <div class="fila">
                     <span class="label">Excursión</span>
                     <span class="valor" id="vpExcursion">---</span>
                 </div>
@@ -452,10 +472,6 @@
                 <div class="fila">
                     <span class="label">Personas</span>
                     <span class="valor" id="vpPersonas">---</span>
-                </div>
-                <div class="fila">
-                    <span class="label">Transporte</span>
-                    <span class="valor" id="vpTransporte">---</span>
                 </div>
                 <div class="fila">
                     <span class="label">Método de Pago</span>
@@ -483,6 +499,19 @@
     </div>
 
     <script>
+        // ====== MOSTRAR PUNTO DE SALIDA ======
+        function mostrarPuntoSalida() {
+            const transporte = document.getElementById('transporte').value;
+            const group = document.getElementById('puntoSalidaGroup');
+            if (transporte === 'No') {
+                group.classList.add('visible');
+            } else {
+                group.classList.remove('visible');
+                document.getElementById('puntoSalida').value = '';
+            }
+            actualizarVistaPrevia();
+        }
+
         // ====== ACTUALIZAR VISTA PREVIA ======
         function actualizarVistaPrevia() {
             // Datos del cliente
@@ -492,15 +521,27 @@
             
             const tipoRecogida = document.getElementById('tipoRecogida').value || '';
             const lugarRecogida = document.getElementById('lugarRecogida').value || '';
-            document.getElementById('vpRecogida').textContent = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '') || '---';
+            const recogidaTexto = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '');
+            document.getElementById('vpRecogida').textContent = recogidaTexto || '---';
             
             const vpLabel = document.getElementById('vpLabelHabitacion');
             if (tipoRecogida === 'Hotel') vpLabel.textContent = 'Habitación';
             else if (tipoRecogida === 'Airbnb') vpLabel.textContent = 'Apartamento';
             else if (tipoRecogida === 'Punto de Encuentro') vpLabel.textContent = 'Referencia';
+            else if (tipoRecogida === 'Sin Recogida') vpLabel.textContent = '---';
             
             document.getElementById('vpHabitacion').textContent = document.getElementById('habitacion').value || '---';
             document.getElementById('vpHoraRecogida').textContent = document.getElementById('horaRecogida').value || '---';
+            
+            const transporte = document.getElementById('transporte').value || '---';
+            document.getElementById('vpTransporte').textContent = transporte;
+            
+            if (transporte === 'No') {
+                document.getElementById('vpPuntoSalida').textContent = document.getElementById('puntoSalida').value || '---';
+            } else {
+                document.getElementById('vpPuntoSalida').textContent = '---';
+            }
+            
             document.getElementById('vpExcursion').textContent = document.getElementById('excursion').value || '---';
             document.getElementById('vpFecha').textContent = document.getElementById('fechaExcursion').value || '---';
             
@@ -508,7 +549,6 @@
             const ninos = document.getElementById('ninos').value || 0;
             document.getElementById('vpPersonas').textContent = adultos + ' Adultos, ' + ninos + ' Niños';
             
-            document.getElementById('vpTransporte').textContent = document.getElementById('transporte').value || '---';
             document.getElementById('vpMetodoPago').textContent = document.getElementById('metodoPago').value || '---';
 
             // ====== CALCULAR TOTAL Y ESTADO ======
@@ -570,6 +610,9 @@
             } else if (tipo === 'Punto de Encuentro') {
                 label.textContent = 'Referencia';
                 input.placeholder = 'Ej: Parque Central, Esquina calle 5';
+            } else if (tipo === 'Sin Recogida') {
+                label.textContent = '---';
+                input.placeholder = 'No aplica';
             }
         }
 
@@ -617,6 +660,8 @@
             const id = document.getElementById('id').value || 'Sin ID';
             const recogidaCompleta = document.getElementById('tipoRecogida').value + (document.getElementById('lugarRecogida').value ? ' - ' + document.getElementById('lugarRecogida').value : '');
             const horaRecogida = document.getElementById('horaRecogida').value || '';
+            const transporte = document.getElementById('transporte').value || 'Sí';
+            const puntoSalida = document.getElementById('puntoSalida').value || '';
 
             const params = new URLSearchParams({
                 id: id,
@@ -638,7 +683,8 @@
                 hotel: recogidaCompleta,
                 habitacion: document.getElementById('habitacion').value || '',
                 horaRecogida: horaRecogida,
-                transporte: document.getElementById('transporte').value || 'Sí',
+                transporte: transporte,
+                puntoSalida: puntoSalida,
                 notas: document.getElementById('notas').value || 'Sin notas adicionales',
                 fechaExcursion: document.getElementById('fechaExcursion').value || ''
             });
