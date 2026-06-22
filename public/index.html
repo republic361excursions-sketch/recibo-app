@@ -349,6 +349,22 @@
             padding: 8px;
             background: #ffffff;
         }
+        
+        /* ===== INFORMACIÓN DE EXPIRACIÓN EN RESULTADO ===== */
+        .expiracion-resultado {
+            background: #e8f5e9;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 12px 0;
+            text-align: center;
+            font-size: 13px;
+            color: #1b5e20;
+            border: 1px solid #a5d6a7;
+        }
+        
+        .expiracion-resultado strong {
+            font-weight: 600;
+        }
 
         /* ===== ACCIONES DEL RESULTADO ===== */
         .acciones {
@@ -736,6 +752,9 @@
             <div class="qr-container">
                 <img id="qrImg" src="" alt="Código QR">
             </div>
+            <div class="expiracion-resultado" id="expiracionInfo">
+                <strong>Válido por 24 horas</strong> desde el momento de la generación
+            </div>
             <div class="enlace" id="enlaceGenerado"></div>
             <div class="acciones">
                 <button class="btn-copiar" onclick="copiarEnlace()">Copiar Enlace</button>
@@ -959,7 +978,7 @@
         }
 
         /**
-         * Genera el QR y el enlace del recibo
+         * Genera el QR y el enlace del recibo con fecha de expiración
          */
         function generarQRYEnlace() {
             var cliente = document.getElementById('cliente').value.trim();
@@ -985,6 +1004,10 @@
                 params.set('recibo', params.get('id'));
             }
             
+            // ====== AGREGAR TIMESTAMP PARA EXPIRACIÓN ======
+            var timestamp = Date.now();
+            params.set('timestamp', timestamp);
+            
             var base = '/ver-recibo';
             var enlaceQR = base + '?' + params.toString();
             
@@ -998,7 +1021,9 @@
             var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(urlCliente) + '&size=200x200';
             document.getElementById('qrImg').src = qrUrl;
             
-            var mensaje = 'Hola ' + cliente + ', tu recibo de ' + excursion + ' está listo. Escanea este QR o haz clic en el enlace: ' + urlCliente;
+            // ====== MENSAJE CON INFORMACIÓN DE EXPIRACIÓN ======
+            var horasExpiracion = 24;
+            var mensaje = 'Hola ' + cliente + ', tu recibo de ' + excursion + ' está listo. Escanea este QR o haz clic en el enlace: ' + urlCliente + ' (Válido por ' + horasExpiracion + ' horas)';
             document.getElementById('whatsappLink').href = 'https://wa.me/1?text=' + encodeURIComponent(mensaje);
             
             document.getElementById('verRecibo').href = urlAdmin;
