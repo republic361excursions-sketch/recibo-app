@@ -130,7 +130,6 @@
             border: 2px solid #e74c3c;
             color: #922b21;
         }
-        .estado-unico .monto { font-size: 26px; }
         .resumen-pago {
             background: #f8f7f4;
             padding: 16px 24px;
@@ -234,7 +233,6 @@
             .info-cliente .valor { text-align: left; width: 100%; }
             .tabla { font-size: 13px; }
             .estado-unico { font-size: 18px; padding: 12px; }
-            .estado-unico .monto { font-size: 20px; }
             .acciones-recibo { flex-direction: column; align-items: center; }
             .btn-accion { width: 100%; text-align: center; }
         }
@@ -248,6 +246,7 @@
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
 
+        <!-- ====== INFORMACIÓN DEL CLIENTE ====== -->
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
             <div class="fila">
@@ -280,9 +279,8 @@
                 <span class="valor"><%= correo %></span>
             </div>
             <% } %>
-
-            <!-- ====== RECOGIDA MEJORADA ====== -->
-            <!-- Si es Sin Recogida, mostrar "Lugar de la Excursión" -->
+            
+            <!-- RECOGIDA -->
             <div class="fila">
                 <span class="label"><%= esSinRecogida ? 'Lugar de la Excursión' : 'Recogida' %></span>
                 <span class="valor">
@@ -294,7 +292,7 @@
                 </span>
             </div>
 
-            <!-- Habitación / Apartamento / Referencia (solo si NO es Sin Recogida) -->
+            <!-- HABITACIÓN (solo si NO es Sin Recogida) -->
             <% if (!esSinRecogida) { %>
             <div class="fila">
                 <span class="label"><%= tipoRecogida === 'Hotel' ? 'Habitación' : tipoRecogida === 'Airbnb' ? 'Apartamento' : 'Referencia' %></span>
@@ -302,9 +300,9 @@
             </div>
             <% } %>
 
-            <!-- Hora (cambia según Sin Recogida o no) -->
+            <!-- HORA -->
             <div class="fila">
-                <span class="label"><%= labelHora || (esSinRecogida ? 'Hora de la Excursión' : 'Hora de Recogida') %></span>
+                <span class="label"><%= labelHora %></span>
                 <span class="valor"><%= horaRecogida || '---' %></span>
             </div>
 
@@ -342,6 +340,7 @@
             <% } %>
         </div>
 
+        <!-- ====== TABLA DE CONCEPTOS CORREGIDA ====== -->
         <table class="tabla">
             <thead>
                 <tr>
@@ -354,8 +353,11 @@
                     <td><strong><%= excursion %></strong></td>
                     <td class="monto"></td>
                 </tr>
+                
+                <% if (tipoExcursion === 'compartido') { %>
+                <!-- COMPARTIDO: desglose por persona -->
                 <tr>
-                    <td><%= tipoExcursion === 'privado' ? 'Privado' : 'Compartido' %> - Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
+                    <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
                     <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
                 </tr>
                 <% if (ninos > 0) { %>
@@ -364,20 +366,38 @@
                     <td class="monto">$<%= (ninos * precioNino).toFixed(2) %></td>
                 </tr>
                 <% } %>
+                
+                <% } else { %>
+                <!-- PRIVADO: total directo -->
+                <tr>
+                    <td>Privado - <%= adultos %> personas</td>
+                    <td class="monto">$<%= precioAdulto.toFixed(2) %></td>
+                </tr>
+                <% } %>
+                
+                <!-- SUBTOTAL -->
                 <tr>
                     <td><strong>Subtotal</strong></td>
                     <td class="monto total">$<%= subtotal.toFixed(2) %></td>
                 </tr>
+                
+                <!-- DESCUENTO (si aplica) -->
                 <% if (descuento > 0) { %>
                 <tr>
                     <td style="color:#27ae60;"><strong>Descuento</strong></td>
-                    <td class="monto">-$<%= descuento.toFixed(2) %></td>
+                    <td class="monto" style="color:#27ae60;">-$<%= descuento.toFixed(2) %></td>
                 </tr>
+                <% } %>
+                
+                <!-- TOTAL (solo si hay descuento) -->
+                <% if (descuento > 0) { %>
                 <tr>
                     <td><strong>Total</strong></td>
                     <td class="monto total">$<%= total.toFixed(2) %></td>
                 </tr>
                 <% } %>
+                
+                <!-- DEPÓSITO (si aplica) -->
                 <% if (depositoPagado > 0 && totalPendiente > 0) { %>
                 <tr>
                     <td>Depósito Pagado (25%)</td>
@@ -387,29 +407,33 @@
             </tbody>
         </table>
 
+        <!-- ====== ESTADO CORREGIDO ====== -->
         <%
             let estadoClase = '';
-            let estadoTexto = '';
+            let estadoMostrar = '';
+            
             if (totalPendiente <= 0) {
                 estadoClase = 'pagado';
-                estadoTexto = 'Pagado Completo';
-            } else if (estado === 'deposito') {
+                estadoMostrar = '✅ PAGADO COMPLETO';
+            } else if (estado === 'deposito' && depositoPagado > 0) {
                 estadoClase = 'falta';
-                estadoTexto = 'Falta Pagar: $' + totalPendiente.toFixed(2);
+                estadoMostrar = '💰 DEPÓSITO PAGADO - Falta: $' + totalPendiente.toFixed(2);
             } else {
                 estadoClase = 'pendiente';
-                estadoTexto = 'Pendiente de Pago: $' + totalPendiente.toFixed(2);
+                estadoMostrar = '⏳ PENDIENTE DE PAGO - Total: $' + totalPendiente.toFixed(2);
             }
         %>
         <div class="estado-unico <%= estadoClase %>">
-            <%= estadoTexto %>
+            <%= estadoMostrar %>
         </div>
 
+        <!-- ====== RESUMEN DE PAGO CORREGIDO ====== -->
         <div class="resumen-pago">
             <div class="fila">
                 <span class="label">Subtotal</span>
                 <span class="value">$<%= subtotal.toFixed(2) %></span>
             </div>
+            
             <% if (descuento > 0) { %>
             <div class="fila">
                 <span class="label">Descuento</span>
@@ -420,16 +444,21 @@
                 <span class="value">$<%= total.toFixed(2) %></span>
             </div>
             <% } %>
+            
             <% if (depositoPagado > 0 && totalPendiente > 0) { %>
             <div class="fila">
-                <span class="label">Depósito Pagado</span>
+                <span class="label">Depósito Pagado (25%)</span>
                 <span class="value">$<%= depositoPagado.toFixed(2) %></span>
             </div>
             <% } %>
+            
             <div class="fila total">
                 <span class="label">Balance Pendiente</span>
-                <span class="value pendiente <%= totalPendiente === 0 ? 'pagado' : '' %>">
+                <span class="value <%= totalPendiente === 0 ? 'pagado' : 'pendiente' %>">
                     $<%= totalPendiente.toFixed(2) %>
+                    <% if (totalPendiente === 0) { %>
+                        <span style="font-size:12px; color:#27ae60;"> (Pagado)</span>
+                    <% } %>
                 </span>
             </div>
         </div>
@@ -446,6 +475,7 @@
         </div>
     </div>
 
+    <!-- ====== BOTONES ====== -->
     <% if (mostrarBotones) { %>
     <div class="acciones-recibo visible">
         <button class="btn-accion imagen" onclick="descargarImagen()">Descargar Imagen</button>
