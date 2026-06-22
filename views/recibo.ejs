@@ -258,6 +258,16 @@
                 <span class="label">Cliente</span>
                 <span class="valor"><%= cliente %></span>
             </div>
+            <div class="fila">
+                <span class="label">Tipo de Excursión</span>
+                <span class="valor"><%= tipoExcursion === 'privado' ? 'Privado' : 'Compartido' %></span>
+            </div>
+            <% if (grupo) { %>
+            <div class="fila">
+                <span class="label">Grupo / Empresa</span>
+                <span class="valor"><%= grupo %></span>
+            </div>
+            <% } %>
             <% if (whatsapp) { %>
             <div class="fila">
                 <span class="label">WhatsApp</span>
@@ -306,6 +316,12 @@
                 <span class="label">Personas</span>
                 <span class="valor"><%= adultos %> Adultos, <%= ninos %> Niños</span>
             </div>
+            <% if (capacidadMaxima) { %>
+            <div class="fila">
+                <span class="label">Capacidad Máxima</span>
+                <span class="valor"><%= capacidadMaxima %></span>
+            </div>
+            <% } %>
             <div class="fila">
                 <span class="label">Método de Pago</span>
                 <span class="valor"><%= metodoPago %></span>
@@ -331,7 +347,7 @@
                     <td class="monto"></td>
                 </tr>
                 <tr>
-                    <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
+                    <td><%= tipoExcursion === 'privado' ? 'Privado' : 'Compartido' %> - Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
                     <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
                 </tr>
                 <% if (ninos > 0) { %>
