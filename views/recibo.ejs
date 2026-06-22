@@ -94,7 +94,6 @@
         .info-cliente .label { font-weight: 500; color: #6b7a8f; }
         .info-cliente .valor { font-weight: 400; text-align: right; color: #1a2a4a; }
 
-        /* ===== TABLA ===== */
         .tabla {
             width: 100%;
             border-collapse: collapse;
@@ -123,7 +122,6 @@
         .tabla .monto { text-align: right; font-weight: 500; }
         .tabla .total { font-weight: 600; font-size: 15px; }
 
-        /* ===== ESTADO DE PAGO ===== */
         .estado-unico {
             text-align: center;
             padding: 16px 20px;
@@ -154,7 +152,6 @@
 
         .estado-unico .monto { font-size: 26px; }
 
-        /* ===== RESUMEN ===== */
         .resumen-pago {
             background: #f8f7f4;
             padding: 16px 24px;
@@ -182,7 +179,6 @@
             font-size: 15px;
         }
 
-        /* ===== FOOTER ===== */
         .footer {
             text-align: center;
             margin-top: 28px;
@@ -225,7 +221,6 @@
 
         .qr-info span { font-weight: 600; color: #1a2a4a; }
 
-        /* ===== BOTONES ===== */
         .acciones-recibo {
             display: none;
             flex-wrap: wrap;
@@ -282,14 +277,12 @@
 </head>
 <body>
     <div id="reciboContainer" class="recibo">
-        <!-- HEADER -->
         <div class="header">
             <div class="logo">Republic <span>Excursions</span></div>
             <div class="titulo">Recibo de Pago</div>
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
 
-        <!-- INFORMACIÓN DE LA RESERVA -->
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
 
@@ -318,7 +311,15 @@
                 <span class="valor"><%= hotel %></span>
             </div>
             <div class="fila">
-                <span class="label">Habitación</span>
+                <span class="label">
+                    <% if (hotel && hotel.toLowerCase().includes('airbnb')) { %>
+                        Apartamento
+                    <% } else if (hotel && hotel.toLowerCase().includes('punto de encuentro')) { %>
+                        Referencia
+                    <% } else { %>
+                        Habitación
+                    <% } %>
+                </span>
                 <span class="valor"><%= habitacion %></span>
             </div>
             <div class="fila">
@@ -349,7 +350,6 @@
             <% } %>
         </div>
 
-        <!-- TABLA DE CONCEPTOS -->
         <table class="tabla">
             <thead>
                 <tr>
@@ -395,7 +395,6 @@
             </tbody>
         </table>
 
-        <!-- ESTADO DE PAGO -->
         <% if (totalPendiente <= 0) { %>
             <div class="estado-unico pagado">Pagado Completo</div>
         <% } else if (estado === 'deposito') { %>
@@ -404,7 +403,6 @@
             <div class="estado-unico pendiente">Pendiente de Pago: <span class="monto">$<%= totalPendiente.toFixed(2) %></span></div>
         <% } %>
 
-        <!-- RESUMEN DE PAGO -->
         <div class="resumen-pago">
             <div class="fila">
                 <span class="label">Subtotal</span>
@@ -434,12 +432,10 @@
             </div>
         </div>
 
-        <!-- CÓDIGO DE VERIFICACIÓN -->
         <div class="qr-info">
             <span>Documento de verificación</span> &mdash; Código <%= numeroRecibo %>
         </div>
 
-        <!-- FOOTER -->
         <div class="footer">
             <p class="empresa">Republic Excursions</p>
             <p class="direccion">Punta Cana, República Dominicana</p>
@@ -448,7 +444,6 @@
         </div>
     </div>
 
-    <!-- BOTONES (SOLO ADMIN) -->
     <% if (mostrarBotones) { %>
     <div class="acciones-recibo visible">
         <button class="btn-accion imagen" onclick="descargarImagen()">Descargar Imagen</button>
