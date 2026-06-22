@@ -1,109 +1,722 @@
-const express = require('express');
-const path = require('path');
-const app = express();
-const PORT = process.env.PORT || 3000;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Republic Excursions - Generador de Recibos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+        .container {
+            background: #ffffff;
+            max-width: 700px;
+            width: 100%;
+            padding: 45px 50px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            border: 1px solid #edebe6;
+        }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 22px; font-weight: 700; color: #1a2a4a; letter-spacing: 2px; }
+        .header h1 span { color: #c9a84c; }
+        .subtitulo { font-size: 14px; color: #8e9aaf; margin-bottom: 30px; font-weight: 400; letter-spacing: 0.5px; text-align: center; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-weight: 600; color: #2c3e50; margin-bottom: 5px; font-size: 13px; letter-spacing: 0.3px; }
+        .form-group label .required { color: #e74c3c; font-weight: 700; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #eae8e3;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: border 0.3s;
+            background: #fafaf8;
+            color: #2c3e50;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: #1a2a4a; outline: none; background: white; }
+        .form-group input::placeholder { color: #b5c0d0; font-weight: 300; font-size: 13px; }
+        .form-row { display: flex; gap: 20px; }
+        .form-row .form-group { flex: 1; }
+        .small-hint { color: #b5c0d0; font-size: 12px; margin-top: 4px; font-weight: 300; }
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: #1a2a4a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+        .btn:hover { background: #2c3e6e; }
+        .btn-descuento {
+            background: #8e9aaf;
+            padding: 12px 18px;
+            font-size: 13px;
+            width: auto;
+            margin-top: 0;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .btn-descuento:hover { background: #6b7a8f; }
+        .btn-descuento.activo { background: #e74c3c; }
+        .btn-descuento.activo:hover { background: #c0392b; }
+        .descuento-activo { display: none; }
+        .descuento-activo.visible { display: block; }
+        .estado-options {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding-top: 4px;
+        }
+        .estado-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 400;
+            cursor: pointer;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+        .estado-options input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #1a2a4a;
+            cursor: pointer;
+        }
+        .vista-previa {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f7f4;
+            border-radius: 10px;
+            border: 2px solid #eae8e3;
+        }
+        .vista-previa h4 {
+            color: #1a2a4a;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .vista-previa .recibo-mini {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #eae8e3;
+            font-size: 13px;
+            color: #2c3e50;
+        }
+        .vista-previa .recibo-mini .fila {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            border-bottom: 1px solid #f0efeb;
+        }
+        .vista-previa .recibo-mini .fila:last-child { border-bottom: none; }
+        .vista-previa .recibo-mini .label { font-weight: 500; color: #6b7a8f; }
+        .vista-previa .recibo-mini .valor { font-weight: 400; color: #1a2a4a; }
+        .vista-previa .recibo-mini .estado-mini {
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .vista-previa .recibo-mini .estado-mini.pagado { background: #d4edda; color: #155724; }
+        .vista-previa .recibo-mini .estado-mini.falta { background: #fff3cd; color: #856404; }
+        .vista-previa .recibo-mini .estado-mini.pendiente { background: #f8d7da; color: #721c24; }
+        .vista-previa .recibo-mini .total-mini {
+            font-weight: 700;
+            font-size: 15px;
+            color: #1a2a4a;
+            text-align: right;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 2px solid #1a2a4a;
+        }
+        .resultado {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f7f4;
+            border-radius: 10px;
+            display: none;
+            border: 2px solid #c9a84c;
+        }
+        .resultado.visible { display: block; }
+        .resultado h3 { color: #1a2a4a; font-size: 18px; margin-bottom: 15px; text-align: center; font-weight: 600; }
+        .resultado .enlace {
+            word-break: break-all;
+            background: white;
+            padding: 14px;
+            border-radius: 6px;
+            border: 1px solid #eae8e3;
+            font-size: 13px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .resultado .qr-container { text-align: center; margin: 15px 0; }
+        .resultado .qr-container img {
+            max-width: 160px;
+            border: 2px solid #eae8e3;
+            border-radius: 10px;
+            padding: 8px;
+            background: white;
+        }
+        .acciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .btn-copiar {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+        .btn-copiar:hover { background: #218838; }
+        .btn-qr {
+            background: #c9a84c;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+        .btn-qr:hover { background: #b8973a; }
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+        .btn-whatsapp:hover { background: #1da851; }
+        .btn-ver-recibo {
+            display: inline-block;
+            background: #1a2a4a;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+        }
+        .btn-ver-recibo:hover { background: #2c3e6e; }
+        @media (max-width: 600px) {
+            .container { padding: 25px 20px; }
+            .form-row { flex-direction: column; gap: 0; }
+            .estado-options { flex-direction: column; gap: 8px; }
+            .resultado .enlace { font-size: 12px; }
+            .vista-previa .recibo-mini { font-size: 12px; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Republic <span>Excursions</span></h1>
+        </div>
+        <p class="subtitulo">Generador de Recibos de Pago</p>
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
+        <form id="formRecibo">
+            <!-- ID -->
+            <div class="form-group">
+                <label>ID / Código de Reserva</label>
+                <input type="text" id="id" placeholder="Ej: BUG-5198" oninput="actualizarVistaPrevia()">
+            </div>
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+            <!-- CLIENTE -->
+            <div class="form-group">
+                <label>Cliente <span class="required">*</span></label>
+                <input type="text" id="cliente" placeholder="Nombre completo" oninput="actualizarVistaPrevia()">
+            </div>
 
-app.get('/ver-recibo', (req, res) => {
-    const { 
-        id, recibo, cliente, excursion, 
-        adultos, ninos, precioAdulto, precioNino,
-        subtotal, descuento, total, deposito, estado, metodoPago,
-        whatsapp, correo, hotel, habitacion, horaRecogida, transporte, puntoSalida, notas, fechaExcursion,
-        tipoExcursion, grupo, capacidadMaxima,
-        admin
-    } = req.query;
+            <!-- WHATSAPP + CORREO -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>WhatsApp <span class="required">*</span></label>
+                    <input type="text" id="whatsapp" placeholder="Ej: 809-555-1234" oninput="actualizarVistaPrevia()">
+                </div>
+                <div class="form-group">
+                    <label>Correo</label>
+                    <input type="email" id="correo" placeholder="correo@ejemplo.com" oninput="actualizarVistaPrevia()">
+                </div>
+            </div>
 
-    if (!id || !recibo) {
-        return res.status(400).send('Faltan parámetros obligatorios: id y recibo');
-    }
+            <!-- RECOGIDA -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tipo de Recogida</label>
+                    <select id="tipoRecogida" onchange="cambiarEtiquetaHabitacion(); actualizarVistaPrevia();">
+                        <option value="Hotel">Hotel</option>
+                        <option value="Airbnb">Airbnb</option>
+                        <option value="Punto de Encuentro">Punto de Encuentro</option>
+                        <option value="Sin Recogida">Sin Recogida</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Lugar de Recogida</label>
+                    <input type="text" id="lugarRecogida" placeholder="Ej: Riu Bavaro, Villa Sol, Parque Central" oninput="actualizarVistaPrevia()">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label id="labelHabitacion">Habitación</label>
+                    <input type="text" id="habitacion" placeholder="Ej: 123, Villa B12" oninput="actualizarVistaPrevia()">
+                </div>
+                <div class="form-group">
+                    <label>Hora de Recogida</label>
+                    <input type="time" id="horaRecogida" onchange="actualizarVistaPrevia()">
+                </div>
+            </div>
 
-    const numAdultos = parseInt(adultos) || 1;
-    const numNinos = parseInt(ninos) || 0;
-    const precioAdultoNum = parseFloat(precioAdulto) || 75;
-    const precioNinoNum = parseFloat(precioNino) || 0;
-    const subtotalNum = parseFloat(subtotal) || ((numAdultos * precioAdultoNum) + (numNinos * precioNinoNum));
-    const descuentoNum = parseFloat(descuento) || 0;
-    const totalNum = parseFloat(total) || (subtotalNum - descuentoNum);
-    const depositoNum = parseFloat(deposito) || 0;
-    const totalPendiente = totalNum - depositoNum;
+            <!-- TRANSPORTE + PUNTO DE SALIDA -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Transporte</label>
+                    <select id="transporte" onchange="mostrarPuntoSalida(); actualizarVistaPrevia();">
+                        <option value="Sí">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="form-group punto-salida" id="puntoSalidaGroup">
+                    <label>Punto de Salida</label>
+                    <input type="text" id="puntoSalida" placeholder="Ej: Muelle de Punta Cana" oninput="actualizarVistaPrevia()">
+                    <div class="small-hint">Lugar donde comienza la excursión</div>
+                </div>
+            </div>
 
-    const datos = {
-        idFactura: id,
-        numeroRecibo: recibo,
-        cliente: cliente || 'Cliente no especificado',
-        excursion: excursion || 'Excursión no especificada',
-        adultos: numAdultos,
-        ninos: numNinos,
-        precioAdulto: precioAdultoNum,
-        precioNino: precioNinoNum,
-        subtotal: subtotalNum,
-        descuento: descuentoNum,
-        total: totalNum,
-        depositoPagado: depositoNum,
-        totalPendiente: totalPendiente,
-        metodoPago: metodoPago || 'Efectivo',
-        whatsapp: whatsapp || '',
-        correo: correo || '',
-        hotel: hotel || '',
-        habitacion: habitacion || '',
-        horaRecogida: horaRecogida || '',
-        transporte: transporte || 'Sí',
-        puntoSalida: puntoSalida || '',
-        notas: notas || 'Sin notas adicionales',
-        fechaExcursion: fechaExcursion || new Date().toLocaleDateString('es-ES'),
-        fecha: new Date().toLocaleDateString('es-ES', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        }),
-        estado: estado || 'pendiente',
-        tipoExcursion: tipoExcursion || 'compartido',
-        grupo: grupo || '',
-        capacidadMaxima: capacidadMaxima || '',
-        mostrarBotones: admin === 'true'
-    };
+            <!-- FECHA + EXCURSION -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Fecha de la Excursión</label>
+                    <input type="date" id="fechaExcursion" onchange="actualizarVistaPrevia()">
+                </div>
+                <div class="form-group">
+                    <label>Excursión <span class="required">*</span></label>
+                    <input type="text" id="excursion" placeholder="Nombre de la excursión" oninput="actualizarVistaPrevia()">
+                </div>
+            </div>
 
-    let estadoTexto = '';
-    let estadoColor = '';
-    let estadoReal = datos.estado;
+            <!-- ADULTOS + NIÑOS -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Adultos <span class="required">*</span></label>
+                    <input type="number" id="adultos" placeholder="Cantidad" min="0" oninput="actualizarVistaPrevia()">
+                </div>
+                <div class="form-group">
+                    <label>Niños</label>
+                    <input type="number" id="ninos" placeholder="Cantidad" min="0" oninput="actualizarVistaPrevia()">
+                </div>
+            </div>
 
-    if (totalPendiente <= 0) {
-        estadoReal = 'completo';
-    }
+            <!-- PRECIOS -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Precio por Adulto (USD) <span class="required">*</span></label>
+                    <input type="number" id="precioAdulto" placeholder="Ej: 45" min="0" step="0.01" oninput="actualizarVistaPrevia()">
+                </div>
+                <div class="form-group">
+                    <label>Precio por Niño (USD)</label>
+                    <input type="number" id="precioNino" placeholder="Ej: 25" min="0" step="0.01" oninput="actualizarVistaPrevia()">
+                    <div class="small-hint">Si no aplica, dejar en 0.</div>
+                </div>
+            </div>
 
-    switch(estadoReal) {
-        case 'completo':
-            estadoTexto = 'PAGADO COMPLETO';
-            estadoColor = '#28a745';
-            break;
-        case 'deposito':
-            estadoTexto = 'DEPÓSITO PAGADO (25%)';
-            estadoColor = '#ffc107';
-            break;
-        case 'pendiente':
-            estadoTexto = 'PENDIENTE DE PAGO';
-            estadoColor = '#dc3545';
-            break;
-        default:
-            estadoTexto = 'ESTADO DESCONOCIDO';
-            estadoColor = '#6c757d';
-    }
+            <!-- SUBTOTAL + DEPOSITO -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Subtotal (USD)</label>
+                    <input type="number" id="subtotal" min="0" step="0.01" readonly style="background:#f0f0f0; font-weight:600; color:#1a2a4a;">
+                </div>
+                <div class="form-group">
+                    <label>Depósito (USD)</label>
+                    <input type="number" id="deposito" min="0" step="0.01" readonly style="background:#f0f0f0; font-weight:600; color:#1a2a4a;">
+                </div>
+            </div>
 
-    res.render('recibo', {
-        ...datos,
-        estadoTexto,
-        estadoColor
-    });
-});
+            <!-- DESCUENTO -->
+            <div class="form-group descuento-activo" id="descuentoGroup">
+                <label>Descuento (USD)</label>
+                <input type="number" id="descuento" min="0" step="0.01" oninput="actualizarVistaPrevia()">
+                <div class="small-hint">Monto a descontar del subtotal</div>
+            </div>
 
-app.listen(PORT, () => {
-    console.log(`Servidor en http://localhost:${PORT}`);
-});
+            <!-- TOTAL + DESCUENTO -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Total (USD)</label>
+                    <input type="number" id="total" min="0" step="0.01" readonly style="background:#f0f0f0; font-weight:600; color:#1a2a4a;">
+                </div>
+                <div class="form-group" style="display:flex; align-items:flex-end;">
+                    <button type="button" class="btn btn-descuento" id="btnDescuento" onclick="toggleDescuento()">
+                        + Agregar Descuento
+                    </button>
+                </div>
+            </div>
+
+            <!-- ESTADO DE PAGO -->
+            <div class="form-group">
+                <label>Estado de Pago</label>
+                <div class="estado-options">
+                    <label><input type="radio" name="estado" value="deposito" onchange="actualizarVistaPrevia()"> Depósito (25%)</label>
+                    <label><input type="radio" name="estado" value="completo" checked onchange="actualizarVistaPrevia()"> Pago Completo</label>
+                    <label><input type="radio" name="estado" value="pendiente" onchange="actualizarVistaPrevia()"> Pendiente</label>
+                </div>
+                <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta a $0.00.</div>
+            </div>
+
+            <!-- METODO PAGO + NOTAS -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Método de Pago</label>
+                    <select id="metodoPago" onchange="actualizarVistaPrevia()">
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="PayPal">PayPal</option>
+                        <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+                        <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Notas</label>
+                    <input type="text" id="notas" placeholder="Notas adicionales" oninput="actualizarVistaPrevia()">
+                </div>
+            </div>
+
+            <button type="submit" class="btn">GENERAR RECIBO</button>
+        </form>
+
+        <!-- VISTA PREVIA -->
+        <div class="vista-previa">
+            <h4>VISTA PREVIA DEL RECIBO</h4>
+            <div class="recibo-mini" id="vistaPrevia">
+                <div class="fila">
+                    <span class="label">Factura / Reserva</span>
+                    <span class="valor" id="vpId">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Cliente</span>
+                    <span class="valor" id="vpCliente">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">WhatsApp</span>
+                    <span class="valor" id="vpWhatsapp">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Recogida</span>
+                    <span class="valor" id="vpRecogida">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label" id="vpLabelHabitacion">Habitación</span>
+                    <span class="valor" id="vpHabitacion">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Hora de Recogida</span>
+                    <span class="valor" id="vpHoraRecogida">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Transporte</span>
+                    <span class="valor" id="vpTransporte">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Punto de Salida</span>
+                    <span class="valor" id="vpPuntoSalida">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Excursión</span>
+                    <span class="valor" id="vpExcursion">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Fecha</span>
+                    <span class="valor" id="vpFecha">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Personas</span>
+                    <span class="valor" id="vpPersonas">---</span>
+                </div>
+                <div class="fila">
+                    <span class="label">Método de Pago</span>
+                    <span class="valor" id="vpMetodoPago">---</span>
+                </div>
+                <div class="estado-mini pagado" id="vpEstado">Pagado Completo</div>
+                <div class="total-mini" id="vpTotal">Total: $0.00</div>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div id="resultado" class="resultado">
+            <h3>Recibo Generado</h3>
+            <div class="qr-container">
+                <img id="qrImg" src="" alt="QR Code">
+            </div>
+            <div class="enlace" id="enlaceGenerado"></div>
+            <div class="acciones">
+                <button class="btn-copiar" onclick="copiarEnlace()">Copiar Enlace</button>
+                <button class="btn-qr" onclick="descargarQR()">Descargar QR</button>
+                <a id="whatsappLink" href="#" target="_blank" class="btn-whatsapp">WhatsApp</a>
+                <a id="verRecibo" href="#" target="_blank" class="btn-ver-recibo">Ver Recibo</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====== MOSTRAR PUNTO DE SALIDA ======
+        function mostrarPuntoSalida() {
+            const transporte = document.getElementById('transporte').value;
+            const group = document.getElementById('puntoSalidaGroup');
+            if (transporte === 'No') {
+                group.classList.add('visible');
+            } else {
+                group.classList.remove('visible');
+                document.getElementById('puntoSalida').value = '';
+            }
+            actualizarVistaPrevia();
+        }
+
+        // ====== ACTUALIZAR VISTA PREVIA ======
+        function actualizarVistaPrevia() {
+            // Datos del cliente
+            document.getElementById('vpId').textContent = document.getElementById('id').value || '---';
+            document.getElementById('vpCliente').textContent = document.getElementById('cliente').value || '---';
+            document.getElementById('vpWhatsapp').textContent = document.getElementById('whatsapp').value || '---';
+            
+            const tipoRecogida = document.getElementById('tipoRecogida').value || '';
+            const lugarRecogida = document.getElementById('lugarRecogida').value || '';
+            const recogidaTexto = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '');
+            document.getElementById('vpRecogida').textContent = recogidaTexto || '---';
+            
+            const vpLabel = document.getElementById('vpLabelHabitacion');
+            if (tipoRecogida === 'Hotel') vpLabel.textContent = 'Habitación';
+            else if (tipoRecogida === 'Airbnb') vpLabel.textContent = 'Apartamento';
+            else if (tipoRecogida === 'Punto de Encuentro') vpLabel.textContent = 'Referencia';
+            else if (tipoRecogida === 'Sin Recogida') vpLabel.textContent = '---';
+            
+            document.getElementById('vpHabitacion').textContent = document.getElementById('habitacion').value || '---';
+            document.getElementById('vpHoraRecogida').textContent = document.getElementById('horaRecogida').value || '---';
+            
+            const transporte = document.getElementById('transporte').value || '---';
+            document.getElementById('vpTransporte').textContent = transporte;
+            
+            if (transporte === 'No') {
+                document.getElementById('vpPuntoSalida').textContent = document.getElementById('puntoSalida').value || '---';
+            } else {
+                document.getElementById('vpPuntoSalida').textContent = '---';
+            }
+            
+            document.getElementById('vpExcursion').textContent = document.getElementById('excursion').value || '---';
+            document.getElementById('vpFecha').textContent = document.getElementById('fechaExcursion').value || '---';
+            
+            const adultos = document.getElementById('adultos').value || 0;
+            const ninos = document.getElementById('ninos').value || 0;
+            document.getElementById('vpPersonas').textContent = adultos + ' Adultos, ' + ninos + ' Niños';
+            
+            document.getElementById('vpMetodoPago').textContent = document.getElementById('metodoPago').value || '---';
+
+            // ====== CALCULAR TOTAL Y ESTADO ======
+            const precioAdulto = parseFloat(document.getElementById('precioAdulto').value) || 0;
+            const precioNino = parseFloat(document.getElementById('precioNino').value) || 0;
+            const subtotal = (parseInt(adultos) * precioAdulto) + (parseInt(ninos) * precioNino);
+            document.getElementById('subtotal').value = subtotal.toFixed(2);
+
+            const descuento = parseFloat(document.getElementById('descuento').value) || 0;
+            const total = subtotal - descuento;
+            document.getElementById('total').value = total.toFixed(2);
+
+            const estadoSeleccionado = document.querySelector('input[name="estado"]:checked');
+            const estado = estadoSeleccionado ? estadoSeleccionado.value : 'completo';
+            
+            let deposito = 0;
+            if (estado === 'completo') {
+                deposito = 0;
+            } else if (estado === 'deposito') {
+                deposito = total * 0.25;
+            } else if (estado === 'pendiente') {
+                deposito = 0;
+            }
+            document.getElementById('deposito').value = deposito.toFixed(2);
+
+            const balance = total - deposito;
+
+            const estadoEl = document.getElementById('vpEstado');
+            if (estado === 'completo') {
+                estadoEl.textContent = '✅ Pagado Completo';
+                estadoEl.className = 'estado-mini pagado';
+            } else if (estado === 'deposito') {
+                estadoEl.textContent = '⚠️ Falta Pagar: $' + balance.toFixed(2);
+                estadoEl.className = 'estado-mini falta';
+            } else if (estado === 'pendiente') {
+                estadoEl.textContent = '⏳ Pendiente de Pago: $' + balance.toFixed(2);
+                estadoEl.className = 'estado-mini pendiente';
+            }
+
+            document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
+        }
+
+        // ====== CAMBIAR ETIQUETA HABITACION ======
+        function cambiarEtiquetaHabitacion() {
+            const label = document.getElementById('labelHabitacion');
+            const input = document.getElementById('habitacion');
+            const tipo = document.getElementById('tipoRecogida').value;
+            if (tipo === 'Hotel') {
+                label.textContent = 'Habitación';
+                input.placeholder = 'Ej: 123';
+            } else if (tipo === 'Airbnb') {
+                label.textContent = 'Apartamento';
+                input.placeholder = 'Ej: Villa B12, Casa 5';
+            } else if (tipo === 'Punto de Encuentro') {
+                label.textContent = 'Referencia';
+                input.placeholder = 'Ej: Parque Central, Esquina calle 5';
+            } else if (tipo === 'Sin Recogida') {
+                label.textContent = '---';
+                input.placeholder = 'No aplica';
+            }
+        }
+
+        // ====== GENERAR FECHA ======
+        document.addEventListener('DOMContentLoaded', function() {
+            const semana = new Date();
+            semana.setDate(semana.getDate() + 7);
+            document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
+            
+            document.querySelector('input[name="estado"][value="completo"]').checked = true;
+            
+            actualizarVistaPrevia();
+        });
+
+        // ====== DESCUENTO ======
+        function toggleDescuento() {
+            const group = document.getElementById('descuentoGroup');
+            const btn = document.getElementById('btnDescuento');
+            group.classList.toggle('visible');
+            if (group.classList.contains('visible')) {
+                btn.innerHTML = 'Quitar Descuento';
+                btn.classList.add('activo');
+            } else {
+                document.getElementById('descuento').value = '';
+                btn.innerHTML = '+ Agregar Descuento';
+                btn.classList.remove('activo');
+                actualizarVistaPrevia();
+            }
+        }
+
+        // ====== ENVIAR ======
+        document.getElementById('formRecibo').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const cliente = document.getElementById('cliente').value;
+            const excursion = document.getElementById('excursion').value;
+            const adultos = document.getElementById('adultos').value;
+            const precioAdulto = document.getElementById('precioAdulto').value;
+
+            if (!cliente || !excursion || !adultos || !precioAdulto) {
+                alert('⚠️ Los campos Cliente, Excursión, Adultos y Precio por Adulto son obligatorios.');
+                return;
+            }
+
+            const id = document.getElementById('id').value || 'Sin ID';
+            const recogidaCompleta = document.getElementById('tipoRecogida').value + (document.getElementById('lugarRecogida').value ? ' - ' + document.getElementById('lugarRecogida').value : '');
+            const horaRecogida = document.getElementById('horaRecogida').value || '';
+            const transporte = document.getElementById('transporte').value || 'Sí';
+            const puntoSalida = document.getElementById('puntoSalida').value || '';
+
+            const params = new URLSearchParams({
+                id: id,
+                recibo: id,
+                cliente: cliente,
+                excursion: excursion,
+                adultos: adultos,
+                ninos: document.getElementById('ninos').value || 0,
+                precioAdulto: precioAdulto,
+                precioNino: document.getElementById('precioNino').value || 0,
+                subtotal: document.getElementById('subtotal').value,
+                descuento: document.getElementById('descuento').value || '0',
+                total: document.getElementById('total').value,
+                deposito: document.getElementById('deposito').value,
+                estado: document.querySelector('input[name="estado"]:checked').value,
+                metodoPago: document.getElementById('metodoPago').value,
+                whatsapp: document.getElementById('whatsapp').value || '',
+                correo: document.getElementById('correo').value || '',
+                hotel: recogidaCompleta,
+                habitacion: document.getElementById('habitacion').value || '',
+                horaRecogida: horaRecogida,
+                transporte: transporte,
+                puntoSalida: puntoSalida,
+                notas: document.getElementById('notas').value || 'Sin notas adicionales',
+                fechaExcursion: document.getElementById('fechaExcursion').value || ''
+            });
+
+            const base = 'https://recibo-app.vercel.app/ver-recibo';
+            const enlaceQR = base + '?' + params.toString();
+            const enlaceAdmin = base + '?' + params.toString() + '&admin=true';
+
+            document.getElementById('enlaceGenerado').textContent = enlaceQR;
+            document.getElementById('verRecibo').href = enlaceAdmin;
+
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(enlaceQR)}&size=200x200`;
+            document.getElementById('qrImg').src = qrUrl;
+
+            const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlaceQR}`;
+            document.getElementById('whatsappLink').href = `https://wa.me/1${document.getElementById('whatsapp').value ? '?text=' + encodeURIComponent(mensaje) : '?text=' + encodeURIComponent(mensaje)}`;
+
+            document.getElementById('resultado').classList.add('visible');
+        });
+
+        function copiarEnlace() {
+            const enlace = document.getElementById('enlaceGenerado').textContent;
+            navigator.clipboard.writeText(enlace).then(() => alert('Enlace copiado'))
+                .catch(() => {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = enlace;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    alert('Enlace copiado');
+                });
+        }
+
+        function descargarQR() {
+            const qrImg = document.getElementById('qrImg');
+            const link = document.createElement('a');
+            link.download = 'recibo-qr-' + (document.getElementById('id').value || 'recibo') + '.png';
+            link.href = qrImg.src;
+            link.click();
+        }
+    </script>
+</body>
+</html>
