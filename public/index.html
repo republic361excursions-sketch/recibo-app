@@ -48,8 +48,6 @@
         .form-row { display: flex; gap: 20px; }
         .form-row .form-group { flex: 1; }
         .small-hint { color: #b5c0d0; font-size: 12px; margin-top: 4px; font-weight: 300; }
-        .punto-salida { display: none; }
-        .punto-salida.visible { display: block; }
         .privado-group { display: none; }
         .privado-group.visible { display: block; }
         .btn {
@@ -315,7 +313,7 @@
                         <option value="Sin Recogida">Sin Recogida</option>
                     </select>
                 </div>
-                <div class="form-group" id="lugarRecogidaGroup">
+                <div class="form-group">
                     <label>Lugar de Recogida</label>
                     <input type="text" id="lugarRecogida" placeholder="Ej: Riu Bavaro, Villa Sol, Parque Central" oninput="actualizarVistaPrevia()">
                 </div>
@@ -325,25 +323,20 @@
                     <label id="labelHabitacion">Habitación</label>
                     <input type="text" id="habitacion" placeholder="Ej: 123, Villa B12" oninput="actualizarVistaPrevia()">
                 </div>
-                <div class="form-group" id="horaRecogidaGroup">
-                    <label id="labelHora">Hora de Recogida</label>
+                <div class="form-group">
+                    <label>Hora de Recogida</label>
                     <input type="time" id="horaRecogida" onchange="actualizarVistaPrevia()">
                 </div>
             </div>
 
-            <!-- TRANSPORTE + LUGAR DE LA EXCURSIÓN -->
+            <!-- TRANSPORTE (SIN LUGAR DE LA EXCURSIÓN) -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Transporte</label>
-                    <select id="transporte" onchange="mostrarOcultarPuntoSalida(); cambiarLabelHora(); actualizarVistaPrevia();">
+                    <select id="transporte" onchange="actualizarVistaPrevia(); cambiarLabelHora();">
                         <option value="Sí">Sí</option>
                         <option value="No">No</option>
                     </select>
-                </div>
-                <div class="form-group punto-salida" id="puntoSalidaGroup">
-                    <label id="labelPuntoSalida">Lugar de la Excursión</label>
-                    <input type="text" id="puntoSalida" placeholder="Ej: Muelle de Punta Cana, Puerto de Bayahíbe" oninput="actualizarVistaPrevia()">
-                    <div class="small-hint">Lugar donde comienza la excursión</div>
                 </div>
             </div>
 
@@ -488,10 +481,6 @@
                     <span class="valor" id="vpTransporte">---</span>
                 </div>
                 <div class="fila">
-                    <span class="label" id="vpLabelLugarExcursion">Lugar de la Excursión</span>
-                    <span class="valor" id="vpPuntoSalida">---</span>
-                </div>
-                <div class="fila">
                     <span class="label">Excursión</span>
                     <span class="valor" id="vpExcursion">---</span>
                 </div>
@@ -533,30 +522,10 @@
     </div>
 
     <script>
-        // ====== MOSTRAR/OCULTAR LUGAR DE LA EXCURSIÓN ======
-        function mostrarOcultarPuntoSalida() {
-            const transporte = document.getElementById('transporte').value;
-            const group = document.getElementById('puntoSalidaGroup');
-            const labelPuntoSalida = document.getElementById('labelPuntoSalida');
-            const inputPuntoSalida = document.getElementById('puntoSalida');
-            
-            if (transporte === 'No') {
-                group.classList.add('visible');
-                labelPuntoSalida.textContent = 'Lugar de la Excursión';
-                inputPuntoSalida.placeholder = 'Ej: Muelle de Punta Cana, Puerto de Bayahíbe';
-            } else {
-                group.classList.remove('visible');
-                labelPuntoSalida.textContent = 'Punto de Salida';
-                inputPuntoSalida.placeholder = 'Ej: Muelle de Punta Cana';
-                document.getElementById('puntoSalida').value = '';
-            }
-            actualizarVistaPrevia();
-        }
-
         // ====== CAMBIAR LABEL DE HORA ======
         function cambiarLabelHora() {
             const transporte = document.getElementById('transporte').value;
-            const labelHora = document.getElementById('labelHora');
+            const labelHora = document.getElementById('vpLabelHora');
             if (transporte === 'No') {
                 labelHora.textContent = 'Hora de la Excursión';
             } else {
@@ -598,51 +567,25 @@
             actualizarVistaPrevia();
         }
 
-        // ====== CAMBIAR ETIQUETA HABITACION Y OCULTAR RECOGIDA ======
+        // ====== CAMBIAR ETIQUETA HABITACION ======
         function cambiarEtiquetaHabitacion() {
             const label = document.getElementById('labelHabitacion');
             const input = document.getElementById('habitacion');
             const tipo = document.getElementById('tipoRecogida').value;
-            const lugarGroup = document.getElementById('lugarRecogidaGroup');
-            const horaGroup = document.getElementById('horaRecogidaGroup');
-            const labelLugar = document.querySelector('#lugarRecogidaGroup label');
-            const inputLugar = document.getElementById('lugarRecogida');
-            const labelHora = document.getElementById('labelHora');
-            const transporte = document.getElementById('transporte').value;
-            
-            if (tipo === 'Sin Recogida') {
-                labelLugar.textContent = 'Lugar de la Excursión';
-                inputLugar.placeholder = 'Ej: Muelle de Punta Cana, Puerto de Bayahíbe';
-                if (transporte === 'No') {
-                    labelHora.textContent = 'Hora de la Excursión';
-                } else {
-                    labelHora.textContent = 'Hora de la Excursión';
-                }
+            if (tipo === 'Hotel') {
+                label.textContent = 'Habitación';
+                input.placeholder = 'Ej: 123';
+            } else if (tipo === 'Airbnb') {
+                label.textContent = 'Apartamento';
+                input.placeholder = 'Ej: Villa B12, Casa 5';
+            } else if (tipo === 'Punto de Encuentro') {
+                label.textContent = 'Referencia';
+                input.placeholder = 'Ej: Parque Central, Esquina calle 5';
+            } else if (tipo === 'Sin Recogida') {
                 label.textContent = '---';
                 input.placeholder = 'No aplica';
-                lugarGroup.style.display = 'block';
-                horaGroup.style.display = 'block';
+                document.getElementById('lugarRecogida').value = '';
                 document.getElementById('habitacion').value = '';
-            } else {
-                labelLugar.textContent = 'Lugar de Recogida';
-                inputLugar.placeholder = 'Ej: Riu Bavaro, Villa Sol, Parque Central';
-                if (transporte === 'No') {
-                    labelHora.textContent = 'Hora de la Excursión';
-                } else {
-                    labelHora.textContent = 'Hora de Recogida';
-                }
-                if (tipo === 'Hotel') {
-                    label.textContent = 'Habitación';
-                    input.placeholder = 'Ej: 123';
-                } else if (tipo === 'Airbnb') {
-                    label.textContent = 'Apartamento';
-                    input.placeholder = 'Ej: Villa B12, Casa 5';
-                } else if (tipo === 'Punto de Encuentro') {
-                    label.textContent = 'Referencia';
-                    input.placeholder = 'Ej: Parque Central, Esquina calle 5';
-                }
-                lugarGroup.style.display = 'block';
-                horaGroup.style.display = 'block';
             }
             actualizarVistaPrevia();
         }
@@ -710,16 +653,10 @@
             document.getElementById('vpTransporte').textContent = transporte;
             
             const vpLabelHora = document.getElementById('vpLabelHora');
-            const vpLabelLugar = document.getElementById('vpLabelLugarExcursion');
-            
             if (transporte === 'No') {
                 vpLabelHora.textContent = 'Hora de la Excursión';
-                vpLabelLugar.textContent = 'Lugar de la Excursión';
-                document.getElementById('vpPuntoSalida').textContent = document.getElementById('puntoSalida').value || '---';
             } else {
                 vpLabelHora.textContent = 'Hora de Recogida';
-                vpLabelLugar.textContent = 'Punto de Salida';
-                document.getElementById('vpPuntoSalida').textContent = '---';
             }
             document.getElementById('vpHoraRecogida').textContent = document.getElementById('horaRecogida').value || '---';
             
@@ -767,8 +704,6 @@
             
             document.querySelector('input[name="estado"][value="completo"]').checked = true;
             
-            // Asegurar que el campo de transporte se muestre correctamente al cargar
-            mostrarOcultarPuntoSalida();
             actualizarVistaPrevia();
         });
 
@@ -815,7 +750,6 @@
             const recogidaCompleta = document.getElementById('tipoRecogida').value + (document.getElementById('lugarRecogida').value ? ' - ' + document.getElementById('lugarRecogida').value : '');
             const horaRecogida = document.getElementById('horaRecogida').value || '';
             const transporte = document.getElementById('transporte').value || 'Sí';
-            const puntoSalida = document.getElementById('puntoSalida').value || '';
             const grupo = document.getElementById('grupo').value || '';
             const capacidadMaxima = document.getElementById('capacidadMaxima').value || '';
 
@@ -842,7 +776,6 @@
                 habitacion: document.getElementById('habitacion').value || '',
                 horaRecogida: horaRecogida,
                 transporte: transporte,
-                puntoSalida: puntoSalida,
                 capacidadMaxima: capacidadMaxima,
                 notas: document.getElementById('notas').value || 'Sin notas adicionales',
                 fechaExcursion: document.getElementById('fechaExcursion').value || ''
