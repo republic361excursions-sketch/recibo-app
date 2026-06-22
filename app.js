@@ -34,6 +34,7 @@ app.get('/ver-recibo', (req, res) => {
     const depositoNum = parseFloat(deposito) || 0;
     const totalPendiente = totalNum - depositoNum;
 
+    // ✅ CONSTRUIR DATOS
     const datos = {
         idFactura: id,
         numeroRecibo: recibo,
@@ -65,13 +66,20 @@ app.get('/ver-recibo', (req, res) => {
         mostrarBotones: admin === 'true'
     };
 
+    // ✅ DETERMINAR ESTADO VISUAL
     let estadoTexto = '';
     let estadoColor = '';
     let estadoReal = datos.estado;
 
+    // ✅ FORZAR ESTADO 'completo' SI EL BALANCE ES 0 O MENOS
     if (totalPendiente <= 0) {
         estadoReal = 'completo';
     }
+
+    // ✅ PARA DEPURACIÓN (puedes eliminar después)
+    console.log('Estado recibido:', datos.estado);
+    console.log('Total pendiente:', totalPendiente);
+    console.log('Estado final:', estadoReal);
 
     switch(estadoReal) {
         case 'completo':
