@@ -52,6 +52,8 @@
         .punto-salida.visible { display: block; }
         .privado-group { display: none; }
         .privado-group.visible { display: block; }
+        .ocultar-recogida { display: none; }
+        .ocultar-recogida.visible { display: block; }
         .btn {
             width: 100%;
             padding: 16px;
@@ -315,7 +317,7 @@
                         <option value="Sin Recogida">Sin Recogida</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="lugarRecogidaGroup">
                     <label>Lugar de Recogida</label>
                     <input type="text" id="lugarRecogida" placeholder="Ej: Riu Bavaro, Villa Sol, Parque Central" oninput="actualizarVistaPrevia()">
                 </div>
@@ -325,8 +327,8 @@
                     <label id="labelHabitacion">Habitación</label>
                     <input type="text" id="habitacion" placeholder="Ej: 123, Villa B12" oninput="actualizarVistaPrevia()">
                 </div>
-                <div class="form-group">
-                    <label>Hora de Recogida</label>
+                <div class="form-group" id="horaRecogidaGroup">
+                    <label id="labelHora">Hora de Recogida</label>
                     <input type="time" id="horaRecogida" onchange="actualizarVistaPrevia()">
                 </div>
             </div>
@@ -335,7 +337,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Transporte</label>
-                    <select id="transporte" onchange="mostrarPuntoSalida(); actualizarVistaPrevia();">
+                    <select id="transporte" onchange="mostrarPuntoSalida(); cambiarLabelHora(); actualizarVistaPrevia();">
                         <option value="Sí">Sí</option>
                         <option value="No">No</option>
                     </select>
@@ -480,7 +482,7 @@
                     <span class="valor" id="vpHabitacion">---</span>
                 </div>
                 <div class="fila">
-                    <span class="label">Hora de Recogida</span>
+                    <span class="label" id="vpLabelHora">Hora de Recogida</span>
                     <span class="valor" id="vpHoraRecogida">---</span>
                 </div>
                 <div class="fila">
@@ -546,6 +548,18 @@
             actualizarVistaPrevia();
         }
 
+        // ====== CAMBIAR LABEL DE HORA ======
+        function cambiarLabelHora() {
+            const transporte = document.getElementById('transporte').value;
+            const labelHora = document.getElementById('labelHora');
+            if (transporte === 'No') {
+                labelHora.textContent = 'Hora de la Excursión';
+            } else {
+                labelHora.textContent = 'Hora de Recogida';
+            }
+            actualizarVistaPrevia();
+        }
+
         // ====== CAMBIAR TIPO DE EXCURSIÓN ======
         function cambiarTipoExcursion() {
             const tipo = document.getElementById('tipoExcursion').value;
@@ -579,6 +593,38 @@
             actualizarVistaPrevia();
         }
 
+        // ====== CAMBIAR ETIQUETA HABITACION Y OCULTAR RECOGIDA ======
+        function cambiarEtiquetaHabitacion() {
+            const label = document.getElementById('labelHabitacion');
+            const input = document.getElementById('habitacion');
+            const tipo = document.getElementById('tipoRecogida').value;
+            const lugarGroup = document.getElementById('lugarRecogidaGroup');
+            const horaGroup = document.getElementById('horaRecogidaGroup');
+            
+            if (tipo === 'Sin Recogida') {
+                lugarGroup.style.display = 'none';
+                horaGroup.style.display = 'none';
+                label.textContent = '---';
+                input.placeholder = 'No aplica';
+                document.getElementById('lugarRecogida').value = '';
+                document.getElementById('habitacion').value = '';
+            } else {
+                lugarGroup.style.display = 'block';
+                horaGroup.style.display = 'block';
+                if (tipo === 'Hotel') {
+                    label.textContent = 'Habitación';
+                    input.placeholder = 'Ej: 123';
+                } else if (tipo === 'Airbnb') {
+                    label.textContent = 'Apartamento';
+                    input.placeholder = 'Ej: Villa B12, Casa 5';
+                } else if (tipo === 'Punto de Encuentro') {
+                    label.textContent = 'Referencia';
+                    input.placeholder = 'Ej: Parque Central, Esquina calle 5';
+                }
+            }
+            actualizarVistaPrevia();
+        }
+
         // ====== CALCULAR SUBTOTAL ======
         function calcularSubtotal() {
             const tipo = document.getElementById('tipoExcursion').value;
@@ -590,21 +636,17 @@
             let subtotal = 0;
             
             if (tipo === 'privado') {
-                // PRIVADO: subtotal = precio total (sin multiplicar por personas)
                 subtotal = precioAdulto;
             } else {
-                // COMPARTIDO: subtotal = (adultos × precioAdulto) + (niños × precioNino)
                 subtotal = (adultos * precioAdulto) + (ninos * precioNino);
             }
             
             document.getElementById('subtotal').value = subtotal.toFixed(2);
             
-            // Calcular total con descuento
             const descuento = parseFloat(document.getElementById('descuento').value) || 0;
             const total = subtotal - descuento;
             document.getElementById('total').value = total.toFixed(2);
             
-            // Calcular depósito según estado
             const estado = document.querySelector('input[name="estado"]:checked').value;
             let deposito = 0;
             if (estado === 'completo') {
@@ -621,7 +663,6 @@
 
         // ====== ACTUALIZAR VISTA PREVIA ======
         function actualizarVistaPrevia() {
-            // Datos del cliente
             document.getElementById('vpId').textContent = document.getElementById('id').value || '---';
             document.getElementById('vpCliente').textContent = document.getElementById('cliente').value || '---';
             document.getElementById('vpWhatsapp').textContent = document.getElementById('whatsapp').value || '---';
@@ -642,10 +683,18 @@
             else if (tipoRecogida === 'Sin Recogida') vpLabel.textContent = '---';
             
             document.getElementById('vpHabitacion').textContent = document.getElementById('habitacion').value || '---';
-            document.getElementById('vpHoraRecogida').textContent = document.getElementById('horaRecogida').value || '---';
             
             const transporte = document.getElementById('transporte').value || '---';
             document.getElementById('vpTransporte').textContent = transporte;
+            
+            // Cambiar label de hora en vista previa
+            const vpLabelHora = document.getElementById('vpLabelHora');
+            if (transporte === 'No') {
+                vpLabelHora.textContent = 'Hora de la Excursión';
+            } else {
+                vpLabelHora.textContent = 'Hora de Recogida';
+            }
+            document.getElementById('vpHoraRecogida').textContent = document.getElementById('horaRecogida').value || '---';
             
             if (transporte === 'No') {
                 document.getElementById('vpPuntoSalida').textContent = document.getElementById('puntoSalida').value || '---';
@@ -663,7 +712,6 @@
             
             document.getElementById('vpMetodoPago').textContent = document.getElementById('metodoPago').value || '---';
 
-            // ====== CALCULAR TOTAL Y ESTADO (usando los valores ya calculados) ======
             const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
             const descuento = parseFloat(document.getElementById('descuento').value) || 0;
             const total = subtotal - descuento;
@@ -688,26 +736,6 @@
             }
 
             document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
-        }
-
-        // ====== CAMBIAR ETIQUETA HABITACION ======
-        function cambiarEtiquetaHabitacion() {
-            const label = document.getElementById('labelHabitacion');
-            const input = document.getElementById('habitacion');
-            const tipo = document.getElementById('tipoRecogida').value;
-            if (tipo === 'Hotel') {
-                label.textContent = 'Habitación';
-                input.placeholder = 'Ej: 123';
-            } else if (tipo === 'Airbnb') {
-                label.textContent = 'Apartamento';
-                input.placeholder = 'Ej: Villa B12, Casa 5';
-            } else if (tipo === 'Punto de Encuentro') {
-                label.textContent = 'Referencia';
-                input.placeholder = 'Ej: Parque Central, Esquina calle 5';
-            } else if (tipo === 'Sin Recogida') {
-                label.textContent = '---';
-                input.placeholder = 'No aplica';
-            }
         }
 
         // ====== GENERAR FECHA ======
