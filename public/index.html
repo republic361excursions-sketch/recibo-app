@@ -3,71 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a2a4a">
     <title>Republic Excursions - Generador de Recibos</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ===== RESET Y ESTILOS BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f5f5f0;
+            background: #f0f2f5;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 30px;
+            padding: 40px 20px;
         }
+        
         .container {
             background: #ffffff;
-            max-width: 700px;
+            max-width: 780px;
             width: 100%;
-            padding: 45px 50px;
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-            border: 1px solid #edebe6;
+            padding: 50px 55px;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e8eaed;
+            transition: box-shadow 0.3s ease;
         }
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { font-size: 22px; font-weight: 700; color: #1a2a4a; letter-spacing: 2px; }
-        .header h1 span { color: #c9a84c; }
-        .subtitulo { font-size: 14px; color: #8e9aaf; margin-bottom: 30px; font-weight: 400; letter-spacing: 0.5px; text-align: center; }
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-weight: 600; color: #2c3e50; margin-bottom: 5px; font-size: 13px; letter-spacing: 0.3px; }
-        .form-group label .required { color: #e74c3c; font-weight: 700; }
-        .form-group input, .form-group select {
+        
+        .container:hover {
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ===== ENCABEZADO ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a2a4a;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        
+        .header h1 span {
+            color: #c9a84c;
+        }
+        
+        .subtitulo {
+            font-size: 15px;
+            color: #8e9aaf;
+            margin-top: 6px;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        /* ===== FORMULARIO ===== */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 6px;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-group label .required {
+            color: #c62828;
+            font-weight: 700;
+        }
+        
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 12px 14px;
-            border: 2px solid #eae8e3;
-            border-radius: 8px;
+            padding: 12px 16px;
+            border: 2px solid #e8eaed;
+            border-radius: 10px;
             font-size: 14px;
             font-family: 'Inter', sans-serif;
-            transition: border 0.3s;
-            background: #fafaf8;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: #fafbfc;
             color: #2c3e50;
         }
-        .form-group input:focus, .form-group select:focus { border-color: #1a2a4a; outline: none; background: white; }
-        .form-group input::placeholder { color: #b5c0d0; font-weight: 300; font-size: 13px; }
-        .form-row { display: flex; gap: 20px; }
-        .form-row .form-group { flex: 1; }
-        .small-hint { color: #b5c0d0; font-size: 12px; margin-top: 4px; font-weight: 300; }
-        .privado-group { display: none; }
-        .privado-group.visible { display: block; }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #1a2a4a;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(26, 42, 74, 0.1);
+        }
+        
+        .form-group input::placeholder {
+            color: #b0bec5;
+            font-weight: 300;
+            font-size: 13px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .small-hint {
+            color: #b0bec5;
+            font-size: 12px;
+            margin-top: 4px;
+            font-weight: 300;
+        }
+
+        /* ===== CAMPOS CONDICIONALES ===== */
+        .privado-group {
+            display: none;
+        }
+        
+        .privado-group.visible {
+            display: block;
+        }
+
+        /* ===== BOTONES ===== */
         .btn {
             width: 100%;
             padding: 16px;
             background: #1a2a4a;
-            color: white;
+            color: #ffffff;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
             letter-spacing: 1px;
             margin-top: 8px;
         }
-        .btn:hover { background: #2c3e6e; }
+        
+        .btn:hover {
+            background: #2c3e6e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 42, 74, 0.25);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
         .btn-descuento {
-            background: #8e9aaf;
+            background: #78909c;
             padding: 12px 18px;
             font-size: 13px;
             width: auto;
@@ -75,17 +172,37 @@
             font-weight: 500;
             letter-spacing: 0.5px;
         }
-        .btn-descuento:hover { background: #6b7a8f; }
-        .btn-descuento.activo { background: #e74c3c; }
-        .btn-descuento.activo:hover { background: #c0392b; }
-        .descuento-activo { display: none; }
-        .descuento-activo.visible { display: block; }
+        
+        .btn-descuento:hover {
+            background: #607d8b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-descuento.activo {
+            background: #c62828;
+        }
+        
+        .btn-descuento.activo:hover {
+            background: #b71c1c;
+        }
+        
+        .descuento-activo {
+            display: none;
+        }
+        
+        .descuento-activo.visible {
+            display: block;
+        }
+
+        /* ===== OPCIONES DE ESTADO ===== */
         .estado-options {
             display: flex;
-            gap: 20px;
+            gap: 24px;
             flex-wrap: wrap;
             padding-top: 4px;
         }
+        
         .estado-options label {
             display: flex;
             align-items: center;
@@ -95,44 +212,63 @@
             font-size: 14px;
             color: #2c3e50;
         }
+        
         .estado-options input[type="radio"] {
             width: 16px;
             height: 16px;
             accent-color: #1a2a4a;
             cursor: pointer;
         }
+
+        /* ===== VISTA PREVIA ===== */
         .vista-previa {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f7f4;
-            border-radius: 10px;
-            border: 2px solid #eae8e3;
+            margin-top: 32px;
+            padding: 24px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e8eaed;
         }
+        
         .vista-previa h4 {
             color: #1a2a4a;
             font-size: 14px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             text-align: center;
             font-weight: 600;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
+        
         .vista-previa .recibo-mini {
-            background: white;
+            background: #ffffff;
             padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #eae8e3;
+            border-radius: 10px;
+            border: 1px solid #e8eaed;
             font-size: 13px;
             color: #2c3e50;
         }
+        
         .vista-previa .recibo-mini .fila {
             display: flex;
             justify-content: space-between;
-            padding: 3px 0;
-            border-bottom: 1px solid #f0efeb;
+            padding: 4px 0;
+            border-bottom: 1px solid #f0f0f0;
         }
-        .vista-previa .recibo-mini .fila:last-child { border-bottom: none; }
-        .vista-previa .recibo-mini .label { font-weight: 500; color: #6b7a8f; }
-        .vista-previa .recibo-mini .valor { font-weight: 400; color: #1a2a4a; }
+        
+        .vista-previa .recibo-mini .fila:last-child {
+            border-bottom: none;
+        }
+        
+        .vista-previa .recibo-mini .label {
+            font-weight: 500;
+            color: #6b7a8f;
+        }
+        
+        .vista-previa .recibo-mini .valor {
+            font-weight: 400;
+            color: #1a2a4a;
+        }
+        
         .vista-previa .recibo-mini .estado-mini {
             text-align: center;
             padding: 8px;
@@ -141,9 +277,22 @@
             font-weight: 600;
             font-size: 14px;
         }
-        .vista-previa .recibo-mini .estado-mini.pagado { background: #d4edda; color: #155724; }
-        .vista-previa .recibo-mini .estado-mini.falta { background: #fff3cd; color: #856404; }
-        .vista-previa .recibo-mini .estado-mini.pendiente { background: #f8d7da; color: #721c24; }
+        
+        .vista-previa .recibo-mini .estado-mini.pagado {
+            background: #e8f5e9;
+            color: #1b5e20;
+        }
+        
+        .vista-previa .recibo-mini .estado-mini.falta {
+            background: #fff8e1;
+            color: #e65100;
+        }
+        
+        .vista-previa .recibo-mini .estado-mini.pendiente {
+            background: #ffebee;
+            color: #b71c1c;
+        }
+        
         .vista-previa .recibo-mini .total-mini {
             font-weight: 700;
             font-size: 15px;
@@ -153,109 +302,185 @@
             padding-top: 8px;
             border-top: 2px solid #1a2a4a;
         }
+
+        /* ===== RESULTADO ===== */
         .resultado {
-            margin-top: 30px;
-            padding: 25px;
-            background: #f8f7f4;
-            border-radius: 10px;
+            margin-top: 32px;
+            padding: 28px;
+            background: #f8f9fa;
+            border-radius: 12px;
             display: none;
             border: 2px solid #c9a84c;
         }
-        .resultado.visible { display: block; }
-        .resultado h3 { color: #1a2a4a; font-size: 18px; margin-bottom: 15px; text-align: center; font-weight: 600; }
+        
+        .resultado.visible {
+            display: block;
+        }
+        
+        .resultado h3 {
+            color: #1a2a4a;
+            font-size: 20px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
         .resultado .enlace {
             word-break: break-all;
-            background: white;
-            padding: 14px;
-            border-radius: 6px;
-            border: 1px solid #eae8e3;
+            background: #ffffff;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border: 1px solid #e8eaed;
             font-size: 13px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             color: #2c3e50;
         }
-        .resultado .qr-container { text-align: center; margin: 15px 0; }
+        
+        .resultado .qr-container {
+            text-align: center;
+            margin: 16px 0;
+        }
+        
         .resultado .qr-container img {
             max-width: 160px;
-            border: 2px solid #eae8e3;
-            border-radius: 10px;
+            border: 2px solid #e8eaed;
+            border-radius: 12px;
             padding: 8px;
-            background: white;
+            background: #ffffff;
         }
+
+        /* ===== ACCIONES DEL RESULTADO ===== */
         .acciones {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             justify-content: center;
-            margin-top: 15px;
+            margin-top: 16px;
         }
+        
         .btn-copiar {
-            background: #28a745;
-            color: white;
+            background: #2e7d32;
+            color: #ffffff;
             border: none;
             padding: 10px 22px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
             font-size: 13px;
+            transition: all 0.3s ease;
         }
-        .btn-copiar:hover { background: #218838; }
+        
+        .btn-copiar:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
         .btn-qr {
             background: #c9a84c;
-            color: white;
+            color: #ffffff;
             border: none;
             padding: 10px 22px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
             font-size: 13px;
+            transition: all 0.3s ease;
         }
-        .btn-qr:hover { background: #b8973a; }
+        
+        .btn-qr:hover {
+            background: #b8973a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
         .btn-whatsapp {
             background: #25D366;
-            color: white;
+            color: #ffffff;
             border: none;
             padding: 10px 22px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
             font-family: 'Inter', sans-serif;
             font-size: 13px;
+            transition: all 0.3s ease;
         }
-        .btn-whatsapp:hover { background: #1da851; }
+        
+        .btn-whatsapp:hover {
+            background: #1da851;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
         .btn-ver-recibo {
             display: inline-block;
             background: #1a2a4a;
-            color: white;
+            color: #ffffff;
             padding: 10px 22px;
-            border-radius: 6px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
             font-size: 13px;
             font-family: 'Inter', sans-serif;
             text-align: center;
+            transition: all 0.3s ease;
         }
-        .btn-ver-recibo:hover { background: #2c3e6e; }
-        @media (max-width: 600px) {
-            .container { padding: 25px 20px; }
-            .form-row { flex-direction: column; gap: 0; }
-            .estado-options { flex-direction: column; gap: 8px; }
-            .resultado .enlace { font-size: 12px; }
-            .vista-previa .recibo-mini { font-size: 12px; padding: 15px; }
+        
+        .btn-ver-recibo:hover {
+            background: #2c3e6e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .estado-options {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .resultado .enlace {
+                font-size: 12px;
+            }
+            
+            .vista-previa .recibo-mini {
+                font-size: 12px;
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        
+        <!-- ENCABEZADO -->
         <div class="header">
             <h1>Republic <span>Excursions</span></h1>
         </div>
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
+        <!-- FORMULARIO -->
         <form id="formRecibo">
+            
             <!-- ID -->
             <div class="form-group">
                 <label>ID / Código de Reserva</label>
@@ -404,7 +629,7 @@
                 </div>
                 <div class="form-group" style="display:flex; align-items:flex-end;">
                     <button type="button" class="btn btn-descuento" id="btnDescuento" onclick="toggleDescuento()">
-                        + Agregar Descuento
+                        Agregar Descuento
                     </button>
                 </div>
             </div>
@@ -442,7 +667,7 @@
 
         <!-- VISTA PREVIA -->
         <div class="vista-previa">
-            <h4>VISTA PREVIA DEL RECIBO</h4>
+            <h4>Vista Previa del Recibo</h4>
             <div class="recibo-mini" id="vistaPrevia">
                 <div class="fila">
                     <span class="label">Factura / Reserva</span>
@@ -509,7 +734,7 @@
         <div id="resultado" class="resultado">
             <h3>Recibo Generado</h3>
             <div class="qr-container">
-                <img id="qrImg" src="" alt="QR Code">
+                <img id="qrImg" src="" alt="Código QR">
             </div>
             <div class="enlace" id="enlaceGenerado"></div>
             <div class="acciones">
@@ -522,16 +747,18 @@
     </div>
 
     <script>
-        // ====== CAMBIAR TIPO DE EXCURSIÓN ======
+        /**
+         * Cambia la interfaz según el tipo de excursión seleccionado
+         */
         function cambiarTipoExcursion() {
-            const tipo = document.getElementById('tipoExcursion').value;
-            const privadoGroup = document.getElementById('privadoGroup');
-            const privadoPrecioGroup = document.getElementById('privadoPrecioGroup');
-            const labelAdultos = document.getElementById('labelAdultos');
-            const labelPrecioAdulto = document.getElementById('labelPrecioAdulto');
-            const inputAdultos = document.getElementById('adultos');
-            const inputPrecioAdulto = document.getElementById('precioAdulto');
-            const inputPrecioNino = document.getElementById('precioNino');
+            var tipo = document.getElementById('tipoExcursion').value;
+            var privadoGroup = document.getElementById('privadoGroup');
+            var privadoPrecioGroup = document.getElementById('privadoPrecioGroup');
+            var labelAdultos = document.getElementById('labelAdultos');
+            var labelPrecioAdulto = document.getElementById('labelPrecioAdulto');
+            var inputAdultos = document.getElementById('adultos');
+            var inputPrecioAdulto = document.getElementById('precioAdulto');
+            var inputPrecioNino = document.getElementById('precioNino');
             
             if (tipo === 'privado') {
                 privadoGroup.classList.add('visible');
@@ -555,14 +782,16 @@
             actualizarVistaPrevia();
         }
 
-        // ====== CAMBIAR ETIQUETA HABITACION, LUGAR DE RECOGIDA Y HORA ======
+        /**
+         * Cambia las etiquetas según el tipo de recogida
+         */
         function cambiarEtiquetaHabitacion() {
-            const label = document.getElementById('labelHabitacion');
-            const input = document.getElementById('habitacion');
-            const tipo = document.getElementById('tipoRecogida').value;
-            const labelLugar = document.getElementById('labelLugarRecogida');
-            const inputLugar = document.getElementById('lugarRecogida');
-            const labelHora = document.getElementById('labelHoraRecogida');
+            var label = document.getElementById('labelHabitacion');
+            var input = document.getElementById('habitacion');
+            var tipo = document.getElementById('tipoRecogida').value;
+            var labelLugar = document.getElementById('labelLugarRecogida');
+            var inputLugar = document.getElementById('lugarRecogida');
+            var labelHora = document.getElementById('labelHoraRecogida');
             
             if (tipo === 'Sin Recogida') {
                 labelLugar.textContent = 'Lugar de la Excursión';
@@ -591,15 +820,17 @@
             actualizarVistaPrevia();
         }
 
-        // ====== CALCULAR SUBTOTAL ======
+        /**
+         * Calcula el subtotal y total del recibo
+         */
         function calcularSubtotal() {
-            const tipo = document.getElementById('tipoExcursion').value;
-            const adultos = parseInt(document.getElementById('adultos').value) || 0;
-            const ninos = parseInt(document.getElementById('ninos').value) || 0;
-            const precioAdulto = parseFloat(document.getElementById('precioAdulto').value) || 0;
-            const precioNino = parseFloat(document.getElementById('precioNino').value) || 0;
+            var tipo = document.getElementById('tipoExcursion').value;
+            var adultos = parseInt(document.getElementById('adultos').value) || 0;
+            var ninos = parseInt(document.getElementById('ninos').value) || 0;
+            var precioAdulto = parseFloat(document.getElementById('precioAdulto').value) || 0;
+            var precioNino = parseFloat(document.getElementById('precioNino').value) || 0;
             
-            let subtotal = 0;
+            var subtotal = 0;
             
             if (tipo === 'privado') {
                 subtotal = precioAdulto;
@@ -609,12 +840,12 @@
             
             document.getElementById('subtotal').value = subtotal.toFixed(2);
             
-            const descuento = parseFloat(document.getElementById('descuento').value) || 0;
-            const total = subtotal - descuento;
+            var descuento = parseFloat(document.getElementById('descuento').value) || 0;
+            var total = subtotal - descuento;
             document.getElementById('total').value = total.toFixed(2);
             
-            const estado = document.querySelector('input[name="estado"]:checked').value;
-            let deposito = 0;
+            var estado = document.querySelector('input[name="estado"]:checked').value;
+            var deposito = 0;
             if (estado === 'completo') {
                 deposito = 0;
             } else if (estado === 'deposito') {
@@ -627,21 +858,23 @@
             actualizarVistaPrevia();
         }
 
-        // ====== ACTUALIZAR VISTA PREVIA ======
+        /**
+         * Actualiza la vista previa del recibo
+         */
         function actualizarVistaPrevia() {
             document.getElementById('vpId').textContent = document.getElementById('id').value || '---';
             document.getElementById('vpCliente').textContent = document.getElementById('cliente').value || '---';
             document.getElementById('vpWhatsapp').textContent = document.getElementById('whatsapp').value || '---';
             
-            const tipo = document.getElementById('tipoExcursion').value || 'compartido';
+            var tipo = document.getElementById('tipoExcursion').value || 'compartido';
             document.getElementById('vpTipo').textContent = tipo === 'privado' ? 'Privado' : 'Compartido';
             document.getElementById('vpGrupo').textContent = document.getElementById('grupo').value || '---';
             
-            const tipoRecogida = document.getElementById('tipoRecogida').value || '';
-            const lugarRecogida = document.getElementById('lugarRecogida').value || '';
+            var tipoRecogida = document.getElementById('tipoRecogida').value || '';
+            var lugarRecogida = document.getElementById('lugarRecogida').value || '';
             
-            const vpLabelRecogida = document.getElementById('vpLabelRecogida');
-            let recogidaTexto = '';
+            var vpLabelRecogida = document.getElementById('vpLabelRecogida');
+            var recogidaTexto = '';
             
             if (tipoRecogida === 'Sin Recogida') {
                 vpLabelRecogida.textContent = 'Lugar de la Excursión';
@@ -652,7 +885,7 @@
             }
             document.getElementById('vpRecogida').textContent = recogidaTexto || '---';
             
-            const vpLabelHabitacion = document.getElementById('vpLabelHabitacion');
+            var vpLabelHabitacion = document.getElementById('vpLabelHabitacion');
             if (tipoRecogida === 'Hotel') vpLabelHabitacion.textContent = 'Habitación';
             else if (tipoRecogida === 'Airbnb') vpLabelHabitacion.textContent = 'Apartamento';
             else if (tipoRecogida === 'Punto de Encuentro') vpLabelHabitacion.textContent = 'Referencia';
@@ -660,10 +893,10 @@
             
             document.getElementById('vpHabitacion').textContent = document.getElementById('habitacion').value || '---';
             
-            const transporte = document.getElementById('transporte').value || '---';
+            var transporte = document.getElementById('transporte').value || '---';
             document.getElementById('vpTransporte').textContent = transporte;
             
-            const vpLabelHora = document.getElementById('vpLabelHora');
+            var vpLabelHora = document.getElementById('vpLabelHora');
             if (tipoRecogida === 'Sin Recogida') {
                 vpLabelHora.textContent = 'Hora de la Excursión';
             } else {
@@ -674,142 +907,141 @@
             document.getElementById('vpExcursion').textContent = document.getElementById('excursion').value || '---';
             document.getElementById('vpFecha').textContent = document.getElementById('fechaExcursion').value || '---';
             
-            const adultos = document.getElementById('adultos').value || 0;
-            const ninos = document.getElementById('ninos').value || 0;
+            var adultos = document.getElementById('adultos').value || 0;
+            var ninos = document.getElementById('ninos').value || 0;
             document.getElementById('vpPersonas').textContent = adultos + ' Adultos, ' + ninos + ' Niños';
             document.getElementById('vpCapacidad').textContent = document.getElementById('capacidadMaxima').value || '---';
             
             document.getElementById('vpMetodoPago').textContent = document.getElementById('metodoPago').value || '---';
 
-            const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
-            const descuento = parseFloat(document.getElementById('descuento').value) || 0;
-            const total = subtotal - descuento;
+            var subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+            var descuento = parseFloat(document.getElementById('descuento').value) || 0;
+            var total = subtotal - descuento;
             document.getElementById('total').value = total.toFixed(2);
 
-            const estadoSeleccionado = document.querySelector('input[name="estado"]:checked');
-            const estado = estadoSeleccionado ? estadoSeleccionado.value : 'completo';
+            var estadoSeleccionado = document.querySelector('input[name="estado"]:checked');
+            var estado = estadoSeleccionado ? estadoSeleccionado.value : 'completo';
             
-            const deposito = parseFloat(document.getElementById('deposito').value) || 0;
-            const balance = total - deposito;
+            var deposito = parseFloat(document.getElementById('deposito').value) || 0;
+            var balance = total - deposito;
 
-            const estadoEl = document.getElementById('vpEstado');
+            var estadoEl = document.getElementById('vpEstado');
             if (estado === 'completo' || balance <= 0) {
-                estadoEl.textContent = '✅ Pagado Completo';
+                estadoEl.textContent = 'Pagado Completo';
                 estadoEl.className = 'estado-mini pagado';
             } else if (estado === 'deposito' && deposito > 0) {
-                estadoEl.textContent = '💰 Falta Pagar: $' + balance.toFixed(2);
+                estadoEl.textContent = 'Falta Pagar: $' + balance.toFixed(2);
                 estadoEl.className = 'estado-mini falta';
             } else {
-                estadoEl.textContent = '⏳ Pendiente de Pago: $' + balance.toFixed(2);
+                estadoEl.textContent = 'Pendiente de Pago: $' + balance.toFixed(2);
                 estadoEl.className = 'estado-mini pendiente';
             }
 
             document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
         }
 
-        // ====== DESCUENTO ======
+        /**
+         * Muestra u oculta el campo de descuento
+         */
         function toggleDescuento() {
-            const group = document.getElementById('descuentoGroup');
-            const btn = document.getElementById('btnDescuento');
+            var group = document.getElementById('descuentoGroup');
+            var btn = document.getElementById('btnDescuento');
             group.classList.toggle('visible');
             if (group.classList.contains('visible')) {
                 btn.innerHTML = 'Quitar Descuento';
                 btn.classList.add('activo');
             } else {
                 document.getElementById('descuento').value = '';
-                btn.innerHTML = '+ Agregar Descuento';
+                btn.innerHTML = 'Agregar Descuento';
                 btn.classList.remove('activo');
                 calcularSubtotal();
             }
         }
 
-        // ====== GENERAR QR Y ENLACE ======
+        /**
+         * Genera el QR y el enlace del recibo
+         */
         function generarQRYEnlace() {
-            // Validar campos obligatorios
-            const cliente = document.getElementById('cliente').value.trim();
-            const excursion = document.getElementById('excursion').value.trim();
+            var cliente = document.getElementById('cliente').value.trim();
+            var excursion = document.getElementById('excursion').value.trim();
             
             if (!cliente || !excursion) {
                 alert('Los campos Cliente y Excursión son obligatorios.');
                 return;
             }
             
-            // Obtener todos los valores del formulario
-            const form = document.getElementById('formRecibo');
-            const formData = new FormData(form);
-            const params = new URLSearchParams(formData);
+            var form = document.getElementById('formRecibo');
+            var formData = new FormData(form);
+            var params = new URLSearchParams(formData);
             
-            // Asegurar que id tenga valor
-            const idField = document.getElementById('id').value.trim();
+            var idField = document.getElementById('id').value.trim();
             if (!idField) {
-                const nuevoId = 'REC-' + Date.now();
+                var nuevoId = 'REC-' + Date.now();
                 document.getElementById('id').value = nuevoId;
                 params.set('id', nuevoId);
             }
             
-            // Recibo usa el mismo ID si no existe
             if (!params.has('recibo') || !params.get('recibo')) {
                 params.set('recibo', params.get('id'));
             }
             
-            const base = '/ver-recibo';
-            const enlaceQR = base + '?' + params.toString();
+            var base = '/ver-recibo';
+            var enlaceQR = base + '?' + params.toString();
             
-            // ====== URL PARA EL CLIENTE (sin admin) ======
-            const urlCliente = window.location.origin + enlaceQR;
+            var urlCliente = window.location.origin + enlaceQR;
             
-            // ====== URL PARA ADMIN (CON admin) ======
-            const ADMIN_KEY = 'admin2026';
-            const urlAdmin = urlCliente + '&admin=' + ADMIN_KEY;
+            var ADMIN_KEY = 'admin2026';
+            var urlAdmin = urlCliente + '&admin=' + ADMIN_KEY;
             
-            // ====== Mostrar enlace público (sin admin) ======
             document.getElementById('enlaceGenerado').textContent = urlCliente;
             
-            // ====== Generar QR (sin admin) ======
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(urlCliente)}&size=200x200`;
+            var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(urlCliente) + '&size=200x200';
             document.getElementById('qrImg').src = qrUrl;
             
-            // ====== WhatsApp (envía enlace público al cliente) ======
-            const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${urlCliente}`;
-            document.getElementById('whatsappLink').href = `https://wa.me/1?text=${encodeURIComponent(mensaje)}`;
+            var mensaje = 'Hola ' + cliente + ', tu recibo de ' + excursion + ' está listo. Escanea este QR o haz clic en el enlace: ' + urlCliente;
+            document.getElementById('whatsappLink').href = 'https://wa.me/1?text=' + encodeURIComponent(mensaje);
             
-            // ====== Ver Recibo (para ti, con admin) ======
             document.getElementById('verRecibo').href = urlAdmin;
             
-            // ====== Mostrar resultado ======
             document.getElementById('resultado').classList.add('visible');
             
-            // ====== Abrir el recibo para ti (con admin) ======
             window.open(urlAdmin, '_blank');
         }
 
-        // ====== COPIAR ENLACE ======
+        /**
+         * Copia el enlace al portapapeles
+         */
         function copiarEnlace() {
-            const enlace = document.getElementById('enlaceGenerado').textContent;
-            navigator.clipboard.writeText(enlace).then(() => alert('Enlace copiado'))
-                .catch(() => {
-                    const textarea = document.createElement('textarea');
-                    textarea.value = enlace;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
-                    alert('Enlace copiado');
-                });
+            var enlace = document.getElementById('enlaceGenerado').textContent;
+            navigator.clipboard.writeText(enlace).then(function() {
+                alert('Enlace copiado');
+            }).catch(function() {
+                var textarea = document.createElement('textarea');
+                textarea.value = enlace;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Enlace copiado');
+            });
         }
 
-        // ====== DESCARGAR QR ======
+        /**
+         * Descarga el código QR como imagen
+         */
         function descargarQR() {
-            const qrImg = document.getElementById('qrImg');
-            const link = document.createElement('a');
+            var qrImg = document.getElementById('qrImg');
+            var link = document.createElement('a');
             link.download = 'recibo-qr-' + (document.getElementById('id').value || 'recibo') + '.png';
             link.href = qrImg.src;
             link.click();
         }
 
-        // ====== FECHA POR DEFECTO ======
+        /**
+         * Inicializa el formulario con valores por defecto
+         */
         document.addEventListener('DOMContentLoaded', function() {
-            const semana = new Date();
+            var semana = new Date();
             semana.setDate(semana.getDate() + 7);
             document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
             
