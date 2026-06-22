@@ -5,21 +5,39 @@ const PORT = process.env.PORT || 3000;
 
 /**
  * CLAVE SECRETA PARA ADMINISTRADOR
- * Cambia esta clave por una que solo tú conozcas
  * @constant {string}
  */
 const ADMIN_KEY = 'admin2026';
 
-/**
- * TIEMPO DE EXPIRACIÓN DEL QR (en horas)
- * Cambia este valor según necesites
- * @constant {number}
- */
-const QR_EXPIRATION_HOURS = 24;
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+/**
+ * Convierte horas a texto legible
+ * @param {number} horas - Número de horas
+ * @returns {string} Texto legible
+ */
+function formatearTiempo(horas) {
+    if (!horas || horas === 'nunca') return 'Permanente';
+    
+    const horasNum = parseInt(horas);
+    if (horasNum < 24) {
+        return horasNum + ' ' + (horasNum === 1 ? 'hora' : 'horas');
+    } else if (horasNum < 168) {
+        const dias = Math.floor(horasNum / 24);
+        return dias + ' ' + (dias === 1 ? 'día' : 'días');
+    } else if (horasNum < 720) {
+        const semanas = Math.floor(horasNum / 168);
+        return semanas + ' ' + (semanas === 1 ? 'semana' : 'semanas');
+    } else if (horasNum < 8760) {
+        const meses = Math.floor(horasNum / 720);
+        return meses + ' ' + (meses === 1 ? 'mes' : 'meses');
+    } else {
+        const anos = Math.floor(horasNum / 8760);
+        return anos + ' ' + (anos === 1 ? 'año' : 'años');
+    }
+}
 
 /**
  * Ruta principal - Generador de recibos
@@ -30,8 +48,6 @@ app.get('/', (req, res) => {
 
 /**
  * Ruta para visualizar el recibo
- * @param {Object} req - Petición HTTP
- * @param {Object} res - Respuesta HTTP
  */
 app.get('/ver-recibo', (req, res) => {
     const { 
@@ -40,7 +56,7 @@ app.get('/ver-recibo', (req, res) => {
         subtotal, descuento, total, deposito, estado, metodoPago,
         whatsapp, correo, hotel, habitacion, horaRecogida, transporte, notas, fechaExcursion,
         tipoExcursion, grupo, capacidadMaxima,
-        admin, tipoRecogida, lugarRecogida, timestamp
+        admin, tipoRecogida, lugarRecogida, timestamp, expiracion
     } = req.query;
 
     // ====== VALIDACIÓN DE PARÁMETROS OBLIGATORIOS ======
@@ -48,16 +64,25 @@ app.get('/ver-recibo', (req, res) => {
         return res.status(400).send('Error: Los campos Cliente y Excursión son obligatorios.');
     }
 
-    // ====== VALIDACIÓN DE EXPIRACIÓN DEL QR ======
-    // Solo validar expiración si NO es admin
+    // ====== VERIFICACIÓN DE ADMINISTRADOR ======
     const esAdmin = admin === ADMIN_KEY;
-    
-    if (timestamp && !esAdmin) {
-        const fechaGeneracion = parseInt(timestamp);
+
+    // ====== PROCESAR EXPIRACIÓN ======
+    let horasExpiracion = null;
+    let fechaExpiracion = null;
+    let reciboValido = true;
+    let fechaGeneracion = null;
+    let textoExpiracion = 'Permanente';
+
+    if (timestamp && expiracion && expiracion !== 'nunca') {
+        horasExpiracion = parseInt(expiracion);
+        textoExpiracion = formatearTiempo(horasExpiracion);
+        fechaGeneracion = parseInt(timestamp);
         const fechaActual = Date.now();
         const horasTranscurridas = (fechaActual - fechaGeneracion) / (1000 * 60 * 60);
         
-        if (horasTranscurridas > QR_EXPIRATION_HOURS) {
+        // Solo validar expiración si NO es admin
+        if (!esAdmin && horasTranscurridas > horasExpiracion) {
             return res.status(410).send(`
                 <!DOCTYPE html>
                 <html lang="es">
@@ -196,6 +221,10 @@ app.get('/ver-recibo', (req, res) => {
                                 <span class="label">Expiró hace</span>
                                 <span class="valor" style="color: #c62828;">${Math.floor(horasTranscurridas)} horas</span>
                             </div>
+                            <div class="fila">
+                                <span class="label">Válido por</span>
+                                <span class="valor">${textoExpiracion}</span>
+                            </div>
                         </div>
                         <p class="footer-error">Republic Excursions - Sistema de Recibos</p>
                     </div>
@@ -203,6 +232,9 @@ app.get('/ver-recibo', (req, res) => {
                 </html>
             `);
         }
+        
+        reciboValido = horasTranscurridas <= horasExpiracion;
+        fechaExpiracion = new Date(fechaGeneracion + (horasExpiracion * 60 * 60 * 1000));
     }
 
     // ====== GENERACIÓN DE IDENTIFICADORES ======
@@ -228,7 +260,6 @@ app.get('/ver-recibo', (req, res) => {
     const totalCalculado = parseFloat(total) || (subtotalCalculado - descuentoNum);
     const depositoNum = parseFloat(deposito) || 0;
     
-    // ====== CÁLCULO DEL BALANCE PENDIENTE ======
     let balancePendiente = totalCalculado - depositoNum;
     
     if (estado === 'completo' || balancePendiente <= 0.009) {
@@ -276,11 +307,6 @@ app.get('/ver-recibo', (req, res) => {
     
     const estadoInfo = estadoConfig[estadoReal] || { texto: 'ESTADO DESCONOCIDO', color: '#6c757d' };
 
-    // ====== INFORMACIÓN DE EXPIRACIÓN ======
-    const fechaGeneracion = timestamp ? parseInt(timestamp) : null;
-    const fechaExpiracion = fechaGeneracion ? new Date(fechaGeneracion + (QR_EXPIRATION_HOURS * 60 * 60 * 1000)) : null;
-    const reciboValido = !fechaGeneracion || (Date.now() - fechaGeneracion) / (1000 * 60 * 60) <= QR_EXPIRATION_HOURS;
-
     // ====== CONSTRUCCIÓN DE DATOS PARA LA VISTA ======
     const datos = {
         idFactura: idFinal,
@@ -322,8 +348,10 @@ app.get('/ver-recibo', (req, res) => {
         mostrarBotones: esAdmin,
         fechaGeneracion: fechaGeneracion,
         fechaExpiracion: fechaExpiracion,
-        horasExpiracion: QR_EXPIRATION_HOURS,
-        reciboValido: reciboValido
+        horasExpiracion: horasExpiracion,
+        textoExpiracion: textoExpiracion,
+        reciboValido: reciboValido,
+        expiracionConfig: expiracion || 'nunca'
     };
 
     res.render('recibo', datos);
@@ -338,7 +366,8 @@ app.listen(PORT, () => {
     console.log('========================================');
     console.log(`  Servidor: http://localhost:${PORT}`);
     console.log(`  Clave Admin: ${ADMIN_KEY}`);
-    console.log(`  Expiración QR: ${QR_EXPIRATION_HOURS} horas`);
+    console.log('  Expiración: Configurable por recibo');
+    console.log('  Opciones: 1h a 8 meses + Permanente');
     console.log('  Estado: Servidor corriendo correctamente');
     console.log('========================================');
 });
