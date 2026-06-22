@@ -280,18 +280,34 @@
                 <span class="valor"><%= correo %></span>
             </div>
             <% } %>
+
+            <!-- ====== RECOGIDA MEJORADA ====== -->
+            <!-- Si es Sin Recogida, mostrar "Lugar de la Excursión" -->
             <div class="fila">
-                <span class="label">Recogida</span>
-                <span class="valor"><%= hotel %></span>
+                <span class="label"><%= esSinRecogida ? 'Lugar de la Excursión' : 'Recogida' %></span>
+                <span class="valor">
+                    <% if (esSinRecogida) { %>
+                        <%= lugarRecogida || '---' %>
+                    <% } else { %>
+                        <%= tipoRecogida %><%= lugarRecogida ? ' - ' + lugarRecogida : '' %>
+                    <% } %>
+                </span>
             </div>
+
+            <!-- Habitación / Apartamento / Referencia (solo si NO es Sin Recogida) -->
+            <% if (!esSinRecogida) { %>
             <div class="fila">
-                <span class="label">Habitación</span>
-                <span class="valor"><%= habitacion %></span>
+                <span class="label"><%= tipoRecogida === 'Hotel' ? 'Habitación' : tipoRecogida === 'Airbnb' ? 'Apartamento' : 'Referencia' %></span>
+                <span class="valor"><%= habitacion || '---' %></span>
             </div>
+            <% } %>
+
+            <!-- Hora (cambia según Sin Recogida o no) -->
             <div class="fila">
-                <span class="label">Hora de Recogida</span>
-                <span class="valor"><%= horaRecogida %></span>
+                <span class="label"><%= labelHora || (esSinRecogida ? 'Hora de la Excursión' : 'Hora de Recogida') %></span>
+                <span class="valor"><%= horaRecogida || '---' %></span>
             </div>
+
             <div class="fila">
                 <span class="label">Transporte</span>
                 <span class="valor"><%= transporte %></span>
