@@ -17,6 +17,7 @@ app.get('/ver-recibo', (req, res) => {
         adultos, ninos, precioAdulto, precioNino,
         subtotal, descuento, total, deposito, estado, metodoPago,
         whatsapp, correo, hotel, habitacion, horaRecogida, transporte, puntoSalida, notas, fechaExcursion,
+        tipoExcursion, grupo, capacidadMaxima,
         admin
     } = req.query;
 
@@ -64,6 +65,9 @@ app.get('/ver-recibo', (req, res) => {
             day: 'numeric'
         }),
         estado: estado || 'pendiente',
+        tipoExcursion: tipoExcursion || 'compartido',
+        grupo: grupo || '',
+        capacidadMaxima: capacidadMaxima || '',
         mostrarBotones: admin === 'true'
     };
 
