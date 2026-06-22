@@ -258,19 +258,16 @@
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
         <form id="formRecibo">
-            <!-- ID -->
             <div class="form-group">
                 <label>ID / Código de Reserva</label>
                 <input type="text" id="id" placeholder="Ej: BUG-5198" oninput="actualizarVistaPrevia()">
             </div>
 
-            <!-- CLIENTE -->
             <div class="form-group">
                 <label>Cliente <span class="required">*</span></label>
                 <input type="text" id="cliente" placeholder="Nombre completo" oninput="actualizarVistaPrevia()">
             </div>
 
-            <!-- WHATSAPP + CORREO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>WhatsApp <span class="required">*</span></label>
@@ -282,7 +279,6 @@
                 </div>
             </div>
 
-            <!-- TIPO DE EXCURSIÓN + GRUPO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Excursión</label>
@@ -304,7 +300,6 @@
                 </div>
             </div>
 
-            <!-- RECOGIDA -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Recogida</label>
@@ -331,7 +326,6 @@
                 </div>
             </div>
 
-            <!-- TRANSPORTE + PUNTO DE SALIDA -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Transporte</label>
@@ -341,13 +335,12 @@
                     </select>
                 </div>
                 <div class="form-group punto-salida" id="puntoSalidaGroup">
-                    <label>Lugar de la Excursión</label>
-                    <input type="text" id="puntoSalida" placeholder="Ej: Muelle de Punta Cana" oninput="actualizarVistaPrevia()">
+                    <label id="labelPuntoSalida">Lugar de la Excursión</label>
+                    <input type="text" id="puntoSalida" placeholder="Ej: Muelle de Punta Cana, Puerto de Bayahíbe" oninput="actualizarVistaPrevia()">
                     <div class="small-hint">Lugar donde comienza la excursión</div>
                 </div>
             </div>
 
-            <!-- FECHA + EXCURSION -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Fecha de la Excursión</label>
@@ -359,7 +352,6 @@
                 </div>
             </div>
 
-            <!-- ADULTOS + NIÑOS -->
             <div class="form-row">
                 <div class="form-group">
                     <label id="labelAdultos">Adultos <span class="required">*</span></label>
@@ -371,7 +363,6 @@
                 </div>
             </div>
 
-            <!-- PRECIOS -->
             <div class="form-row">
                 <div class="form-group">
                     <label id="labelPrecioAdulto">Precio por Adulto (USD) <span class="required">*</span></label>
@@ -384,7 +375,6 @@
                 </div>
             </div>
 
-            <!-- SUBTOTAL + DEPOSITO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Subtotal (USD)</label>
@@ -396,14 +386,12 @@
                 </div>
             </div>
 
-            <!-- DESCUENTO -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label>Descuento (USD)</label>
                 <input type="number" id="descuento" min="0" step="0.01" oninput="calcularSubtotal()">
                 <div class="small-hint">Monto a descontar del subtotal</div>
             </div>
 
-            <!-- TOTAL + DESCUENTO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Total (USD)</label>
@@ -416,7 +404,6 @@
                 </div>
             </div>
 
-            <!-- ESTADO DE PAGO -->
             <div class="form-group">
                 <label>Estado de Pago</label>
                 <div class="estado-options">
@@ -427,7 +414,6 @@
                 <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta a $0.00.</div>
             </div>
 
-            <!-- METODO PAGO + NOTAS -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Método de Pago</label>
@@ -447,7 +433,6 @@
             <button type="submit" class="btn">GENERAR RECIBO</button>
         </form>
 
-        <!-- VISTA PREVIA -->
         <div class="vista-previa">
             <h4>VISTA PREVIA DEL RECIBO</h4>
             <div class="recibo-mini" id="vistaPrevia">
@@ -488,7 +473,7 @@
                     <span class="valor" id="vpTransporte">---</span>
                 </div>
                 <div class="fila">
-                    <span class="label">Lugar de la Excursión</span>
+                    <span class="label" id="vpLabelLugarExcursion">Lugar de la Excursión</span>
                     <span class="valor" id="vpPuntoSalida">---</span>
                 </div>
                 <div class="fila">
@@ -516,7 +501,6 @@
             </div>
         </div>
 
-        <!-- RESULTADO -->
         <div id="resultado" class="resultado">
             <h3>Recibo Generado</h3>
             <div class="qr-container">
@@ -533,11 +517,10 @@
     </div>
 
     <script>
-        // ====== MOSTRAR PUNTO DE SALIDA ======
         function mostrarPuntoSalida() {
             const transporte = document.getElementById('transporte').value;
             const group = document.getElementById('puntoSalidaGroup');
-            const labelPuntoSalida = document.querySelector('#puntoSalidaGroup label');
+            const labelPuntoSalida = document.getElementById('labelPuntoSalida');
             const inputPuntoSalida = document.getElementById('puntoSalida');
             const labelHora = document.getElementById('labelHora');
             
@@ -556,7 +539,6 @@
             actualizarVistaPrevia();
         }
 
-        // ====== CAMBIAR LABEL DE HORA ======
         function cambiarLabelHora() {
             const transporte = document.getElementById('transporte').value;
             const labelHora = document.getElementById('labelHora');
@@ -568,7 +550,6 @@
             actualizarVistaPrevia();
         }
 
-        // ====== CAMBIAR TIPO DE EXCURSIÓN ======
         function cambiarTipoExcursion() {
             const tipo = document.getElementById('tipoExcursion').value;
             const privadoGroup = document.getElementById('privadoGroup');
@@ -601,7 +582,6 @@
             actualizarVistaPrevia();
         }
 
-        // ====== CAMBIAR ETIQUETA HABITACION Y OCULTAR RECOGIDA ======
         function cambiarEtiquetaHabitacion() {
             const label = document.getElementById('labelHabitacion');
             const input = document.getElementById('habitacion');
@@ -611,11 +591,16 @@
             const labelLugar = document.querySelector('#lugarRecogidaGroup label');
             const inputLugar = document.getElementById('lugarRecogida');
             const labelHora = document.getElementById('labelHora');
+            const transporte = document.getElementById('transporte').value;
             
             if (tipo === 'Sin Recogida') {
                 labelLugar.textContent = 'Lugar de la Excursión';
                 inputLugar.placeholder = 'Ej: Muelle de Punta Cana, Puerto de Bayahíbe';
-                labelHora.textContent = 'Hora de la Excursión';
+                if (transporte === 'No') {
+                    labelHora.textContent = 'Hora de la Excursión';
+                } else {
+                    labelHora.textContent = 'Hora de la Excursión';
+                }
                 label.textContent = '---';
                 input.placeholder = 'No aplica';
                 lugarGroup.style.display = 'block';
@@ -624,6 +609,11 @@
             } else {
                 labelLugar.textContent = 'Lugar de Recogida';
                 inputLugar.placeholder = 'Ej: Riu Bavaro, Villa Sol, Parque Central';
+                if (transporte === 'No') {
+                    labelHora.textContent = 'Hora de la Excursión';
+                } else {
+                    labelHora.textContent = 'Hora de Recogida';
+                }
                 if (tipo === 'Hotel') {
                     label.textContent = 'Habitación';
                     input.placeholder = 'Ej: 123';
@@ -640,7 +630,6 @@
             actualizarVistaPrevia();
         }
 
-        // ====== CALCULAR SUBTOTAL ======
         function calcularSubtotal() {
             const tipo = document.getElementById('tipoExcursion').value;
             const adultos = parseInt(document.getElementById('adultos').value) || 0;
@@ -676,7 +665,6 @@
             actualizarVistaPrevia();
         }
 
-        // ====== ACTUALIZAR VISTA PREVIA ======
         function actualizarVistaPrevia() {
             document.getElementById('vpId').textContent = document.getElementById('id').value || '---';
             document.getElementById('vpCliente').textContent = document.getElementById('cliente').value || '---';
@@ -703,18 +691,18 @@
             document.getElementById('vpTransporte').textContent = transporte;
             
             const vpLabelHora = document.getElementById('vpLabelHora');
-            if (transporte === 'No') {
-                vpLabelHora.textContent = 'Hora de la Excursión';
-            } else {
-                vpLabelHora.textContent = 'Hora de Recogida';
-            }
-            document.getElementById('vpHoraRecogida').textContent = document.getElementById('horaRecogida').value || '---';
+            const vpLabelLugar = document.getElementById('vpLabelLugarExcursion');
             
             if (transporte === 'No') {
+                vpLabelHora.textContent = 'Hora de la Excursión';
+                vpLabelLugar.textContent = 'Lugar de la Excursión';
                 document.getElementById('vpPuntoSalida').textContent = document.getElementById('puntoSalida').value || '---';
             } else {
+                vpLabelHora.textContent = 'Hora de Recogida';
+                vpLabelLugar.textContent = 'Punto de Salida';
                 document.getElementById('vpPuntoSalida').textContent = '---';
             }
+            document.getElementById('vpHoraRecogida').textContent = document.getElementById('horaRecogida').value || '---';
             
             document.getElementById('vpExcursion').textContent = document.getElementById('excursion').value || '---';
             document.getElementById('vpFecha').textContent = document.getElementById('fechaExcursion').value || '---';
@@ -739,20 +727,19 @@
 
             const estadoEl = document.getElementById('vpEstado');
             if (estado === 'completo') {
-                estadoEl.textContent = '✅ Pagado Completo';
+                estadoEl.textContent = 'Pagado Completo';
                 estadoEl.className = 'estado-mini pagado';
             } else if (estado === 'deposito') {
-                estadoEl.textContent = '⚠️ Falta Pagar: $' + balance.toFixed(2);
+                estadoEl.textContent = 'Falta Pagar: $' + balance.toFixed(2);
                 estadoEl.className = 'estado-mini falta';
             } else if (estado === 'pendiente') {
-                estadoEl.textContent = '⏳ Pendiente de Pago: $' + balance.toFixed(2);
+                estadoEl.textContent = 'Pendiente de Pago: $' + balance.toFixed(2);
                 estadoEl.className = 'estado-mini pendiente';
             }
 
             document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
         }
 
-        // ====== GENERAR FECHA ======
         document.addEventListener('DOMContentLoaded', function() {
             const semana = new Date();
             semana.setDate(semana.getDate() + 7);
@@ -763,7 +750,6 @@
             actualizarVistaPrevia();
         });
 
-        // ====== DESCUENTO ======
         function toggleDescuento() {
             const group = document.getElementById('descuentoGroup');
             const btn = document.getElementById('btnDescuento');
@@ -779,7 +765,6 @@
             }
         }
 
-        // ====== ENVIAR ======
         document.getElementById('formRecibo').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -790,15 +775,15 @@
             const tipo = document.getElementById('tipoExcursion').value;
 
             if (tipo === 'compartido' && (!adultos || !precioAdulto)) {
-                alert('⚠️ Para excursiones compartidas, completa Adultos y Precio por Adulto.');
+                alert('Para excursiones compartidas, completa Adultos y Precio por Adulto.');
                 return;
             }
             if (tipo === 'privado' && !precioAdulto) {
-                alert('⚠️ Para excursiones privadas, completa el Precio Total.');
+                alert('Para excursiones privadas, completa el Precio Total.');
                 return;
             }
             if (!cliente || !excursion) {
-                alert('⚠️ Los campos Cliente y Excursión son obligatorios.');
+                alert('Los campos Cliente y Excursión son obligatorios.');
                 return;
             }
 
