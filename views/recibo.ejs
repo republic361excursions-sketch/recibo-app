@@ -78,6 +78,45 @@
             letter-spacing: 0.5px;
         }
 
+        /* ===== INFORMACIÓN DE EXPIRACIÓN ===== */
+        .expiracion-info {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px 20px;
+            background: #e8f5e9;
+            border-radius: 10px;
+            margin: 16px 0 24px 0;
+            border: 1px solid #a5d6a7;
+        }
+        
+        .expiracion-item {
+            text-align: center;
+        }
+        
+        .expiracion-item .label {
+            display: block;
+            font-size: 11px;
+            color: #6b7a8f;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .expiracion-item .valor {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a2a4a;
+            margin-top: 4px;
+        }
+        
+        .expiracion-item .valor.expirado {
+            color: #c62828;
+        }
+        
+        .expiracion-item .valor.valido {
+            color: #2e7d32;
+        }
+
         /* ===== INFORMACIÓN DEL CLIENTE ===== */
         .info-cliente {
             margin-bottom: 30px;
@@ -371,6 +410,25 @@
                 padding: 25px 20px;
             }
             
+            .expiracion-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .expiracion-item {
+                display: flex;
+                justify-content: space-between;
+                padding: 2px 0;
+            }
+            
+            .expiracion-item .label {
+                font-size: 12px;
+            }
+            
+            .expiracion-item .valor {
+                font-size: 13px;
+            }
+            
             .info-cliente .fila {
                 flex-direction: column;
                 align-items: flex-start;
@@ -413,6 +471,30 @@
             <div class="titulo">Recibo de Pago</div>
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
+
+        <!-- ===== INFORMACIÓN DE EXPIRACIÓN ===== -->
+        <% if (fechaGeneracion && fechaExpiracion) { %>
+        <div class="expiracion-info">
+            <div class="expiracion-item">
+                <span class="label">Generado</span>
+                <span class="valor"><%= new Date(fechaGeneracion).toLocaleString('es-ES') %></span>
+            </div>
+            <div class="expiracion-item">
+                <span class="label">Válido hasta</span>
+                <span class="valor"><%= new Date(fechaExpiracion).toLocaleString('es-ES') %></span>
+            </div>
+            <div class="expiracion-item">
+                <span class="label">Estado</span>
+                <span class="valor <%= reciboValido ? 'valido' : 'expirado' %>">
+                    <%= reciboValido ? 'Válido' : 'Expirado' %>
+                </span>
+            </div>
+            <div class="expiracion-item">
+                <span class="label">Expira en</span>
+                <span class="valor"><%= horasExpiracion %> horas</span>
+            </div>
+        </div>
+        <% } %>
 
         <!-- INFORMACIÓN DEL CLIENTE -->
         <div class="info-cliente">
