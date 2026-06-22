@@ -255,7 +255,7 @@
         </div>
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
-        <form id="formRecibo" action="/ver-recibo" method="GET" target="_blank">
+        <form id="formRecibo">
             <!-- ID -->
             <div class="form-group">
                 <label>ID / Código de Reserva</label>
@@ -437,7 +437,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn">GENERAR RECIBO</button>
+            <button type="button" class="btn" onclick="generarQRYEnlace()">GENERAR RECIBO</button>
         </form>
 
         <!-- VISTA PREVIA -->
@@ -640,7 +640,6 @@
             const tipoRecogida = document.getElementById('tipoRecogida').value || '';
             const lugarRecogida = document.getElementById('lugarRecogida').value || '';
             
-            // Vista previa de recogida
             const vpLabelRecogida = document.getElementById('vpLabelRecogida');
             let recogidaTexto = '';
             
@@ -664,7 +663,6 @@
             const transporte = document.getElementById('transporte').value || '---';
             document.getElementById('vpTransporte').textContent = transporte;
             
-            // Hora de recogida
             const vpLabelHora = document.getElementById('vpLabelHora');
             if (tipoRecogida === 'Sin Recogida') {
                 vpLabelHora.textContent = 'Hora de la Excursión';
@@ -725,16 +723,64 @@
             }
         }
 
-        // ====== FECHA POR DEFECTO ======
-        document.addEventListener('DOMContentLoaded', function() {
-            const semana = new Date();
-            semana.setDate(semana.getDate() + 7);
-            document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
+        // ====== GENERAR QR Y ENLACE ======
+        function generarQRYEnlace() {
+            // Validar campos obligatorios
+            const cliente = document.getElementById('cliente').value.trim();
+            const excursion = document.getElementById('excursion').value.trim();
             
-            document.querySelector('input[name="estado"][value="completo"]').checked = true;
-            cambiarEtiquetaHabitacion();
-            actualizarVistaPrevia();
-        });
+            if (!cliente || !excursion) {
+                alert('Los campos Cliente y Excursión son obligatorios.');
+                return;
+            }
+            
+            // Obtener todos los valores del formulario
+            const form = document.getElementById('formRecibo');
+            const formData = new FormData(form);
+            const params = new URLSearchParams(formData);
+            
+            // Asegurar que id y recibo tengan valores
+            const idField = document.getElementById('id').value.trim();
+            if (!idField) {
+                const nuevoId = 'REC-' + Date.now();
+                document.getElementById('id').value = nuevoId;
+                params.set('id', nuevoId);
+            }
+            
+            // Recibo usa el mismo ID si no existe
+            const reciboField = document.getElementById('recibo') ? document.getElementById('recibo').value : '';
+            if (!reciboField) {
+                params.set('recibo', params.get('id'));
+            }
+            
+            // Añadir admin=true para mostrar botones en el recibo
+            params.set('admin', 'true');
+            
+            // Construir enlace
+            const base = '/ver-recibo';
+            const enlaceQR = base + '?' + params.toString();
+            const urlCompleta = window.location.origin + enlaceQR;
+            
+            // Mostrar enlace
+            document.getElementById('enlaceGenerado').textContent = urlCompleta;
+            
+            // Generar QR
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(urlCompleta)}&size=200x200`;
+            document.getElementById('qrImg').src = qrUrl;
+            
+            // Configurar WhatsApp
+            const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${urlCompleta}`;
+            document.getElementById('whatsappLink').href = `https://wa.me/1?text=${encodeURIComponent(mensaje)}`;
+            
+            // Configurar Ver Recibo
+            document.getElementById('verRecibo').href = urlCompleta + '&admin=true';
+            
+            // Mostrar resultado
+            document.getElementById('resultado').classList.add('visible');
+            
+            // Abrir el recibo en una nueva pestaña
+            window.open(urlCompleta + '&admin=true', '_blank');
+        }
 
         // ====== COPIAR ENLACE ======
         function copiarEnlace() {
@@ -760,13 +806,15 @@
             link.click();
         }
 
-        // ====== ENVIAR FORMULARIO ======
-        document.getElementById('formRecibo').addEventListener('submit', function(e) {
-            // No prevenimos el submit porque queremos que abra en nueva pestaña
-            // Solo mostramos el resultado después de generar
-            setTimeout(function() {
-                document.getElementById('resultado').classList.add('visible');
-            }, 1000);
+        // ====== FECHA POR DEFECTO ======
+        document.addEventListener('DOMContentLoaded', function() {
+            const semana = new Date();
+            semana.setDate(semana.getDate() + 7);
+            document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
+            
+            document.querySelector('input[name="estado"][value="completo"]').checked = true;
+            cambiarEtiquetaHabitacion();
+            actualizarVistaPrevia();
         });
     </script>
 </body>
