@@ -52,8 +52,6 @@
         .punto-salida.visible { display: block; }
         .privado-group { display: none; }
         .privado-group.visible { display: block; }
-        .ocultar-recogida { display: none; }
-        .ocultar-recogida.visible { display: block; }
         .btn {
             width: 100%;
             padding: 16px;
@@ -343,7 +341,7 @@
                     </select>
                 </div>
                 <div class="form-group punto-salida" id="puntoSalidaGroup">
-                    <label>Punto de Salida</label>
+                    <label>Lugar de la Excursión</label>
                     <input type="text" id="puntoSalida" placeholder="Ej: Muelle de Punta Cana" oninput="actualizarVistaPrevia()">
                     <div class="small-hint">Lugar donde comienza la excursión</div>
                 </div>
@@ -490,7 +488,7 @@
                     <span class="valor" id="vpTransporte">---</span>
                 </div>
                 <div class="fila">
-                    <span class="label">Punto de Salida</span>
+                    <span class="label">Lugar de la Excursión</span>
                     <span class="valor" id="vpPuntoSalida">---</span>
                 </div>
                 <div class="fila">
@@ -539,10 +537,20 @@
         function mostrarPuntoSalida() {
             const transporte = document.getElementById('transporte').value;
             const group = document.getElementById('puntoSalidaGroup');
+            const labelPuntoSalida = document.querySelector('#puntoSalidaGroup label');
+            const inputPuntoSalida = document.getElementById('puntoSalida');
+            const labelHora = document.getElementById('labelHora');
+            
             if (transporte === 'No') {
                 group.classList.add('visible');
+                labelPuntoSalida.textContent = 'Lugar de la Excursión';
+                inputPuntoSalida.placeholder = 'Ej: Muelle de Punta Cana, Puerto de Bayahíbe';
+                labelHora.textContent = 'Hora de la Excursión';
             } else {
                 group.classList.remove('visible');
+                labelPuntoSalida.textContent = 'Punto de Salida';
+                inputPuntoSalida.placeholder = 'Ej: Muelle de Punta Cana';
+                labelHora.textContent = 'Hora de Recogida';
                 document.getElementById('puntoSalida').value = '';
             }
             actualizarVistaPrevia();
@@ -600,17 +608,22 @@
             const tipo = document.getElementById('tipoRecogida').value;
             const lugarGroup = document.getElementById('lugarRecogidaGroup');
             const horaGroup = document.getElementById('horaRecogidaGroup');
+            const labelLugar = document.querySelector('#lugarRecogidaGroup label');
+            const inputLugar = document.getElementById('lugarRecogida');
+            const labelHora = document.getElementById('labelHora');
             
             if (tipo === 'Sin Recogida') {
-                lugarGroup.style.display = 'none';
-                horaGroup.style.display = 'none';
+                labelLugar.textContent = 'Lugar de la Excursión';
+                inputLugar.placeholder = 'Ej: Muelle de Punta Cana, Puerto de Bayahíbe';
+                labelHora.textContent = 'Hora de la Excursión';
                 label.textContent = '---';
                 input.placeholder = 'No aplica';
-                document.getElementById('lugarRecogida').value = '';
-                document.getElementById('habitacion').value = '';
-            } else {
                 lugarGroup.style.display = 'block';
                 horaGroup.style.display = 'block';
+                document.getElementById('habitacion').value = '';
+            } else {
+                labelLugar.textContent = 'Lugar de Recogida';
+                inputLugar.placeholder = 'Ej: Riu Bavaro, Villa Sol, Parque Central';
                 if (tipo === 'Hotel') {
                     label.textContent = 'Habitación';
                     input.placeholder = 'Ej: 123';
@@ -621,6 +634,8 @@
                     label.textContent = 'Referencia';
                     input.placeholder = 'Ej: Parque Central, Esquina calle 5';
                 }
+                lugarGroup.style.display = 'block';
+                horaGroup.style.display = 'block';
             }
             actualizarVistaPrevia();
         }
@@ -687,7 +702,6 @@
             const transporte = document.getElementById('transporte').value || '---';
             document.getElementById('vpTransporte').textContent = transporte;
             
-            // Cambiar label de hora en vista previa
             const vpLabelHora = document.getElementById('vpLabelHora');
             if (transporte === 'No') {
                 vpLabelHora.textContent = 'Hora de la Excursión';
