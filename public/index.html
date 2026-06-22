@@ -292,7 +292,7 @@
                     </select>
                 </div>
                 <div class="form-group privado-group" id="privadoGroup">
-                    <label>Grupo / Empresa</label>
+                    <label>Grupo</label>
                     <input type="text" id="grupo" placeholder="Ej: Familia Pérez, Grupo 10" oninput="actualizarVistaPrevia()">
                 </div>
             </div>
@@ -362,24 +362,24 @@
             <!-- ADULTOS + NIÑOS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Adultos <span class="required">*</span></label>
-                    <input type="number" id="adultos" placeholder="Cantidad" min="0" oninput="actualizarVistaPrevia()">
+                    <label id="labelAdultos">Adultos <span class="required">*</span></label>
+                    <input type="number" id="adultos" placeholder="Cantidad" min="0" oninput="calcularSubtotal()">
                 </div>
                 <div class="form-group">
-                    <label>Niños</label>
-                    <input type="number" id="ninos" placeholder="Cantidad" min="0" oninput="actualizarVistaPrevia()">
+                    <label id="labelNinos">Niños</label>
+                    <input type="number" id="ninos" placeholder="Cantidad" min="0" oninput="calcularSubtotal()">
                 </div>
             </div>
 
             <!-- PRECIOS -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Precio por Adulto (USD) <span class="required">*</span></label>
-                    <input type="number" id="precioAdulto" placeholder="Ej: 45" min="0" step="0.01" oninput="actualizarVistaPrevia()">
+                    <label id="labelPrecioAdulto">Precio por Adulto (USD) <span class="required">*</span></label>
+                    <input type="number" id="precioAdulto" placeholder="Ej: 45" min="0" step="0.01" oninput="calcularSubtotal()">
                 </div>
                 <div class="form-group">
-                    <label>Precio por Niño (USD)</label>
-                    <input type="number" id="precioNino" placeholder="Ej: 25" min="0" step="0.01" oninput="actualizarVistaPrevia()">
+                    <label id="labelPrecioNino">Precio por Niño (USD)</label>
+                    <input type="number" id="precioNino" placeholder="Ej: 25" min="0" step="0.01" oninput="calcularSubtotal()">
                     <div class="small-hint">Si no aplica, dejar en 0.</div>
                 </div>
             </div>
@@ -399,7 +399,7 @@
             <!-- DESCUENTO -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label>Descuento (USD)</label>
-                <input type="number" id="descuento" min="0" step="0.01" oninput="actualizarVistaPrevia()">
+                <input type="number" id="descuento" min="0" step="0.01" oninput="calcularSubtotal()">
                 <div class="small-hint">Monto a descontar del subtotal</div>
             </div>
 
@@ -420,9 +420,9 @@
             <div class="form-group">
                 <label>Estado de Pago</label>
                 <div class="estado-options">
-                    <label><input type="radio" name="estado" value="deposito" onchange="actualizarVistaPrevia()"> Depósito (25%)</label>
-                    <label><input type="radio" name="estado" value="completo" checked onchange="actualizarVistaPrevia()"> Pago Completo</label>
-                    <label><input type="radio" name="estado" value="pendiente" onchange="actualizarVistaPrevia()"> Pendiente</label>
+                    <label><input type="radio" name="estado" value="deposito" onchange="calcularSubtotal()"> Depósito (25%)</label>
+                    <label><input type="radio" name="estado" value="completo" checked onchange="calcularSubtotal()"> Pago Completo</label>
+                    <label><input type="radio" name="estado" value="pendiente" onchange="calcularSubtotal()"> Pendiente</label>
                 </div>
                 <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta a $0.00.</div>
             </div>
@@ -551,16 +551,71 @@
             const tipo = document.getElementById('tipoExcursion').value;
             const privadoGroup = document.getElementById('privadoGroup');
             const privadoPrecioGroup = document.getElementById('privadoPrecioGroup');
+            const labelAdultos = document.getElementById('labelAdultos');
+            const labelPrecioAdulto = document.getElementById('labelPrecioAdulto');
+            const inputAdultos = document.getElementById('adultos');
+            const inputPrecioAdulto = document.getElementById('precioAdulto');
+            const inputPrecioNino = document.getElementById('precioNino');
             
             if (tipo === 'privado') {
                 privadoGroup.classList.add('visible');
                 privadoPrecioGroup.classList.add('visible');
+                labelAdultos.textContent = 'Personas';
+                labelPrecioAdulto.textContent = 'Precio Total (USD) *';
+                inputAdultos.placeholder = 'Cantidad de personas';
+                inputPrecioAdulto.placeholder = 'Ej: 350 (total)';
+                inputPrecioNino.value = '0';
+                inputPrecioNino.disabled = true;
             } else {
                 privadoGroup.classList.remove('visible');
                 privadoPrecioGroup.classList.remove('visible');
-                document.getElementById('grupo').value = '';
-                document.getElementById('capacidadMaxima').value = '';
+                labelAdultos.textContent = 'Adultos *';
+                labelPrecioAdulto.textContent = 'Precio por Adulto (USD) *';
+                inputAdultos.placeholder = 'Cantidad';
+                inputPrecioAdulto.placeholder = 'Ej: 45';
+                inputPrecioNino.disabled = false;
             }
+            calcularSubtotal();
+            actualizarVistaPrevia();
+        }
+
+        // ====== CALCULAR SUBTOTAL ======
+        function calcularSubtotal() {
+            const tipo = document.getElementById('tipoExcursion').value;
+            const adultos = parseInt(document.getElementById('adultos').value) || 0;
+            const ninos = parseInt(document.getElementById('ninos').value) || 0;
+            const precioAdulto = parseFloat(document.getElementById('precioAdulto').value) || 0;
+            const precioNino = parseFloat(document.getElementById('precioNino').value) || 0;
+            
+            let subtotal = 0;
+            
+            if (tipo === 'privado') {
+                // PRIVADO: subtotal = precio total (sin multiplicar por personas)
+                subtotal = precioAdulto;
+            } else {
+                // COMPARTIDO: subtotal = (adultos × precioAdulto) + (niños × precioNino)
+                subtotal = (adultos * precioAdulto) + (ninos * precioNino);
+            }
+            
+            document.getElementById('subtotal').value = subtotal.toFixed(2);
+            
+            // Calcular total con descuento
+            const descuento = parseFloat(document.getElementById('descuento').value) || 0;
+            const total = subtotal - descuento;
+            document.getElementById('total').value = total.toFixed(2);
+            
+            // Calcular depósito según estado
+            const estado = document.querySelector('input[name="estado"]:checked').value;
+            let deposito = 0;
+            if (estado === 'completo') {
+                deposito = 0;
+            } else if (estado === 'deposito') {
+                deposito = total * 0.25;
+            } else if (estado === 'pendiente') {
+                deposito = 0;
+            }
+            document.getElementById('deposito').value = deposito.toFixed(2);
+            
             actualizarVistaPrevia();
         }
 
@@ -608,12 +663,8 @@
             
             document.getElementById('vpMetodoPago').textContent = document.getElementById('metodoPago').value || '---';
 
-            // ====== CALCULAR TOTAL Y ESTADO ======
-            const precioAdulto = parseFloat(document.getElementById('precioAdulto').value) || 0;
-            const precioNino = parseFloat(document.getElementById('precioNino').value) || 0;
-            const subtotal = (parseInt(adultos) * precioAdulto) + (parseInt(ninos) * precioNino);
-            document.getElementById('subtotal').value = subtotal.toFixed(2);
-
+            // ====== CALCULAR TOTAL Y ESTADO (usando los valores ya calculados) ======
+            const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
             const descuento = parseFloat(document.getElementById('descuento').value) || 0;
             const total = subtotal - descuento;
             document.getElementById('total').value = total.toFixed(2);
@@ -621,16 +672,7 @@
             const estadoSeleccionado = document.querySelector('input[name="estado"]:checked');
             const estado = estadoSeleccionado ? estadoSeleccionado.value : 'completo';
             
-            let deposito = 0;
-            if (estado === 'completo') {
-                deposito = 0;
-            } else if (estado === 'deposito') {
-                deposito = total * 0.25;
-            } else if (estado === 'pendiente') {
-                deposito = 0;
-            }
-            document.getElementById('deposito').value = deposito.toFixed(2);
-
+            const deposito = parseFloat(document.getElementById('deposito').value) || 0;
             const balance = total - deposito;
 
             const estadoEl = document.getElementById('vpEstado');
@@ -691,7 +733,7 @@
                 document.getElementById('descuento').value = '';
                 btn.innerHTML = '+ Agregar Descuento';
                 btn.classList.remove('activo');
-                actualizarVistaPrevia();
+                calcularSubtotal();
             }
         }
 
@@ -707,6 +749,10 @@
 
             if (tipo === 'compartido' && (!adultos || !precioAdulto)) {
                 alert('⚠️ Para excursiones compartidas, completa Adultos y Precio por Adulto.');
+                return;
+            }
+            if (tipo === 'privado' && !precioAdulto) {
+                alert('⚠️ Para excursiones privadas, completa el Precio Total.');
                 return;
             }
             if (!cliente || !excursion) {
