@@ -21,9 +21,14 @@ app.get('/ver-recibo', (req, res) => {
         admin, tipoRecogida, lugarRecogida
     } = req.query;
 
-    if (!id || !recibo) {
-        return res.status(400).send('Faltan parámetros obligatorios: id y recibo');
+    // ====== VALIDAR PARÁMETROS OBLIGATORIOS ======
+    if (!cliente || !excursion) {
+        return res.status(400).send('Faltan parámetros obligatorios: cliente y excursion');
     }
+
+    // ====== GENERAR ID Y RECIBO SI NO VIENEN ======
+    const idFinal = id || 'REC-' + Date.now();
+    const reciboFinal = recibo || idFinal;
 
     // ====== CALCULAR VALORES NUMÉRICOS ======
     const numAdultos = parseInt(adultos) || 1;
@@ -31,7 +36,6 @@ app.get('/ver-recibo', (req, res) => {
     const precioAdultoNum = parseFloat(precioAdulto) || 0;
     const precioNinoNum = parseFloat(precioNino) || 0;
     
-    // Calcular subtotal si no viene
     let subtotalCalculado = parseFloat(subtotal) || 0;
     if (subtotalCalculado === 0) {
         if (tipoExcursion === 'privado') {
@@ -109,8 +113,8 @@ app.get('/ver-recibo', (req, res) => {
 
     // ====== DATOS PARA LA VISTA ======
     const datos = {
-        idFactura: id,
-        numeroRecibo: recibo,
+        idFactura: idFinal,
+        numeroRecibo: reciboFinal,
         cliente: cliente || 'Cliente no especificado',
         excursion: excursion || 'Excursión no especificada',
         adultos: numAdultos,
