@@ -257,24 +257,24 @@
             <!-- ID -->
             <div class="form-group">
                 <label>ID / Código de Reserva</label>
-                <input type="text" id="id" placeholder="Ej: BUG-5198">
+                <input type="text" id="id" placeholder="Ej: BUG-5198" oninput="actualizarVistaPrevia()">
             </div>
 
             <!-- CLIENTE -->
             <div class="form-group">
                 <label>Cliente <span class="required">*</span></label>
-                <input type="text" id="cliente" placeholder="Nombre completo">
+                <input type="text" id="cliente" placeholder="Nombre completo" oninput="actualizarVistaPrevia()">
             </div>
 
             <!-- WHATSAPP + CORREO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>WhatsApp <span class="required">*</span></label>
-                    <input type="text" id="whatsapp" placeholder="Ej: 809-555-1234">
+                    <input type="text" id="whatsapp" placeholder="Ej: 809-555-1234" oninput="actualizarVistaPrevia()">
                 </div>
                 <div class="form-group">
                     <label>Correo</label>
-                    <input type="email" id="correo" placeholder="correo@ejemplo.com">
+                    <input type="email" id="correo" placeholder="correo@ejemplo.com" oninput="actualizarVistaPrevia()">
                 </div>
             </div>
 
@@ -282,7 +282,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Recogida</label>
-                    <select id="tipoRecogida">
+                    <select id="tipoRecogida" onchange="cambiarEtiquetaHabitacion(); actualizarVistaPrevia();">
                         <option value="Hotel">Hotel</option>
                         <option value="Airbnb">Airbnb</option>
                         <option value="Punto de Encuentro">Punto de Encuentro</option>
@@ -290,13 +290,13 @@
                 </div>
                 <div class="form-group">
                     <label>Lugar de Recogida</label>
-                    <input type="text" id="lugarRecogida" placeholder="Ej: Riu Bavaro, Villa Sol, Parque Central">
+                    <input type="text" id="lugarRecogida" placeholder="Ej: Riu Bavaro, Villa Sol, Parque Central" oninput="actualizarVistaPrevia()">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label id="labelHabitacion">Habitación</label>
-                    <input type="text" id="habitacion" placeholder="Ej: 123, Villa B12">
+                    <input type="text" id="habitacion" placeholder="Ej: 123, Villa B12" oninput="actualizarVistaPrevia()">
                 </div>
             </div>
 
@@ -304,32 +304,32 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Transporte</label>
-                    <select id="transporte">
+                    <select id="transporte" onchange="actualizarVistaPrevia()">
                         <option value="Sí">Sí</option>
                         <option value="No">No</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Fecha de la Excursión</label>
-                    <input type="date" id="fechaExcursion">
+                    <input type="date" id="fechaExcursion" onchange="actualizarVistaPrevia()">
                 </div>
             </div>
 
             <!-- EXCURSION -->
             <div class="form-group">
                 <label>Excursión <span class="required">*</span></label>
-                <input type="text" id="excursion" placeholder="Nombre de la excursión">
+                <input type="text" id="excursion" placeholder="Nombre de la excursión" oninput="actualizarVistaPrevia()">
             </div>
 
             <!-- ADULTOS + NIÑOS -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Adultos <span class="required">*</span></label>
-                    <input type="number" id="adultos" placeholder="Cantidad" min="0">
+                    <input type="number" id="adultos" placeholder="Cantidad" min="0" oninput="actualizarVistaPrevia()">
                 </div>
                 <div class="form-group">
                     <label>Niños</label>
-                    <input type="number" id="ninos" placeholder="Cantidad" min="0">
+                    <input type="number" id="ninos" placeholder="Cantidad" min="0" oninput="actualizarVistaPrevia()">
                 </div>
             </div>
 
@@ -337,11 +337,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Precio por Adulto (USD) <span class="required">*</span></label>
-                    <input type="number" id="precioAdulto" placeholder="Ej: 45" min="0" step="0.01">
+                    <input type="number" id="precioAdulto" placeholder="Ej: 45" min="0" step="0.01" oninput="actualizarVistaPrevia()">
                 </div>
                 <div class="form-group">
                     <label>Precio por Niño (USD)</label>
-                    <input type="number" id="precioNino" placeholder="Ej: 25" min="0" step="0.01">
+                    <input type="number" id="precioNino" placeholder="Ej: 25" min="0" step="0.01" oninput="actualizarVistaPrevia()">
                     <div class="small-hint">Si no aplica, dejar en 0.</div>
                 </div>
             </div>
@@ -361,7 +361,7 @@
             <!-- DESCUENTO -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label>Descuento (USD)</label>
-                <input type="number" id="descuento" min="0" step="0.01">
+                <input type="number" id="descuento" min="0" step="0.01" oninput="actualizarVistaPrevia()">
                 <div class="small-hint">Monto a descontar del subtotal</div>
             </div>
 
@@ -382,9 +382,9 @@
             <div class="form-group">
                 <label>Estado de Pago</label>
                 <div class="estado-options">
-                    <label><input type="radio" name="estado" value="deposito" checked> Depósito (25%)</label>
-                    <label><input type="radio" name="estado" value="completo"> Pago Completo</label>
-                    <label><input type="radio" name="estado" value="pendiente"> Pendiente</label>
+                    <label><input type="radio" name="estado" value="deposito" checked onchange="actualizarVistaPrevia()"> Depósito (25%)</label>
+                    <label><input type="radio" name="estado" value="completo" onchange="actualizarVistaPrevia()"> Pago Completo</label>
+                    <label><input type="radio" name="estado" value="pendiente" onchange="actualizarVistaPrevia()"> Pendiente</label>
                 </div>
                 <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta a $0.00.</div>
             </div>
@@ -393,7 +393,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Método de Pago</label>
-                    <select id="metodoPago">
+                    <select id="metodoPago" onchange="actualizarVistaPrevia()">
                         <option value="Efectivo">Efectivo</option>
                         <option value="PayPal">PayPal</option>
                         <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
@@ -402,7 +402,7 @@
                 </div>
                 <div class="form-group">
                     <label>Notas</label>
-                    <input type="text" id="notas" placeholder="Notas adicionales">
+                    <input type="text" id="notas" placeholder="Notas adicionales" oninput="actualizarVistaPrevia()">
                 </div>
             </div>
 
@@ -486,7 +486,7 @@
             const lugarRecogida = document.getElementById('lugarRecogida').value || '';
             document.getElementById('vpRecogida').textContent = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '') || '---';
             
-            // Cambiar etiqueta de habitación
+            // Cambiar etiqueta de habitación en vista previa
             const vpLabel = document.getElementById('vpLabelHabitacion');
             if (tipoRecogida === 'Hotel') vpLabel.textContent = 'Habitación';
             else if (tipoRecogida === 'Airbnb') vpLabel.textContent = 'Apartamento';
@@ -513,8 +513,10 @@
             const total = subtotal - descuento;
             document.getElementById('total').value = total.toFixed(2);
 
-            // Depósito según estado
-            const estado = document.querySelector('input[name="estado"]:checked').value;
+            // ✅ Depósito según estado
+            const estadoSeleccionado = document.querySelector('input[name="estado"]:checked');
+            const estado = estadoSeleccionado ? estadoSeleccionado.value : 'deposito';
+            
             let deposito = 0;
             if (estado === 'completo') {
                 deposito = 0;
@@ -528,7 +530,7 @@
             // Balance
             const balance = total - deposito;
 
-            // Estado visual
+            // ✅ Estado visual
             const estadoEl = document.getElementById('vpEstado');
             if (balance <= 0) {
                 estadoEl.textContent = '✅ Pagado Completo';
@@ -544,40 +546,28 @@
             document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
         }
 
-        // ====== EVENTOS ======
+        // ====== CAMBIAR ETIQUETA HABITACION ======
+        function cambiarEtiquetaHabitacion() {
+            const label = document.getElementById('labelHabitacion');
+            const input = document.getElementById('habitacion');
+            const tipo = document.getElementById('tipoRecogida').value;
+            if (tipo === 'Hotel') {
+                label.textContent = 'Habitación';
+                input.placeholder = 'Ej: 123';
+            } else if (tipo === 'Airbnb') {
+                label.textContent = 'Apartamento';
+                input.placeholder = 'Ej: Villa B12, Casa 5';
+            } else if (tipo === 'Punto de Encuentro') {
+                label.textContent = 'Referencia';
+                input.placeholder = 'Ej: Parque Central, Esquina calle 5';
+            }
+        }
+
+        // ====== GENERAR FECHA ======
         document.addEventListener('DOMContentLoaded', function() {
             const semana = new Date();
             semana.setDate(semana.getDate() + 7);
             document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
-            
-            // Todos los inputs actualizan la vista previa
-            document.querySelectorAll('#formRecibo input, #formRecibo select').forEach(el => {
-                el.addEventListener('input', actualizarVistaPrevia);
-                el.addEventListener('change', actualizarVistaPrevia);
-            });
-            
-            // Radio buttons
-            document.querySelectorAll('input[name="estado"]').forEach(el => {
-                el.addEventListener('change', actualizarVistaPrevia);
-            });
-            
-            // Cambiar etiqueta de habitación en el formulario
-            document.getElementById('tipoRecogida').addEventListener('change', function() {
-                const label = document.getElementById('labelHabitacion');
-                const input = document.getElementById('habitacion');
-                if (this.value === 'Hotel') {
-                    label.textContent = 'Habitación';
-                    input.placeholder = 'Ej: 123';
-                } else if (this.value === 'Airbnb') {
-                    label.textContent = 'Apartamento';
-                    input.placeholder = 'Ej: Villa B12, Casa 5';
-                } else if (this.value === 'Punto de Encuentro') {
-                    label.textContent = 'Referencia';
-                    input.placeholder = 'Ej: Parque Central, Esquina calle 5';
-                }
-                actualizarVistaPrevia();
-            });
-            
             actualizarVistaPrevia();
         });
 
