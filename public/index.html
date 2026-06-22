@@ -7,13 +7,7 @@
     <title>Republic Excursions - Generador de Recibos</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== RESET Y ESTILOS BASE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #f0f2f5;
@@ -23,7 +17,6 @@
             align-items: center;
             padding: 40px 20px;
         }
-        
         .container {
             background: #ffffff;
             max-width: 780px;
@@ -34,17 +27,10 @@
             border: 1px solid #e8eaed;
             transition: box-shadow 0.3s ease;
         }
-        
         .container:hover {
             box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
         }
-
-        /* ===== ENCABEZADO ===== */
-        .header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-        
+        .header { text-align: center; margin-bottom: 32px; }
         .header h1 {
             font-size: 28px;
             font-weight: 700;
@@ -52,11 +38,7 @@
             letter-spacing: 4px;
             text-transform: uppercase;
         }
-        
-        .header h1 span {
-            color: #c9a84c;
-        }
-        
+        .header h1 span { color: #c9a84c; }
         .subtitulo {
             font-size: 15px;
             color: #8e9aaf;
@@ -65,11 +47,7 @@
             letter-spacing: 1px;
         }
 
-        /* ===== FORMULARIO ===== */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
+        .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             font-weight: 600;
@@ -78,14 +56,8 @@
             font-size: 13px;
             letter-spacing: 0.5px;
         }
-        
-        .form-group label .required {
-            color: #c62828;
-            font-weight: 700;
-        }
-        
-        .form-group input,
-        .form-group select {
+        .form-group label .required { color: #c62828; font-weight: 700; }
+        .form-group input, .form-group select {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e8eaed;
@@ -96,47 +68,28 @@
             background: #fafbfc;
             color: #2c3e50;
         }
-        
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-group input:focus, .form-group select:focus {
             border-color: #1a2a4a;
             outline: none;
             background: #ffffff;
             box-shadow: 0 0 0 4px rgba(26, 42, 74, 0.1);
         }
-        
         .form-group input::placeholder {
             color: #b0bec5;
             font-weight: 300;
             font-size: 13px;
         }
-        
-        .form-row {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .form-row .form-group {
-            flex: 1;
-        }
-        
+        .form-row { display: flex; gap: 20px; }
+        .form-row .form-group { flex: 1; }
         .small-hint {
             color: #b0bec5;
             font-size: 12px;
             margin-top: 4px;
             font-weight: 300;
         }
+        .privado-group { display: none; }
+        .privado-group.visible { display: block; }
 
-        /* ===== CAMPOS CONDICIONALES ===== */
-        .privado-group {
-            display: none;
-        }
-        
-        .privado-group.visible {
-            display: block;
-        }
-
-        /* ===== BOTONES ===== */
         .btn {
             width: 100%;
             padding: 16px;
@@ -152,17 +105,11 @@
             letter-spacing: 1px;
             margin-top: 8px;
         }
-        
         .btn:hover {
             background: #2c3e6e;
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(26, 42, 74, 0.25);
         }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
         .btn-descuento {
             background: #78909c;
             padding: 12px 18px;
@@ -172,37 +119,22 @@
             font-weight: 500;
             letter-spacing: 0.5px;
         }
-        
         .btn-descuento:hover {
             background: #607d8b;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
-        
-        .btn-descuento.activo {
-            background: #c62828;
-        }
-        
-        .btn-descuento.activo:hover {
-            background: #b71c1c;
-        }
-        
-        .descuento-activo {
-            display: none;
-        }
-        
-        .descuento-activo.visible {
-            display: block;
-        }
+        .btn-descuento.activo { background: #c62828; }
+        .btn-descuento.activo:hover { background: #b71c1c; }
+        .descuento-activo { display: none; }
+        .descuento-activo.visible { display: block; }
 
-        /* ===== OPCIONES DE ESTADO ===== */
         .estado-options {
             display: flex;
             gap: 24px;
             flex-wrap: wrap;
             padding-top: 4px;
         }
-        
         .estado-options label {
             display: flex;
             align-items: center;
@@ -212,7 +144,6 @@
             font-size: 14px;
             color: #2c3e50;
         }
-        
         .estado-options input[type="radio"] {
             width: 16px;
             height: 16px;
@@ -220,7 +151,6 @@
             cursor: pointer;
         }
 
-        /* ===== VISTA PREVIA ===== */
         .vista-previa {
             margin-top: 32px;
             padding: 24px;
@@ -228,7 +158,6 @@
             border-radius: 12px;
             border: 2px solid #e8eaed;
         }
-        
         .vista-previa h4 {
             color: #1a2a4a;
             font-size: 14px;
@@ -238,7 +167,6 @@
             letter-spacing: 2px;
             text-transform: uppercase;
         }
-        
         .vista-previa .recibo-mini {
             background: #ffffff;
             padding: 20px;
@@ -247,28 +175,15 @@
             font-size: 13px;
             color: #2c3e50;
         }
-        
         .vista-previa .recibo-mini .fila {
             display: flex;
             justify-content: space-between;
             padding: 4px 0;
             border-bottom: 1px solid #f0f0f0;
         }
-        
-        .vista-previa .recibo-mini .fila:last-child {
-            border-bottom: none;
-        }
-        
-        .vista-previa .recibo-mini .label {
-            font-weight: 500;
-            color: #6b7a8f;
-        }
-        
-        .vista-previa .recibo-mini .valor {
-            font-weight: 400;
-            color: #1a2a4a;
-        }
-        
+        .vista-previa .recibo-mini .fila:last-child { border-bottom: none; }
+        .vista-previa .recibo-mini .label { font-weight: 500; color: #6b7a8f; }
+        .vista-previa .recibo-mini .valor { font-weight: 400; color: #1a2a4a; }
         .vista-previa .recibo-mini .estado-mini {
             text-align: center;
             padding: 8px;
@@ -277,22 +192,9 @@
             font-weight: 600;
             font-size: 14px;
         }
-        
-        .vista-previa .recibo-mini .estado-mini.pagado {
-            background: #e8f5e9;
-            color: #1b5e20;
-        }
-        
-        .vista-previa .recibo-mini .estado-mini.falta {
-            background: #fff8e1;
-            color: #e65100;
-        }
-        
-        .vista-previa .recibo-mini .estado-mini.pendiente {
-            background: #ffebee;
-            color: #b71c1c;
-        }
-        
+        .vista-previa .recibo-mini .estado-mini.pagado { background: #e8f5e9; color: #1b5e20; }
+        .vista-previa .recibo-mini .estado-mini.falta { background: #fff8e1; color: #e65100; }
+        .vista-previa .recibo-mini .estado-mini.pendiente { background: #ffebee; color: #b71c1c; }
         .vista-previa .recibo-mini .total-mini {
             font-weight: 700;
             font-size: 15px;
@@ -303,7 +205,6 @@
             border-top: 2px solid #1a2a4a;
         }
 
-        /* ===== RESULTADO ===== */
         .resultado {
             margin-top: 32px;
             padding: 28px;
@@ -312,11 +213,7 @@
             display: none;
             border: 2px solid #c9a84c;
         }
-        
-        .resultado.visible {
-            display: block;
-        }
-        
+        .resultado.visible { display: block; }
         .resultado h3 {
             color: #1a2a4a;
             font-size: 20px;
@@ -325,7 +222,6 @@
             font-weight: 600;
             letter-spacing: 1px;
         }
-        
         .resultado .enlace {
             word-break: break-all;
             background: #ffffff;
@@ -336,12 +232,7 @@
             margin-bottom: 16px;
             color: #2c3e50;
         }
-        
-        .resultado .qr-container {
-            text-align: center;
-            margin: 16px 0;
-        }
-        
+        .resultado .qr-container { text-align: center; margin: 16px 0; }
         .resultado .qr-container img {
             max-width: 160px;
             border: 2px solid #e8eaed;
@@ -349,24 +240,24 @@
             padding: 8px;
             background: #ffffff;
         }
-        
-        /* ===== INFORMACIÓN DE EXPIRACIÓN EN RESULTADO ===== */
+
         .expiracion-resultado {
-            background: #e8f5e9;
             padding: 12px 16px;
             border-radius: 8px;
             margin: 12px 0;
             text-align: center;
             font-size: 13px;
-            color: #1b5e20;
             border: 1px solid #a5d6a7;
+            background: #e8f5e9;
+            color: #1b5e20;
         }
-        
-        .expiracion-resultado strong {
-            font-weight: 600;
+        .expiracion-resultado.permanente {
+            background: #e3f2fd;
+            border-color: #64b5f6;
+            color: #0d47a1;
         }
+        .expiracion-resultado strong { font-weight: 600; }
 
-        /* ===== ACCIONES DEL RESULTADO ===== */
         .acciones {
             display: flex;
             flex-wrap: wrap;
@@ -374,7 +265,6 @@
             justify-content: center;
             margin-top: 16px;
         }
-        
         .btn-copiar {
             background: #2e7d32;
             color: #ffffff;
@@ -387,13 +277,11 @@
             font-size: 13px;
             transition: all 0.3s ease;
         }
-        
         .btn-copiar:hover {
             background: #1b5e20;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
-        
         .btn-qr {
             background: #c9a84c;
             color: #ffffff;
@@ -406,13 +294,11 @@
             font-size: 13px;
             transition: all 0.3s ease;
         }
-        
         .btn-qr:hover {
             background: #b8973a;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
-        
         .btn-whatsapp {
             background: #25D366;
             color: #ffffff;
@@ -427,13 +313,11 @@
             font-size: 13px;
             transition: all 0.3s ease;
         }
-        
         .btn-whatsapp:hover {
             background: #1da851;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
-        
         .btn-ver-recibo {
             display: inline-block;
             background: #1a2a4a;
@@ -447,69 +331,42 @@
             text-align: center;
             transition: all 0.3s ease;
         }
-        
         .btn-ver-recibo:hover {
             background: #2c3e6e;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 640px) {
-            .container {
-                padding: 30px 20px;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-            
-            .estado-options {
-                flex-direction: column;
-                gap: 8px;
-            }
-            
-            .resultado .enlace {
-                font-size: 12px;
-            }
-            
-            .vista-previa .recibo-mini {
-                font-size: 12px;
-                padding: 15px;
-            }
-            
-            .header h1 {
-                font-size: 22px;
-            }
+            .container { padding: 30px 20px; }
+            .form-row { flex-direction: column; gap: 0; }
+            .estado-options { flex-direction: column; gap: 8px; }
+            .resultado .enlace { font-size: 12px; }
+            .vista-previa .recibo-mini { font-size: 12px; padding: 15px; }
+            .header h1 { font-size: 22px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         
-        <!-- ENCABEZADO -->
         <div class="header">
             <h1>Republic <span>Excursions</span></h1>
         </div>
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
-        <!-- FORMULARIO -->
         <form id="formRecibo">
             
-            <!-- ID -->
             <div class="form-group">
                 <label>ID / Código de Reserva</label>
                 <input type="text" id="id" name="id" placeholder="Ej: BUG-5198" oninput="actualizarVistaPrevia()">
             </div>
 
-            <!-- CLIENTE -->
             <div class="form-group">
                 <label>Cliente <span class="required">*</span></label>
                 <input type="text" id="cliente" name="cliente" placeholder="Nombre completo" required oninput="actualizarVistaPrevia()">
             </div>
 
-            <!-- WHATSAPP + CORREO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>WhatsApp <span class="required">*</span></label>
@@ -521,7 +378,6 @@
                 </div>
             </div>
 
-            <!-- TIPO DE EXCURSIÓN + GRUPO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Excursión</label>
@@ -543,7 +399,6 @@
                 </div>
             </div>
 
-            <!-- RECOGIDA -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Recogida</label>
@@ -570,7 +425,6 @@
                 </div>
             </div>
 
-            <!-- TRANSPORTE -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Transporte</label>
@@ -581,7 +435,6 @@
                 </div>
             </div>
 
-            <!-- FECHA + EXCURSION -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Fecha de la Excursión</label>
@@ -593,7 +446,6 @@
                 </div>
             </div>
 
-            <!-- ADULTOS + NIÑOS -->
             <div class="form-row">
                 <div class="form-group">
                     <label id="labelAdultos">Adultos <span class="required">*</span></label>
@@ -605,7 +457,6 @@
                 </div>
             </div>
 
-            <!-- PRECIOS -->
             <div class="form-row">
                 <div class="form-group">
                     <label id="labelPrecioAdulto">Precio por Adulto (USD) <span class="required">*</span></label>
@@ -618,7 +469,6 @@
                 </div>
             </div>
 
-            <!-- SUBTOTAL + DEPOSITO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Subtotal (USD)</label>
@@ -630,14 +480,12 @@
                 </div>
             </div>
 
-            <!-- DESCUENTO -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label>Descuento (USD)</label>
                 <input type="number" id="descuento" name="descuento" min="0" step="0.01" oninput="calcularSubtotal()">
                 <div class="small-hint">Monto a descontar del subtotal</div>
             </div>
 
-            <!-- TOTAL + DESCUENTO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Total (USD)</label>
@@ -650,7 +498,6 @@
                 </div>
             </div>
 
-            <!-- ESTADO DE PAGO -->
             <div class="form-group">
                 <label>Estado de Pago</label>
                 <div class="estado-options">
@@ -661,7 +508,6 @@
                 <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta a $0.00.</div>
             </div>
 
-            <!-- METODO PAGO + NOTAS -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Método de Pago</label>
@@ -676,6 +522,30 @@
                     <label>Notas</label>
                     <input type="text" id="notas" name="notas" placeholder="Notas adicionales" oninput="actualizarVistaPrevia()">
                 </div>
+            </div>
+
+            <!-- ===== EXPIRACIÓN ===== -->
+            <div class="form-group">
+                <label>Expiración del QR</label>
+                <select id="expiracion" name="expiracion" onchange="actualizarVistaPrevia()">
+                    <option value="1">1 hora</option>
+                    <option value="2">2 horas</option>
+                    <option value="6">6 horas</option>
+                    <option value="12">12 horas</option>
+                    <option value="24" selected>24 horas (1 día)</option>
+                    <option value="48">48 horas (2 días)</option>
+                    <option value="72">72 horas (3 días)</option>
+                    <option value="168">168 horas (7 días)</option>
+                    <option value="336">336 horas (14 días)</option>
+                    <option value="720">720 horas (1 mes)</option>
+                    <option value="1440">1440 horas (2 meses)</option>
+                    <option value="2160">2160 horas (3 meses)</option>
+                    <option value="4320">4320 horas (6 meses)</option>
+                    <option value="5760">5760 horas (8 meses)</option>
+                    <option value="8760">8760 horas (1 año)</option>
+                    <option value="nunca">Nunca expira</option>
+                </select>
+                <div class="small-hint">Tiempo durante el cual el QR será válido para el cliente</div>
             </div>
 
             <button type="button" class="btn" onclick="generarQRYEnlace()">GENERAR RECIBO</button>
@@ -766,9 +636,6 @@
     </div>
 
     <script>
-        /**
-         * Cambia la interfaz según el tipo de excursión seleccionado
-         */
         function cambiarTipoExcursion() {
             var tipo = document.getElementById('tipoExcursion').value;
             var privadoGroup = document.getElementById('privadoGroup');
@@ -801,9 +668,6 @@
             actualizarVistaPrevia();
         }
 
-        /**
-         * Cambia las etiquetas según el tipo de recogida
-         */
         function cambiarEtiquetaHabitacion() {
             var label = document.getElementById('labelHabitacion');
             var input = document.getElementById('habitacion');
@@ -839,9 +703,6 @@
             actualizarVistaPrevia();
         }
 
-        /**
-         * Calcula el subtotal y total del recibo
-         */
         function calcularSubtotal() {
             var tipo = document.getElementById('tipoExcursion').value;
             var adultos = parseInt(document.getElementById('adultos').value) || 0;
@@ -877,9 +738,6 @@
             actualizarVistaPrevia();
         }
 
-        /**
-         * Actualiza la vista previa del recibo
-         */
         function actualizarVistaPrevia() {
             document.getElementById('vpId').textContent = document.getElementById('id').value || '---';
             document.getElementById('vpCliente').textContent = document.getElementById('cliente').value || '---';
@@ -959,9 +817,6 @@
             document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
         }
 
-        /**
-         * Muestra u oculta el campo de descuento
-         */
         function toggleDescuento() {
             var group = document.getElementById('descuentoGroup');
             var btn = document.getElementById('btnDescuento');
@@ -977,9 +832,6 @@
             }
         }
 
-        /**
-         * Genera el QR y el enlace del recibo con fecha de expiración
-         */
         function generarQRYEnlace() {
             var cliente = document.getElementById('cliente').value.trim();
             var excursion = document.getElementById('excursion').value.trim();
@@ -1004,9 +856,11 @@
                 params.set('recibo', params.get('id'));
             }
             
-            // ====== AGREGAR TIMESTAMP PARA EXPIRACIÓN ======
             var timestamp = Date.now();
             params.set('timestamp', timestamp);
+            
+            var expiracion = document.getElementById('expiracion').value;
+            params.set('expiracion', expiracion);
             
             var base = '/ver-recibo';
             var enlaceQR = base + '?' + params.toString();
@@ -1021,9 +875,37 @@
             var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(urlCliente) + '&size=200x200';
             document.getElementById('qrImg').src = qrUrl;
             
-            // ====== MENSAJE CON INFORMACIÓN DE EXPIRACIÓN ======
-            var horasExpiracion = 24;
-            var mensaje = 'Hola ' + cliente + ', tu recibo de ' + excursion + ' está listo. Escanea este QR o haz clic en el enlace: ' + urlCliente + ' (Válido por ' + horasExpiracion + ' horas)';
+            var textoExpiracion = '';
+            var expiracionInfo = document.getElementById('expiracionInfo');
+            
+            if (expiracion === 'nunca') {
+                textoExpiracion = 'válido permanentemente';
+                expiracionInfo.innerHTML = '<strong>Válido permanentemente</strong> - Este QR nunca expira';
+                expiracionInfo.className = 'expiracion-resultado permanente';
+            } else {
+                var horas = parseInt(expiracion);
+                var texto = '';
+                if (horas < 24) {
+                    texto = horas + ' ' + (horas === 1 ? 'hora' : 'horas');
+                } else if (horas < 168) {
+                    var dias = Math.floor(horas / 24);
+                    texto = dias + ' ' + (dias === 1 ? 'día' : 'días');
+                } else if (horas < 720) {
+                    var semanas = Math.floor(horas / 168);
+                    texto = semanas + ' ' + (semanas === 1 ? 'semana' : 'semanas');
+                } else if (horas < 8760) {
+                    var meses = Math.floor(horas / 720);
+                    texto = meses + ' ' + (meses === 1 ? 'mes' : 'meses');
+                } else {
+                    var anos = Math.floor(horas / 8760);
+                    texto = anos + ' ' + (anos === 1 ? 'año' : 'años');
+                }
+                textoExpiracion = 'válido por ' + texto;
+                expiracionInfo.innerHTML = '<strong>Válido por ' + texto + '</strong> desde el momento de la generación';
+                expiracionInfo.className = 'expiracion-resultado';
+            }
+            
+            var mensaje = 'Hola ' + cliente + ', tu recibo de ' + excursion + ' está listo. Escanea este QR o haz clic en el enlace: ' + urlCliente + ' (' + textoExpiracion + ')';
             document.getElementById('whatsappLink').href = 'https://wa.me/1?text=' + encodeURIComponent(mensaje);
             
             document.getElementById('verRecibo').href = urlAdmin;
@@ -1033,9 +915,6 @@
             window.open(urlAdmin, '_blank');
         }
 
-        /**
-         * Copia el enlace al portapapeles
-         */
         function copiarEnlace() {
             var enlace = document.getElementById('enlaceGenerado').textContent;
             navigator.clipboard.writeText(enlace).then(function() {
@@ -1051,9 +930,6 @@
             });
         }
 
-        /**
-         * Descarga el código QR como imagen
-         */
         function descargarQR() {
             var qrImg = document.getElementById('qrImg');
             var link = document.createElement('a');
@@ -1062,9 +938,6 @@
             link.click();
         }
 
-        /**
-         * Inicializa el formulario con valores por defecto
-         */
         document.addEventListener('DOMContentLoaded', function() {
             var semana = new Date();
             semana.setDate(semana.getDate() + 7);
