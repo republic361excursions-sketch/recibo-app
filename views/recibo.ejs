@@ -246,7 +246,6 @@
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
 
-        <!-- ====== INFORMACIÓN DEL CLIENTE ====== -->
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
             <div class="fila">
@@ -280,7 +279,6 @@
             </div>
             <% } %>
             
-            <!-- RECOGIDA -->
             <div class="fila">
                 <span class="label"><%= esSinRecogida ? 'Lugar de la Excursión' : 'Recogida' %></span>
                 <span class="valor">
@@ -292,7 +290,6 @@
                 </span>
             </div>
 
-            <!-- HABITACIÓN (solo si NO es Sin Recogida) -->
             <% if (!esSinRecogida) { %>
             <div class="fila">
                 <span class="label"><%= tipoRecogida === 'Hotel' ? 'Habitación' : tipoRecogida === 'Airbnb' ? 'Apartamento' : 'Referencia' %></span>
@@ -300,7 +297,6 @@
             </div>
             <% } %>
 
-            <!-- HORA -->
             <div class="fila">
                 <span class="label"><%= labelHora %></span>
                 <span class="valor"><%= horaRecogida || '---' %></span>
@@ -340,7 +336,6 @@
             <% } %>
         </div>
 
-        <!-- ====== TABLA DE CONCEPTOS CORREGIDA ====== -->
         <table class="tabla">
             <thead>
                 <tr>
@@ -355,7 +350,6 @@
                 </tr>
                 
                 <% if (tipoExcursion === 'compartido') { %>
-                <!-- COMPARTIDO: desglose por persona -->
                 <tr>
                     <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
                     <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
@@ -368,36 +362,28 @@
                 <% } %>
                 
                 <% } else { %>
-                <!-- PRIVADO: total directo -->
                 <tr>
                     <td>Privado - <%= adultos %> personas</td>
                     <td class="monto">$<%= precioAdulto.toFixed(2) %></td>
                 </tr>
                 <% } %>
                 
-                <!-- SUBTOTAL -->
                 <tr>
                     <td><strong>Subtotal</strong></td>
                     <td class="monto total">$<%= subtotal.toFixed(2) %></td>
                 </tr>
                 
-                <!-- DESCUENTO (si aplica) -->
                 <% if (descuento > 0) { %>
                 <tr>
                     <td style="color:#27ae60;"><strong>Descuento</strong></td>
                     <td class="monto" style="color:#27ae60;">-$<%= descuento.toFixed(2) %></td>
                 </tr>
-                <% } %>
-                
-                <!-- TOTAL (solo si hay descuento) -->
-                <% if (descuento > 0) { %>
                 <tr>
                     <td><strong>Total</strong></td>
                     <td class="monto total">$<%= total.toFixed(2) %></td>
                 </tr>
                 <% } %>
                 
-                <!-- DEPÓSITO (si aplica) -->
                 <% if (depositoPagado > 0 && totalPendiente > 0) { %>
                 <tr>
                     <td>Depósito Pagado (25%)</td>
@@ -407,7 +393,6 @@
             </tbody>
         </table>
 
-        <!-- ====== ESTADO CORREGIDO ====== -->
         <%
             let estadoClase = '';
             let estadoMostrar = '';
@@ -427,7 +412,6 @@
             <%= estadoMostrar %>
         </div>
 
-        <!-- ====== RESUMEN DE PAGO CORREGIDO ====== -->
         <div class="resumen-pago">
             <div class="fila">
                 <span class="label">Subtotal</span>
@@ -475,7 +459,6 @@
         </div>
     </div>
 
-    <!-- ====== BOTONES ====== -->
     <% if (mostrarBotones) { %>
     <div class="acciones-recibo visible">
         <button class="btn-accion imagen" onclick="descargarImagen()">Descargar Imagen</button>
