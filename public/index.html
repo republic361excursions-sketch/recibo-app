@@ -382,8 +382,8 @@
             <div class="form-group">
                 <label>Estado de Pago</label>
                 <div class="estado-options">
-                    <label><input type="radio" name="estado" value="deposito" checked onchange="actualizarVistaPrevia()"> Depósito (25%)</label>
-                    <label><input type="radio" name="estado" value="completo" onchange="actualizarVistaPrevia()"> Pago Completo</label>
+                    <label><input type="radio" name="estado" value="deposito" onchange="actualizarVistaPrevia()"> Depósito (25%)</label>
+                    <label><input type="radio" name="estado" value="completo" checked onchange="actualizarVistaPrevia()"> Pago Completo</label>
                     <label><input type="radio" name="estado" value="pendiente" onchange="actualizarVistaPrevia()"> Pendiente</label>
                 </div>
                 <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta a $0.00.</div>
@@ -486,7 +486,6 @@
             const lugarRecogida = document.getElementById('lugarRecogida').value || '';
             document.getElementById('vpRecogida').textContent = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '') || '---';
             
-            // Cambiar etiqueta de habitación en vista previa
             const vpLabel = document.getElementById('vpLabelHabitacion');
             if (tipoRecogida === 'Hotel') vpLabel.textContent = 'Habitación';
             else if (tipoRecogida === 'Airbnb') vpLabel.textContent = 'Apartamento';
@@ -513,9 +512,9 @@
             const total = subtotal - descuento;
             document.getElementById('total').value = total.toFixed(2);
 
-            // ✅ Depósito según estado
+            // ====== DEPÓSITO SEGÚN ESTADO ======
             const estadoSeleccionado = document.querySelector('input[name="estado"]:checked');
-            const estado = estadoSeleccionado ? estadoSeleccionado.value : 'deposito';
+            const estado = estadoSeleccionado ? estadoSeleccionado.value : 'completo';
             
             let deposito = 0;
             if (estado === 'completo') {
@@ -527,10 +526,10 @@
             }
             document.getElementById('deposito').value = deposito.toFixed(2);
 
-            // Balance
+            // ====== BALANCE ======
             const balance = total - deposito;
 
-            // ✅ Estado visual
+            // ====== ESTADO VISUAL ======
             const estadoEl = document.getElementById('vpEstado');
             if (balance <= 0) {
                 estadoEl.textContent = '✅ Pagado Completo';
