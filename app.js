@@ -347,7 +347,7 @@
                     <td class="monto"></td>
                 </tr>
                 <tr>
-                    <td><%= tipoExcursion === 'privado' ? 'Privado' : 'Compartido' %> - Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
+                    <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
                     <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
                 </tr>
                 <% if (ninos > 0) { %>
