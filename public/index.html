@@ -512,10 +512,11 @@
             const total = subtotal - descuento;
             document.getElementById('total').value = total.toFixed(2);
 
-            // ====== DEPÓSITO SEGÚN ESTADO ======
+            // ====== OBTENER EL ESTADO SELECCIONADO ======
             const estadoSeleccionado = document.querySelector('input[name="estado"]:checked');
             const estado = estadoSeleccionado ? estadoSeleccionado.value : 'completo';
             
+            // ====== DEPÓSITO SEGÚN ESTADO ======
             let deposito = 0;
             if (estado === 'completo') {
                 deposito = 0;
@@ -529,15 +530,17 @@
             // ====== BALANCE ======
             const balance = total - deposito;
 
-            // ====== ESTADO VISUAL ======
+            // ====== ESTADO VISUAL - FORZAR SEGÚN EL ESTADO SELECCIONADO ======
             const estadoEl = document.getElementById('vpEstado');
-            if (balance <= 0) {
+            
+            // ✅ SI EL USUARIO SELECCIONÓ "Pago Completo", SIEMPRE mostrar "Pagado Completo"
+            if (estado === 'completo') {
                 estadoEl.textContent = '✅ Pagado Completo';
                 estadoEl.className = 'estado-mini pagado';
             } else if (estado === 'deposito') {
                 estadoEl.textContent = '⚠️ Falta Pagar: $' + balance.toFixed(2);
                 estadoEl.className = 'estado-mini falta';
-            } else {
+            } else if (estado === 'pendiente') {
                 estadoEl.textContent = '⏳ Pendiente de Pago: $' + balance.toFixed(2);
                 estadoEl.className = 'estado-mini pendiente';
             }
