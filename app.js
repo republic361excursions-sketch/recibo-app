@@ -3,6 +3,10 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ====== CLAVE SECRETA PARA ADMIN ======
+// Cambia esta clave por una que solo tú conozcas
+const ADMIN_KEY = 'admin2026';
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -111,6 +115,9 @@ app.get('/ver-recibo', (req, res) => {
             estadoColor = '#6c757d';
     }
 
+    // ====== VERIFICAR SI ES ADMIN ======
+    const esAdmin = admin === ADMIN_KEY;
+
     // ====== DATOS PARA LA VISTA ======
     const datos = {
         idFactura: idFinal,
@@ -149,7 +156,7 @@ app.get('/ver-recibo', (req, res) => {
         tipoExcursion: tipoExcursion || 'compartido',
         grupo: grupo || '',
         capacidadMaxima: capacidadMaxima || '',
-        mostrarBotones: admin === 'true'
+        mostrarBotones: esAdmin
     };
 
     res.render('recibo', datos);
@@ -157,4 +164,5 @@ app.get('/ver-recibo', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Servidor en http://localhost:${PORT}`);
+    console.log(`Clave admin: ${ADMIN_KEY}`);
 });
