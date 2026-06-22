@@ -246,6 +246,7 @@
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
 
+        <!-- ====== INFORMACIÓN DEL CLIENTE ====== -->
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
             <div class="fila">
@@ -279,6 +280,7 @@
             </div>
             <% } %>
             
+            <!-- RECOGIDA -->
             <div class="fila">
                 <span class="label"><%= esSinRecogida ? 'Lugar de la Excursión' : 'Recogida' %></span>
                 <span class="valor">
@@ -290,6 +292,7 @@
                 </span>
             </div>
 
+            <!-- HABITACIÓN (solo si NO es Sin Recogida) -->
             <% if (!esSinRecogida) { %>
             <div class="fila">
                 <span class="label"><%= tipoRecogida === 'Hotel' ? 'Habitación' : tipoRecogida === 'Airbnb' ? 'Apartamento' : 'Referencia' %></span>
@@ -297,6 +300,7 @@
             </div>
             <% } %>
 
+            <!-- HORA -->
             <div class="fila">
                 <span class="label"><%= labelHora %></span>
                 <span class="valor"><%= horaRecogida || '---' %></span>
@@ -336,6 +340,7 @@
             <% } %>
         </div>
 
+        <!-- ====== TABLA DE CONCEPTOS ====== -->
         <table class="tabla">
             <thead>
                 <tr>
@@ -393,6 +398,7 @@
             </tbody>
         </table>
 
+        <!-- ====== ESTADO ====== -->
         <%
             let estadoClase = '';
             let estadoMostrar = '';
@@ -412,6 +418,7 @@
             <%= estadoMostrar %>
         </div>
 
+        <!-- ====== RESUMEN DE PAGO ====== -->
         <div class="resumen-pago">
             <div class="fila">
                 <span class="label">Subtotal</span>
@@ -459,6 +466,7 @@
         </div>
     </div>
 
+    <!-- ====== BOTONES (SOLO ADMIN) ====== -->
     <% if (mostrarBotones) { %>
     <div class="acciones-recibo visible">
         <button class="btn-accion imagen" onclick="descargarImagen()">Descargar Imagen</button>
