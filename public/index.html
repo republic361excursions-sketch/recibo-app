@@ -418,22 +418,22 @@
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
         <form id="formRecibo" oninput="actualizarVistaPrevia()">
-            <!-- ID -->
+            <!-- ID (NO OBLIGATORIO) -->
             <div class="form-group">
                 <label>ID / Código de Reserva</label>
                 <input type="text" id="id" placeholder="Ej: BUG-5198">
             </div>
 
-            <!-- CLIENTE -->
+            <!-- CLIENTE (OBLIGATORIO) -->
             <div class="form-group">
                 <label>Cliente <span class="required">*</span></label>
                 <input type="text" id="cliente" placeholder="Nombre completo">
             </div>
 
-            <!-- WHATSAPP + CORREO -->
+            <!-- WHATSAPP (OBLIGATORIO) + CORREO (NO OBLIGATORIO) -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>WhatsApp</label>
+                    <label>WhatsApp <span class="required">*</span></label>
                     <input type="text" id="whatsapp" placeholder="Ej: 809-555-1234">
                 </div>
                 <div class="form-group">
@@ -442,7 +442,7 @@
                 </div>
             </div>
 
-            <!-- TIPO DE RECOGIDA + LUGAR DE RECOGIDA + HABITACION/APARTAMENTO -->
+            <!-- TIPO DE RECOGIDA + LUGAR DE RECOGIDA + HABITACION -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Recogida</label>
@@ -479,13 +479,13 @@
                 </div>
             </div>
 
-            <!-- EXCURSION -->
+            <!-- EXCURSION (OBLIGATORIO) -->
             <div class="form-group">
                 <label>Excursión <span class="required">*</span></label>
                 <input type="text" id="excursion" placeholder="Nombre de la excursión">
             </div>
 
-            <!-- ADULTOS + NIÑOS -->
+            <!-- ADULTOS (OBLIGATORIO) + NIÑOS -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Adultos <span class="required">*</span></label>
@@ -573,7 +573,7 @@
             <button type="submit" class="btn">GENERAR RECIBO</button>
         </form>
 
-        <!-- ===== VISTA PREVIA EN VIVO ===== -->
+        <!-- VISTA PREVIA -->
         <div class="vista-previa">
             <h4>VISTA PREVIA DEL RECIBO</h4>
             <div class="recibo-mini" id="vistaPrevia">
@@ -642,7 +642,7 @@
     </div>
 
     <script>
-        // ====== VISTA PREVIA EN VIVO ======
+        // ====== VISTA PREVIA ======
         function actualizarVistaPrevia() {
             const id = document.getElementById('id').value || '---';
             const cliente = document.getElementById('cliente').value || '---';
@@ -664,7 +664,6 @@
             const deposito = parseFloat(document.getElementById('deposito').value) || 0;
             const balance = total - deposito;
 
-            // Cambiar etiqueta de habitación según tipo
             const labelHabitacion = document.getElementById('vpLabelHabitacion');
             const tipo = document.getElementById('tipoRecogida').value;
             if (tipo === 'Hotel') {
@@ -701,7 +700,7 @@
             document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
         }
 
-        // ====== CAMBIAR ETIQUETA SEGÚN TIPO DE RECOGIDA ======
+        // ====== CAMBIAR ETIQUETA ======
         document.getElementById('tipoRecogida').addEventListener('change', function() {
             const label = document.getElementById('labelHabitacion');
             const input = document.getElementById('habitacion');
@@ -735,7 +734,7 @@
             });
         });
 
-        // ====== CALCULAR SUBTOTAL ======
+        // ====== CALCULAR ======
         document.getElementById('adultos').addEventListener('input', function() {
             calcularSubtotal(); calcularTotal(); ajustarDeposito();
         });
@@ -758,7 +757,6 @@
             document.getElementById('subtotal').value = subtotal.toFixed(2);
         }
 
-        // ====== CALCULAR TOTAL ======
         function calcularTotal() {
             const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
             const descuento = parseFloat(document.getElementById('descuento').value) || 0;
@@ -767,7 +765,6 @@
             ajustarDeposito();
         }
 
-        // ====== DESCUENTO ======
         function toggleDescuento() {
             const group = document.getElementById('descuentoGroup');
             const btn = document.getElementById('btnDescuento');
@@ -784,7 +781,6 @@
             }
         }
 
-        // ====== AJUSTAR DEPOSITO ======
         function ajustarDeposito() {
             const estado = document.querySelector('input[name="estado"]:checked').value;
             const total = parseFloat(document.getElementById('total').value) || 0;
@@ -824,22 +820,37 @@
             const notas = document.getElementById('notas').value || 'Sin notas adicionales';
             const fechaExcursion = document.getElementById('fechaExcursion').value || '';
 
-            const recogidaCompleta = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '');
-
-            if (!id || !cliente || !excursion || !adultos || !precioAdulto) {
-                alert('Por favor, completa los campos obligatorios');
+            // ✅ VALIDACIÓN: Cliente, Excursión, Adultos y Precio Adulto son obligatorios
+            if (!cliente || !excursion || !adultos || !precioAdulto) {
+                alert('⚠️ Los campos Cliente, Excursión, Adultos y Precio por Adulto son obligatorios.');
                 return;
             }
 
+            const recogidaCompleta = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '');
+
             const base = 'https://recibo-app.vercel.app/ver-recibo';
             const params = new URLSearchParams({
-                id: id, recibo: id, cliente: cliente, excursion: excursion,
-                adultos: adultos, ninos: ninos, precioAdulto: precioAdulto,
-                precioNino: precioNino, subtotal: subtotal, descuento: descuento,
-                total: total, deposito: deposito, estado: estado,
-                metodoPago: metodoPago, whatsapp: whatsapp, correo: correo,
-                hotel: recogidaCompleta, habitacion: habitacion, transporte: transporte,
-                notas: notas, fechaExcursion: fechaExcursion
+                id: id || 'Sin ID',
+                recibo: id || 'Sin ID',
+                cliente: cliente,
+                excursion: excursion,
+                adultos: adultos,
+                ninos: ninos || 0,
+                precioAdulto: precioAdulto,
+                precioNino: precioNino || 0,
+                subtotal: subtotal,
+                descuento: descuento,
+                total: total,
+                deposito: deposito,
+                estado: estado,
+                metodoPago: metodoPago,
+                whatsapp: whatsapp,
+                correo: correo,
+                hotel: recogidaCompleta,
+                habitacion: habitacion,
+                transporte: transporte,
+                notas: notas,
+                fechaExcursion: fechaExcursion
             });
 
             const enlaceQR = base + '?' + params.toString();
