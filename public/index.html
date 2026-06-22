@@ -278,7 +278,7 @@
                 </div>
             </div>
 
-            <!-- TIPO DE RECOGIDA + LUGAR + HABITACION -->
+            <!-- TIPO DE RECOGIDA + LUGAR DE RECOGIDA + HABITACION + HORA -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Recogida</label>
@@ -297,6 +297,10 @@
                 <div class="form-group">
                     <label id="labelHabitacion">Habitación</label>
                     <input type="text" id="habitacion" placeholder="Ej: 123, Villa B12" oninput="actualizarVistaPrevia()">
+                </div>
+                <div class="form-group">
+                    <label>Hora de Recogida</label>
+                    <input type="time" id="horaRecogida" onchange="actualizarVistaPrevia()">
                 </div>
             </div>
 
@@ -434,6 +438,10 @@
                     <span class="valor" id="vpHabitacion">---</span>
                 </div>
                 <div class="fila">
+                    <span class="label">Hora de Recogida</span>
+                    <span class="valor" id="vpHoraRecogida">---</span>
+                </div>
+                <div class="fila">
                     <span class="label">Excursión</span>
                     <span class="valor" id="vpExcursion">---</span>
                 </div>
@@ -492,6 +500,7 @@
             else if (tipoRecogida === 'Punto de Encuentro') vpLabel.textContent = 'Referencia';
             
             document.getElementById('vpHabitacion').textContent = document.getElementById('habitacion').value || '---';
+            document.getElementById('vpHoraRecogida').textContent = document.getElementById('horaRecogida').value || '---';
             document.getElementById('vpExcursion').textContent = document.getElementById('excursion').value || '---';
             document.getElementById('vpFecha').textContent = document.getElementById('fechaExcursion').value || '---';
             
@@ -530,10 +539,9 @@
             // ====== BALANCE ======
             const balance = total - deposito;
 
-            // ====== ESTADO VISUAL - FORZAR SEGÚN EL ESTADO SELECCIONADO ======
+            // ====== ESTADO VISUAL ======
             const estadoEl = document.getElementById('vpEstado');
             
-            // ✅ SI EL USUARIO SELECCIONÓ "Pago Completo", SIEMPRE mostrar "Pagado Completo"
             if (estado === 'completo') {
                 estadoEl.textContent = '✅ Pagado Completo';
                 estadoEl.className = 'estado-mini pagado';
@@ -571,7 +579,6 @@
             semana.setDate(semana.getDate() + 7);
             document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
             
-            // ✅ Establecer "Pago Completo" por defecto
             document.querySelector('input[name="estado"][value="completo"]').checked = true;
             
             actualizarVistaPrevia();
@@ -609,6 +616,7 @@
 
             const id = document.getElementById('id').value || 'Sin ID';
             const recogidaCompleta = document.getElementById('tipoRecogida').value + (document.getElementById('lugarRecogida').value ? ' - ' + document.getElementById('lugarRecogida').value : '');
+            const horaRecogida = document.getElementById('horaRecogida').value || '';
 
             const params = new URLSearchParams({
                 id: id,
@@ -629,6 +637,7 @@
                 correo: document.getElementById('correo').value || '',
                 hotel: recogidaCompleta,
                 habitacion: document.getElementById('habitacion').value || '',
+                horaRecogida: horaRecogida,
                 transporte: document.getElementById('transporte').value || 'Sí',
                 notas: document.getElementById('notas').value || 'Sin notas adicionales',
                 fechaExcursion: document.getElementById('fechaExcursion').value || ''
