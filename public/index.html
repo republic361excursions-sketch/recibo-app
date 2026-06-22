@@ -331,7 +331,7 @@
                 </div>
             </div>
 
-            <!-- TRANSPORTE - SOLO EL SELECTOR -->
+            <!-- TRANSPORTE + LUGAR DE LA EXCURSIÓN -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Transporte</label>
@@ -767,6 +767,8 @@
             
             document.querySelector('input[name="estado"][value="completo"]').checked = true;
             
+            // Asegurar que el campo de transporte se muestre correctamente al cargar
+            mostrarOcultarPuntoSalida();
             actualizarVistaPrevia();
         });
 
