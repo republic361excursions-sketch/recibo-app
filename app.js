@@ -16,7 +16,7 @@ app.get('/ver-recibo', (req, res) => {
         id, recibo, cliente, excursion, 
         adultos, ninos, precioAdulto, precioNino,
         subtotal, descuento, total, deposito, estado, metodoPago,
-        whatsapp, correo, hotel, habitacion, horaRecogida, transporte, puntoSalida, notas, fechaExcursion,
+        whatsapp, correo, hotel, habitacion, horaRecogida, transporte, notas, fechaExcursion,
         tipoExcursion, grupo, capacidadMaxima,
         admin
     } = req.query;
@@ -56,7 +56,6 @@ app.get('/ver-recibo', (req, res) => {
         habitacion: habitacion || '',
         horaRecogida: horaRecogida || '',
         transporte: transporte || 'Sí',
-        puntoSalida: puntoSalida || '',
         notas: notas || 'Sin notas adicionales',
         fechaExcursion: fechaExcursion || new Date().toLocaleDateString('es-ES'),
         fecha: new Date().toLocaleDateString('es-ES', {
