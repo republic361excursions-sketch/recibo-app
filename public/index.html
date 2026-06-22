@@ -465,7 +465,7 @@
                     <span class="valor" id="vpGrupo">---</span>
                 </div>
                 <div class="fila">
-                    <span class="label">Recogida</span>
+                    <span class="label" id="vpLabelRecogida">Recogida</span>
                     <span class="valor" id="vpRecogida">---</span>
                 </div>
                 <div class="fila">
@@ -572,11 +572,13 @@
                 label.textContent = '---';
                 input.placeholder = 'No aplica';
                 document.getElementById('habitacion').value = '';
+                document.getElementById('habitacion').disabled = true;
             } else {
                 // Cuando hay recogida (Hotel, Airbnb, Punto de Encuentro)
                 labelLugar.textContent = 'Lugar de Recogida';
                 inputLugar.placeholder = 'Ej: Riu Bavaro, Villa Sol, Parque Central';
                 labelHora.textContent = 'Hora de Recogida';
+                document.getElementById('habitacion').disabled = false;
                 if (tipo === 'Hotel') {
                     label.textContent = 'Habitación';
                     input.placeholder = 'Ej: 123';
@@ -640,20 +642,25 @@
             const tipoRecogida = document.getElementById('tipoRecogida').value || '';
             const lugarRecogida = document.getElementById('lugarRecogida').value || '';
             
+            // *** CAMBIO IMPORTANTE AQUÍ ***
             // Si es Sin Recogida, mostrar "Lugar de la Excursión" en la vista previa
+            const vpLabelRecogida = document.getElementById('vpLabelRecogida');
             let recogidaTexto = '';
+            
             if (tipoRecogida === 'Sin Recogida') {
-                recogidaTexto = 'Lugar de la Excursión: ' + (lugarRecogida || '---');
+                vpLabelRecogida.textContent = 'Lugar de la Excursión';
+                recogidaTexto = lugarRecogida || '---';
             } else {
+                vpLabelRecogida.textContent = 'Recogida';
                 recogidaTexto = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '');
             }
             document.getElementById('vpRecogida').textContent = recogidaTexto || '---';
             
-            const vpLabel = document.getElementById('vpLabelHabitacion');
-            if (tipoRecogida === 'Hotel') vpLabel.textContent = 'Habitación';
-            else if (tipoRecogida === 'Airbnb') vpLabel.textContent = 'Apartamento';
-            else if (tipoRecogida === 'Punto de Encuentro') vpLabel.textContent = 'Referencia';
-            else if (tipoRecogida === 'Sin Recogida') vpLabel.textContent = '---';
+            const vpLabelHabitacion = document.getElementById('vpLabelHabitacion');
+            if (tipoRecogida === 'Hotel') vpLabelHabitacion.textContent = 'Habitación';
+            else if (tipoRecogida === 'Airbnb') vpLabelHabitacion.textContent = 'Apartamento';
+            else if (tipoRecogida === 'Punto de Encuentro') vpLabelHabitacion.textContent = 'Referencia';
+            else if (tipoRecogida === 'Sin Recogida') vpLabelHabitacion.textContent = '---';
             
             document.getElementById('vpHabitacion').textContent = document.getElementById('habitacion').value || '---';
             
