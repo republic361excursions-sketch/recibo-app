@@ -25,89 +25,69 @@ app.get('/ver-recibo', (req, res) => {
         return res.status(400).send('Faltan parámetros obligatorios: id y recibo');
     }
 
+    // ====== CALCULAR VALORES NUMÉRICOS ======
     const numAdultos = parseInt(adultos) || 1;
     const numNinos = parseInt(ninos) || 0;
-    const precioAdultoNum = parseFloat(precioAdulto) || 75;
+    const precioAdultoNum = parseFloat(precioAdulto) || 0;
     const precioNinoNum = parseFloat(precioNino) || 0;
-    const subtotalNum = parseFloat(subtotal) || ((numAdultos * precioAdultoNum) + (numNinos * precioNinoNum));
+    
+    // Calcular subtotal si no viene
+    let subtotalCalculado = parseFloat(subtotal) || 0;
+    if (subtotalCalculado === 0) {
+        if (tipoExcursion === 'privado') {
+            subtotalCalculado = precioAdultoNum;
+        } else {
+            subtotalCalculado = (numAdultos * precioAdultoNum) + (numNinos * precioNinoNum);
+        }
+    }
+    
     const descuentoNum = parseFloat(descuento) || 0;
-    const totalNum = parseFloat(total) || (subtotalNum - descuentoNum);
+    const totalCalculado = parseFloat(total) || (subtotalCalculado - descuentoNum);
     const depositoNum = parseFloat(deposito) || 0;
-    const totalPendiente = totalNum - depositoNum;
+    
+    // ====== CALCULAR BALANCE PENDIENTE ======
+    let balancePendiente = totalCalculado - depositoNum;
+    
+    if (estado === 'completo' || balancePendiente <= 0.009) {
+        balancePendiente = 0;
+    }
 
     // ====== PROCESAR RECOGIDA ======
-    // Determinar si es "Sin Recogida" o tiene recogida
     const esSinRecogida = tipoRecogida === 'Sin Recogida';
     
     let recogidaMostrar = '';
     let lugarMostrar = '';
     
     if (esSinRecogida) {
-        // Si es SIN RECOGIDA, mostrar "Lugar de la Excursión"
         recogidaMostrar = 'Lugar de la Excursión';
-        lugarMostrar = lugarRecogida || hotel || ''; // hotel viene del campo lugarRecogida
+        lugarMostrar = lugarRecogida || hotel || '';
     } else {
-        // Si hay recogida, mostrar el tipo + lugar
         recogidaMostrar = tipoRecogida || 'Hotel';
         lugarMostrar = lugarRecogida || hotel || '';
     }
 
-    // Procesar habitación (solo aplica si NO es Sin Recogida)
     let habitacionMostrar = habitacion || '';
     if (esSinRecogida) {
         habitacionMostrar = '---';
     }
 
-    // Procesar hora
     let horaMostrar = horaRecogida || '';
     let labelHora = esSinRecogida ? 'Hora de la Excursión' : 'Hora de Recogida';
 
-    const datos = {
-        idFactura: id,
-        numeroRecibo: recibo,
-        cliente: cliente || 'Cliente no especificado',
-        excursion: excursion || 'Excursión no especificada',
-        adultos: numAdultos,
-        ninos: numNinos,
-        precioAdulto: precioAdultoNum,
-        precioNino: precioNinoNum,
-        subtotal: subtotalNum,
-        descuento: descuentoNum,
-        total: totalNum,
-        depositoPagado: depositoNum,
-        totalPendiente: totalPendiente,
-        metodoPago: metodoPago || 'Efectivo',
-        whatsapp: whatsapp || '',
-        correo: correo || '',
-        // Recogida mejorada
-        tipoRecogida: recogidaMostrar,
-        lugarRecogida: lugarMostrar,
-        habitacion: habitacionMostrar,
-        horaRecogida: horaMostrar,
-        labelHora: labelHora,
-        esSinRecogida: esSinRecogida,
-        transporte: transporte || 'Sí',
-        notas: notas || 'Sin notas adicionales',
-        fechaExcursion: fechaExcursion || new Date().toLocaleDateString('es-ES'),
-        fecha: new Date().toLocaleDateString('es-ES', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        }),
-        estado: estado || 'pendiente',
-        tipoExcursion: tipoExcursion || 'compartido',
-        grupo: grupo || '',
-        capacidadMaxima: capacidadMaxima || '',
-        mostrarBotones: admin === 'true'
-    };
-
-    let estadoTexto = '';
-    let estadoColor = '';
-    let estadoReal = datos.estado;
-
-    if (totalPendiente <= 0) {
+    // ====== DETERMINAR ESTADO REAL ======
+    let estadoReal = estado || 'pendiente';
+    
+    if (balancePendiente <= 0.009) {
         estadoReal = 'completo';
     }
+    
+    if (estadoReal === 'deposito' && depositoNum === 0) {
+        estadoReal = 'pendiente';
+    }
+
+    // ====== TEXTO Y COLOR DEL ESTADO ======
+    let estadoTexto = '';
+    let estadoColor = '';
 
     switch(estadoReal) {
         case 'completo':
@@ -127,11 +107,48 @@ app.get('/ver-recibo', (req, res) => {
             estadoColor = '#6c757d';
     }
 
-    res.render('recibo', {
-        ...datos,
-        estadoTexto,
-        estadoColor
-    });
+    // ====== DATOS PARA LA VISTA ======
+    const datos = {
+        idFactura: id,
+        numeroRecibo: recibo,
+        cliente: cliente || 'Cliente no especificado',
+        excursion: excursion || 'Excursión no especificada',
+        adultos: numAdultos,
+        ninos: numNinos,
+        precioAdulto: precioAdultoNum,
+        precioNino: precioNinoNum,
+        subtotal: subtotalCalculado,
+        descuento: descuentoNum,
+        total: totalCalculado,
+        depositoPagado: depositoNum,
+        totalPendiente: balancePendiente,
+        metodoPago: metodoPago || 'Efectivo',
+        whatsapp: whatsapp || '',
+        correo: correo || '',
+        tipoRecogida: recogidaMostrar,
+        lugarRecogida: lugarMostrar,
+        habitacion: habitacionMostrar,
+        horaRecogida: horaMostrar,
+        labelHora: labelHora,
+        esSinRecogida: esSinRecogida,
+        transporte: transporte || 'Sí',
+        notas: notas || 'Sin notas adicionales',
+        fechaExcursion: fechaExcursion || new Date().toLocaleDateString('es-ES'),
+        fecha: new Date().toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }),
+        estado: estadoReal,
+        estadoTexto: estadoTexto,
+        estadoColor: estadoColor,
+        tipoExcursion: tipoExcursion || 'compartido',
+        grupo: grupo || '',
+        capacidadMaxima: capacidadMaxima || '',
+        mostrarBotones: admin === 'true'
+    };
+
+    res.render('recibo', datos);
 });
 
 app.listen(PORT, () => {
