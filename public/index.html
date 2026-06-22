@@ -567,6 +567,10 @@
             const semana = new Date();
             semana.setDate(semana.getDate() + 7);
             document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
+            
+            // ✅ Establecer "Pago Completo" por defecto
+            document.querySelector('input[name="estado"][value="completo"]').checked = true;
+            
             actualizarVistaPrevia();
         });
 
