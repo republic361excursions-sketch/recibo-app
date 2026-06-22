@@ -105,5 +105,5 @@ app.get('/ver-recibo', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor en http://localhost:${PORT}`);
+    console.log(`Servidor en http://localhost:${PORT}`);
 });
