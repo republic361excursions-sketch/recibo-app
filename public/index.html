@@ -27,9 +27,7 @@
             border: 1px solid #e8eaed;
             transition: box-shadow 0.3s ease;
         }
-        .container:hover {
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
-        }
+        .container:hover { box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12); }
         .header { text-align: center; margin-bottom: 32px; }
         .header h1 {
             font-size: 28px;
@@ -89,6 +87,50 @@
         }
         .privado-group { display: none; }
         .privado-group.visible { display: block; }
+
+        /* ===== EXPIRACIÓN PERSONALIZADA ===== */
+        .expiracion-personalizada {
+            display: none;
+            margin-top: 10px;
+            padding: 14px 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px dashed #b0bec5;
+        }
+        .expiracion-personalizada.visible {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .expiracion-personalizada label {
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 13px;
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+        .expiracion-personalizada input {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px 12px;
+            border: 2px solid #e8eaed;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #2c3e50;
+        }
+        .expiracion-personalizada input:focus {
+            border-color: #1a2a4a;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 42, 74, 0.1);
+        }
+        .expiracion-personalizada span {
+            color: #6b7a8f;
+            font-size: 14px;
+            font-weight: 500;
+        }
 
         .btn {
             width: 100%;
@@ -344,6 +386,11 @@
             .resultado .enlace { font-size: 12px; }
             .vista-previa .recibo-mini { font-size: 12px; padding: 15px; }
             .header h1 { font-size: 22px; }
+            .expiracion-personalizada.visible {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .expiracion-personalizada label { white-space: normal; }
         }
     </style>
 </head>
@@ -524,10 +571,10 @@
                 </div>
             </div>
 
-            <!-- ===== EXPIRACIÓN ===== -->
+            <!-- ===== EXPIRACIÓN CON PERSONALIZADO ===== -->
             <div class="form-group">
                 <label>Expiración del QR</label>
-                <select id="expiracion" name="expiracion" onchange="actualizarVistaPrevia()">
+                <select id="expiracion" name="expiracion" onchange="mostrarPersonalizado(); actualizarVistaPrevia();">
                     <option value="1">1 hora</option>
                     <option value="2">2 horas</option>
                     <option value="6">6 horas</option>
@@ -543,9 +590,18 @@
                     <option value="4320">4320 horas (6 meses)</option>
                     <option value="5760">5760 horas (8 meses)</option>
                     <option value="8760">8760 horas (1 año)</option>
+                    <option value="personalizado">Personalizado</option>
                     <option value="nunca">Nunca expira</option>
                 </select>
-                <div class="small-hint">Tiempo durante el cual el QR será válido para el cliente</div>
+                <div class="small-hint">Selecciona una opción predefinida o personaliza el tiempo</div>
+            </div>
+
+            <!-- ===== CAMPO PERSONALIZADO ===== -->
+            <div class="expiracion-personalizada" id="personalizadoContainer">
+                <label for="diasPersonalizado">Escribir días:</label>
+                <input type="number" id="diasPersonalizado" min="1" max="3650" placeholder="Ej: 30, 60, 90..." oninput="actualizarVistaPrevia()">
+                <span>días</span>
+                <div class="small-hint" style="margin-top:4px; width:100%;">Máximo 3650 días (10 años)</div>
             </div>
 
             <button type="button" class="btn" onclick="generarQRYEnlace()">GENERAR RECIBO</button>
@@ -636,6 +692,66 @@
     </div>
 
     <script>
+        // ===== MOSTRAR CAMPO PERSONALIZADO =====
+        function mostrarPersonalizado() {
+            var select = document.getElementById('expiracion');
+            var container = document.getElementById('personalizadoContainer');
+            if (select.value === 'personalizado') {
+                container.classList.add('visible');
+            } else {
+                container.classList.remove('visible');
+                document.getElementById('diasPersonalizado').value = '';
+            }
+        }
+
+        // ===== OBTENER HORAS DE EXPIRACIÓN =====
+        function obtenerHorasExpiracion() {
+            var select = document.getElementById('expiracion');
+            var valor = select.value;
+            
+            if (valor === 'nunca') {
+                return 'nunca';
+            }
+            
+            if (valor === 'personalizado') {
+                var dias = parseInt(document.getElementById('diasPersonalizado').value);
+                if (!dias || dias < 1) {
+                    alert('Por favor, ingresa un número válido de días (mínimo 1).');
+                    return null;
+                }
+                if (dias > 3650) {
+                    alert('El máximo permitido es 3650 días (10 años).');
+                    return null;
+                }
+                return (dias * 24).toString();
+            }
+            
+            return valor;
+        }
+
+        // ===== FORMATEAR TIEMPO PARA TEXTO =====
+        function formatearTiempoParaTexto(horas) {
+            if (!horas || horas === 'nunca') return 'permanentemente';
+            
+            var h = parseInt(horas);
+            if (h < 24) {
+                return h + ' ' + (h === 1 ? 'hora' : 'horas');
+            } else if (h < 168) {
+                var d = Math.floor(h / 24);
+                return d + ' ' + (d === 1 ? 'día' : 'días');
+            } else if (h < 720) {
+                var s = Math.floor(h / 168);
+                return s + ' ' + (s === 1 ? 'semana' : 'semanas');
+            } else if (h < 8760) {
+                var m = Math.floor(h / 720);
+                return m + ' ' + (m === 1 ? 'mes' : 'meses');
+            } else {
+                var a = Math.floor(h / 8760);
+                return a + ' ' + (a === 1 ? 'año' : 'años');
+            }
+        }
+
+        // ===== CAMBIAR TIPO EXCURSIÓN =====
         function cambiarTipoExcursion() {
             var tipo = document.getElementById('tipoExcursion').value;
             var privadoGroup = document.getElementById('privadoGroup');
@@ -668,6 +784,7 @@
             actualizarVistaPrevia();
         }
 
+        // ===== CAMBIAR ETIQUETA HABITACIÓN =====
         function cambiarEtiquetaHabitacion() {
             var label = document.getElementById('labelHabitacion');
             var input = document.getElementById('habitacion');
@@ -703,6 +820,7 @@
             actualizarVistaPrevia();
         }
 
+        // ===== CALCULAR SUBTOTAL =====
         function calcularSubtotal() {
             var tipo = document.getElementById('tipoExcursion').value;
             var adultos = parseInt(document.getElementById('adultos').value) || 0;
@@ -738,6 +856,7 @@
             actualizarVistaPrevia();
         }
 
+        // ===== ACTUALIZAR VISTA PREVIA =====
         function actualizarVistaPrevia() {
             document.getElementById('vpId').textContent = document.getElementById('id').value || '---';
             document.getElementById('vpCliente').textContent = document.getElementById('cliente').value || '---';
@@ -817,6 +936,7 @@
             document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
         }
 
+        // ===== DESCUENTO =====
         function toggleDescuento() {
             var group = document.getElementById('descuentoGroup');
             var btn = document.getElementById('btnDescuento');
@@ -832,12 +952,18 @@
             }
         }
 
+        // ===== GENERAR QR Y ENLACE =====
         function generarQRYEnlace() {
             var cliente = document.getElementById('cliente').value.trim();
             var excursion = document.getElementById('excursion').value.trim();
             
             if (!cliente || !excursion) {
                 alert('Los campos Cliente y Excursión son obligatorios.');
+                return;
+            }
+            
+            var horasExpiracion = obtenerHorasExpiracion();
+            if (horasExpiracion === null) {
                 return;
             }
             
@@ -859,8 +985,12 @@
             var timestamp = Date.now();
             params.set('timestamp', timestamp);
             
-            var expiracion = document.getElementById('expiracion').value;
-            params.set('expiracion', expiracion);
+            // Si es personalizado, usar el valor calculado
+            if (document.getElementById('expiracion').value === 'personalizado') {
+                params.set('expiracion', horasExpiracion);
+            } else {
+                params.set('expiracion', horasExpiracion);
+            }
             
             var base = '/ver-recibo';
             var enlaceQR = base + '?' + params.toString();
@@ -878,28 +1008,12 @@
             var textoExpiracion = '';
             var expiracionInfo = document.getElementById('expiracionInfo');
             
-            if (expiracion === 'nunca') {
-                textoExpiracion = 'válido permanentemente';
+            if (horasExpiracion === 'nunca') {
+                textoExpiracion = 'permanentemente';
                 expiracionInfo.innerHTML = '<strong>Válido permanentemente</strong> - Este QR nunca expira';
                 expiracionInfo.className = 'expiracion-resultado permanente';
             } else {
-                var horas = parseInt(expiracion);
-                var texto = '';
-                if (horas < 24) {
-                    texto = horas + ' ' + (horas === 1 ? 'hora' : 'horas');
-                } else if (horas < 168) {
-                    var dias = Math.floor(horas / 24);
-                    texto = dias + ' ' + (dias === 1 ? 'día' : 'días');
-                } else if (horas < 720) {
-                    var semanas = Math.floor(horas / 168);
-                    texto = semanas + ' ' + (semanas === 1 ? 'semana' : 'semanas');
-                } else if (horas < 8760) {
-                    var meses = Math.floor(horas / 720);
-                    texto = meses + ' ' + (meses === 1 ? 'mes' : 'meses');
-                } else {
-                    var anos = Math.floor(horas / 8760);
-                    texto = anos + ' ' + (anos === 1 ? 'año' : 'años');
-                }
+                var texto = formatearTiempoParaTexto(horasExpiracion);
                 textoExpiracion = 'válido por ' + texto;
                 expiracionInfo.innerHTML = '<strong>Válido por ' + texto + '</strong> desde el momento de la generación';
                 expiracionInfo.className = 'expiracion-resultado';
@@ -915,6 +1029,7 @@
             window.open(urlAdmin, '_blank');
         }
 
+        // ===== COPIAR ENLACE =====
         function copiarEnlace() {
             var enlace = document.getElementById('enlaceGenerado').textContent;
             navigator.clipboard.writeText(enlace).then(function() {
@@ -930,6 +1045,7 @@
             });
         }
 
+        // ===== DESCARGAR QR =====
         function descargarQR() {
             var qrImg = document.getElementById('qrImg');
             var link = document.createElement('a');
@@ -938,6 +1054,7 @@
             link.click();
         }
 
+        // ===== INICIALIZAR =====
         document.addEventListener('DOMContentLoaded', function() {
             var semana = new Date();
             semana.setDate(semana.getDate() + 7);
@@ -946,6 +1063,7 @@
             document.querySelector('input[name="estado"][value="completo"]').checked = true;
             cambiarEtiquetaHabitacion();
             actualizarVistaPrevia();
+            mostrarPersonalizado();
         });
     </script>
 </body>
