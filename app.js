@@ -18,7 +18,7 @@ app.get('/ver-recibo', (req, res) => {
         subtotal, descuento, total, deposito, estado, metodoPago,
         whatsapp, correo, hotel, habitacion, horaRecogida, transporte, notas, fechaExcursion,
         tipoExcursion, grupo, capacidadMaxima,
-        admin
+        admin, tipoRecogida, lugarRecogida
     } = req.query;
 
     if (!id || !recibo) {
@@ -34,6 +34,33 @@ app.get('/ver-recibo', (req, res) => {
     const totalNum = parseFloat(total) || (subtotalNum - descuentoNum);
     const depositoNum = parseFloat(deposito) || 0;
     const totalPendiente = totalNum - depositoNum;
+
+    // ====== PROCESAR RECOGIDA ======
+    // Determinar si es "Sin Recogida" o tiene recogida
+    const esSinRecogida = tipoRecogida === 'Sin Recogida';
+    
+    let recogidaMostrar = '';
+    let lugarMostrar = '';
+    
+    if (esSinRecogida) {
+        // Si es SIN RECOGIDA, mostrar "Lugar de la Excursión"
+        recogidaMostrar = 'Lugar de la Excursión';
+        lugarMostrar = lugarRecogida || hotel || ''; // hotel viene del campo lugarRecogida
+    } else {
+        // Si hay recogida, mostrar el tipo + lugar
+        recogidaMostrar = tipoRecogida || 'Hotel';
+        lugarMostrar = lugarRecogida || hotel || '';
+    }
+
+    // Procesar habitación (solo aplica si NO es Sin Recogida)
+    let habitacionMostrar = habitacion || '';
+    if (esSinRecogida) {
+        habitacionMostrar = '---';
+    }
+
+    // Procesar hora
+    let horaMostrar = horaRecogida || '';
+    let labelHora = esSinRecogida ? 'Hora de la Excursión' : 'Hora de Recogida';
 
     const datos = {
         idFactura: id,
@@ -52,9 +79,13 @@ app.get('/ver-recibo', (req, res) => {
         metodoPago: metodoPago || 'Efectivo',
         whatsapp: whatsapp || '',
         correo: correo || '',
-        hotel: hotel || '',
-        habitacion: habitacion || '',
-        horaRecogida: horaRecogida || '',
+        // Recogida mejorada
+        tipoRecogida: recogidaMostrar,
+        lugarRecogida: lugarMostrar,
+        habitacion: habitacionMostrar,
+        horaRecogida: horaMostrar,
+        labelHora: labelHora,
+        esSinRecogida: esSinRecogida,
         transporte: transporte || 'Sí',
         notas: notas || 'Sin notas adicionales',
         fechaExcursion: fechaExcursion || new Date().toLocaleDateString('es-ES'),
