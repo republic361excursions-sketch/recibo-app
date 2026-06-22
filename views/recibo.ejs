@@ -7,7 +7,6 @@
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #f5f5f0;
@@ -17,25 +16,22 @@
             align-items: center;
             padding: 30px;
         }
-
         .recibo {
             background: #ffffff;
             max-width: 700px;
             width: 100%;
             padding: 45px 50px;
             border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
             border: 1px solid #edebe6;
             margin-bottom: 30px;
         }
-
         .header {
             text-align: center;
             border-bottom: 2px solid #1a2a4a;
             padding-bottom: 22px;
             margin-bottom: 28px;
         }
-
         .header .logo {
             font-size: 20px;
             font-weight: 700;
@@ -43,9 +39,7 @@
             letter-spacing: 3px;
             text-transform: uppercase;
         }
-
         .header .logo span { color: #c9a84c; }
-
         .header .titulo {
             font-size: 24px;
             font-weight: 300;
@@ -53,7 +47,6 @@
             margin-top: 4px;
             letter-spacing: 1px;
         }
-
         .header .recibo-numero {
             font-size: 13px;
             color: #8e9aaf;
@@ -61,7 +54,6 @@
             font-weight: 400;
             letter-spacing: 0.5px;
         }
-
         .info-cliente {
             margin-bottom: 28px;
             padding: 16px 22px;
@@ -69,7 +61,6 @@
             border-radius: 8px;
             border-left: 4px solid #c9a84c;
         }
-
         .info-cliente .titulo {
             font-size: 11px;
             text-transform: uppercase;
@@ -80,7 +71,6 @@
             border-bottom: 1px solid #eae8e3;
             padding-bottom: 6px;
         }
-
         .info-cliente .fila {
             display: flex;
             justify-content: space-between;
@@ -89,11 +79,9 @@
             color: #2c3e50;
             border-bottom: 1px solid #f0efeb;
         }
-
         .info-cliente .fila:last-child { border-bottom: none; }
         .info-cliente .label { font-weight: 500; color: #6b7a8f; }
         .info-cliente .valor { font-weight: 400; text-align: right; color: #1a2a4a; }
-
         .tabla {
             width: 100%;
             border-collapse: collapse;
@@ -101,7 +89,6 @@
             font-size: 14px;
             border-bottom: 2px solid #1a2a4a;
         }
-
         .tabla th {
             text-align: left;
             padding: 10px 0;
@@ -112,16 +99,13 @@
             text-transform: uppercase;
             letter-spacing: 0.8px;
         }
-
         .tabla td {
             padding: 8px 0;
             border-bottom: 1px solid #eeede8;
             color: #2c3e50;
         }
-
         .tabla .monto { text-align: right; font-weight: 500; }
         .tabla .total { font-weight: 600; font-size: 15px; }
-
         .estado-unico {
             text-align: center;
             padding: 16px 20px;
@@ -131,34 +115,28 @@
             font-weight: 600;
             letter-spacing: 0.3px;
         }
-
         .estado-unico.pagado {
             background: #eafaf1;
             border: 2px solid #27ae60;
             color: #1e8449;
         }
-
         .estado-unico.falta {
             background: #fef9e7;
             border: 2px solid #f1c40f;
             color: #7d6608;
         }
-
         .estado-unico.pendiente {
             background: #fdedec;
             border: 2px solid #e74c3c;
             color: #922b21;
         }
-
         .estado-unico .monto { font-size: 26px; }
-
         .resumen-pago {
             background: #f8f7f4;
             padding: 16px 24px;
             border-radius: 8px;
             margin: 20px 0;
         }
-
         .resumen-pago .fila {
             display: flex;
             justify-content: space-between;
@@ -166,7 +144,6 @@
             border-bottom: 1px solid #eae8e3;
             font-size: 14px;
         }
-
         .resumen-pago .fila:last-child { border-bottom: none; }
         .resumen-pago .label { font-weight: 500; color: #6b7a8f; }
         .resumen-pago .value { font-weight: 600; color: #1a2a4a; }
@@ -178,7 +155,6 @@
             margin-top: 4px;
             font-size: 15px;
         }
-
         .footer {
             text-align: center;
             margin-top: 28px;
@@ -188,27 +164,23 @@
             font-size: 12px;
             letter-spacing: 0.5px;
         }
-
         .footer .empresa {
             color: #1a2a4a;
             font-weight: 600;
             font-size: 13px;
             letter-spacing: 1.5px;
         }
-
         .footer .direccion {
             margin-top: 4px;
             font-size: 11px;
             color: #c5cdd8;
         }
-
         .footer .codigo {
             margin-top: 6px;
             font-size: 10px;
             color: #c5cdd8;
             letter-spacing: 0.5px;
         }
-
         .qr-info {
             text-align: center;
             margin: 14px 0;
@@ -218,9 +190,7 @@
             font-size: 12px;
             color: #8e9aaf;
         }
-
         .qr-info span { font-weight: 600; color: #1a2a4a; }
-
         .acciones-recibo {
             display: none;
             flex-wrap: wrap;
@@ -230,9 +200,7 @@
             width: 100%;
             margin-top: 10px;
         }
-
         .acciones-recibo.visible { display: flex; }
-
         .btn-accion {
             padding: 12px 28px;
             border: none;
@@ -248,7 +216,6 @@
             background: #1a2a4a;
             color: white;
         }
-
         .btn-accion:hover { background: #2c3e6e; }
         .btn-accion.whatsapp { background: #25D366; }
         .btn-accion.whatsapp:hover { background: #1da851; }
@@ -256,13 +223,11 @@
         .btn-accion.imagen:hover { background: #b8973a; }
         .btn-accion.volver { background: #8e9aaf; }
         .btn-accion.volver:hover { background: #6b7a8f; }
-
         @media print {
             body { background: white; padding: 0; }
             .recibo { box-shadow: none; border: 1px solid #ddd; padding: 30px; }
             .acciones-recibo { display: none !important; }
         }
-
         @media (max-width: 600px) {
             .recibo { padding: 25px 20px; }
             .info-cliente .fila { flex-direction: column; align-items: flex-start; }
@@ -277,17 +242,14 @@
 </head>
 <body>
     <div id="reciboContainer" class="recibo">
-        <!-- HEADER -->
         <div class="header">
             <div class="logo">Republic <span>Excursions</span></div>
             <div class="titulo">Recibo de Pago</div>
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
 
-        <!-- INFORMACIÓN DE LA RESERVA -->
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
-
             <div class="fila">
                 <span class="label">Factura / Reserva</span>
                 <span class="valor"><%= idFactura %></span>
@@ -296,16 +258,6 @@
                 <span class="label">Cliente</span>
                 <span class="valor"><%= cliente %></span>
             </div>
-            <div class="fila">
-                <span class="label">Tipo de Excursión</span>
-                <span class="valor"><%= tipoExcursion === 'privado' ? 'Privado' : 'Compartido' %></span>
-            </div>
-            <% if (grupo) { %>
-            <div class="fila">
-                <span class="label">Grupo / Empresa</span>
-                <span class="valor"><%= grupo %></span>
-            </div>
-            <% } %>
             <% if (whatsapp) { %>
             <div class="fila">
                 <span class="label">WhatsApp</span>
@@ -323,17 +275,7 @@
                 <span class="valor"><%= hotel %></span>
             </div>
             <div class="fila">
-                <span class="label">
-                    <% if (hotel && hotel.toLowerCase().includes('airbnb')) { %>
-                        Apartamento
-                    <% } else if (hotel && hotel.toLowerCase().includes('punto de encuentro')) { %>
-                        Referencia
-                    <% } else if (hotel && hotel.toLowerCase().includes('sin recogida')) { %>
-                        ---
-                    <% } else { %>
-                        Habitación
-                    <% } %>
-                </span>
+                <span class="label">Habitación</span>
                 <span class="valor"><%= habitacion %></span>
             </div>
             <% if (horaRecogida) { %>
@@ -364,12 +306,6 @@
                 <span class="label">Personas</span>
                 <span class="valor"><%= adultos %> Adultos, <%= ninos %> Niños</span>
             </div>
-            <% if (capacidadMaxima) { %>
-            <div class="fila">
-                <span class="label">Capacidad Máxima</span>
-                <span class="valor"><%= capacidadMaxima %></span>
-            </div>
-            <% } %>
             <div class="fila">
                 <span class="label">Método de Pago</span>
                 <span class="valor"><%= metodoPago %></span>
@@ -382,7 +318,6 @@
             <% } %>
         </div>
 
-        <!-- TABLA DE CONCEPTOS -->
         <table class="tabla">
             <thead>
                 <tr>
@@ -396,7 +331,7 @@
                     <td class="monto"></td>
                 </tr>
                 <tr>
-                    <td><%= tipoExcursion === 'privado' ? 'Privado' : 'Compartido' %> - Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
+                    <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
                     <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
                 </tr>
                 <% if (ninos > 0) { %>
@@ -428,7 +363,6 @@
             </tbody>
         </table>
 
-        <!-- ESTADO DE PAGO -->
         <%
             let estadoClase = '';
             let estadoTexto = '';
@@ -447,7 +381,6 @@
             <%= estadoTexto %>
         </div>
 
-        <!-- RESUMEN DE PAGO -->
         <div class="resumen-pago">
             <div class="fila">
                 <span class="label">Subtotal</span>
@@ -477,12 +410,10 @@
             </div>
         </div>
 
-        <!-- CÓDIGO DE VERIFICACIÓN -->
         <div class="qr-info">
             <span>Documento de verificación</span> &mdash; Código <%= numeroRecibo %>
         </div>
 
-        <!-- FOOTER -->
         <div class="footer">
             <p class="empresa">Republic Excursions</p>
             <p class="direccion">Punta Cana, República Dominicana</p>
@@ -491,7 +422,6 @@
         </div>
     </div>
 
-    <!-- BOTONES ADMIN -->
     <% if (mostrarBotones) { %>
     <div class="acciones-recibo visible">
         <button class="btn-accion imagen" onclick="descargarImagen()">Descargar Imagen</button>
