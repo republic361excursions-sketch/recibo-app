@@ -29,9 +29,7 @@
             margin-bottom: 30px;
             transition: box-shadow 0.3s ease;
         }
-        .recibo:hover {
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
-        }
+        .recibo:hover { box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12); }
         .header {
             text-align: center;
             border-bottom: 3px solid #1a2a4a;
@@ -61,7 +59,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ===== INFORMACIÓN DE EXPIRACIÓN ===== */
         .expiracion-info {
             display: flex;
             justify-content: space-around;
@@ -79,9 +76,7 @@
             background: #ffebee;
             border-color: #ef9a9a;
         }
-        .expiracion-item {
-            text-align: center;
-        }
+        .expiracion-item { text-align: center; }
         .expiracion-item .label {
             display: block;
             font-size: 11px;
@@ -96,17 +91,10 @@
             color: #1a2a4a;
             margin-top: 4px;
         }
-        .expiracion-item .valor.expirado {
-            color: #c62828;
-        }
-        .expiracion-item .valor.valido {
-            color: #2e7d32;
-        }
-        .expiracion-item .valor.permanente {
-            color: #0d47a1;
-        }
+        .expiracion-item .valor.expirado { color: #c62828; }
+        .expiracion-item .valor.valido { color: #2e7d32; }
+        .expiracion-item .valor.permanente { color: #0d47a1; }
 
-        /* ===== INFORMACIÓN DEL CLIENTE ===== */
         .info-cliente {
             margin-bottom: 30px;
             padding: 20px 28px;
@@ -136,11 +124,7 @@
         .info-cliente .label { font-weight: 500; color: #6b7a8f; }
         .info-cliente .valor { font-weight: 400; text-align: right; color: #1a2a4a; }
 
-        /* ===== TABLA ===== */
-        .tabla-container {
-            overflow-x: auto;
-            margin: 25px 0;
-        }
+        .tabla-container { overflow-x: auto; margin: 25px 0; }
         .tabla {
             width: 100%;
             border-collapse: collapse;
@@ -165,7 +149,6 @@
         .tabla .monto { text-align: right; font-weight: 500; }
         .tabla .total { font-weight: 600; font-size: 15px; }
 
-        /* ===== ESTADO ===== */
         .estado-unico {
             text-align: center;
             padding: 18px 24px;
@@ -191,7 +174,6 @@
             color: #b71c1c;
         }
 
-        /* ===== RESUMEN ===== */
         .resumen-pago {
             background: #f8f9fa;
             padding: 20px 28px;
@@ -217,7 +199,6 @@
             font-size: 15px;
         }
 
-        /* ===== FOOTER ===== */
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -255,7 +236,6 @@
         }
         .qr-info span { font-weight: 600; color: #1a2a4a; }
 
-        /* ===== BOTONES ===== */
         .acciones-recibo {
             display: none;
             flex-wrap: wrap;
@@ -323,13 +303,8 @@
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
 
-        <!-- ===== INFORMACIÓN DE EXPIRACIÓN ===== -->
         <% if (fechaGeneracion && fechaExpiracion) { %>
-            <% if (reciboValido) { %>
-            <div class="expiracion-info">
-            <% } else { %>
-            <div class="expiracion-info expirado">
-            <% } %>
+            <div class="expiracion-info <%= reciboValido ? '' : 'expirado' %>">
                 <div class="expiracion-item">
                     <span class="label">Generado</span>
                     <span class="valor"><%= new Date(fechaGeneracion).toLocaleString('es-ES') %></span>
@@ -362,46 +337,38 @@
         </div>
         <% } %>
 
-        <!-- INFORMACIÓN DEL CLIENTE -->
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
-            
             <div class="fila">
                 <span class="label">Factura / Reserva</span>
                 <span class="valor"><%= idFactura %></span>
             </div>
-            
             <div class="fila">
                 <span class="label">Cliente</span>
                 <span class="valor"><%= cliente %></span>
             </div>
-            
             <div class="fila">
                 <span class="label">Tipo de Excursión</span>
                 <span class="valor"><%= tipoExcursion === 'privado' ? 'Privado' : 'Compartido' %></span>
             </div>
-            
             <% if (grupo) { %>
             <div class="fila">
                 <span class="label">Grupo</span>
                 <span class="valor"><%= grupo %></span>
             </div>
             <% } %>
-            
             <% if (whatsapp) { %>
             <div class="fila">
                 <span class="label">WhatsApp</span>
                 <span class="valor"><%= whatsapp %></span>
             </div>
             <% } %>
-            
             <% if (correo) { %>
             <div class="fila">
                 <span class="label">Correo Electrónico</span>
                 <span class="valor"><%= correo %></span>
             </div>
             <% } %>
-            
             <div class="fila">
                 <span class="label"><%= esSinRecogida ? 'Lugar de la Excursión' : 'Recogida' %></span>
                 <span class="valor">
@@ -412,51 +379,42 @@
                     <% } %>
                 </span>
             </div>
-
             <% if (!esSinRecogida) { %>
             <div class="fila">
                 <span class="label"><%= tipoRecogida === 'Hotel' ? 'Habitación' : tipoRecogida === 'Airbnb' ? 'Apartamento' : 'Referencia' %></span>
                 <span class="valor"><%= habitacion || '---' %></span>
             </div>
             <% } %>
-
             <div class="fila">
                 <span class="label"><%= labelHora %></span>
                 <span class="valor"><%= horaRecogida || '---' %></span>
             </div>
-
             <div class="fila">
                 <span class="label">Transporte</span>
                 <span class="valor"><%= transporte %></span>
             </div>
-            
             <div class="fila">
                 <span class="label">Excursión</span>
                 <span class="valor"><%= excursion %></span>
             </div>
-            
             <div class="fila">
                 <span class="label">Fecha</span>
                 <span class="valor"><%= fechaExcursion %></span>
             </div>
-            
             <div class="fila">
                 <span class="label">Personas</span>
                 <span class="valor"><%= adultos %> Adultos, <%= ninos %> Niños</span>
             </div>
-            
             <% if (capacidadMaxima) { %>
             <div class="fila">
                 <span class="label">Capacidad Máxima</span>
                 <span class="valor"><%= capacidadMaxima %></span>
             </div>
             <% } %>
-            
             <div class="fila">
                 <span class="label">Método de Pago</span>
                 <span class="valor"><%= metodoPago %></span>
             </div>
-            
             <% if (notas && notas !== 'Sin notas adicionales') { %>
             <div class="fila">
                 <span class="label">Notas</span>
@@ -465,7 +423,6 @@
             <% } %>
         </div>
 
-        <!-- TABLA -->
         <div class="tabla-container">
             <table class="tabla">
                 <thead>
@@ -479,7 +436,6 @@
                         <td><strong><%= excursion %></strong></td>
                         <td class="monto"></td>
                     </tr>
-                    
                     <% if (tipoExcursion === 'compartido') { %>
                     <tr>
                         <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
@@ -491,19 +447,16 @@
                         <td class="monto">$<%= (ninos * precioNino).toFixed(2) %></td>
                     </tr>
                     <% } %>
-                    
                     <% } else { %>
                     <tr>
                         <td>Privado - <%= adultos %> personas</td>
                         <td class="monto">$<%= precioAdulto.toFixed(2) %></td>
                     </tr>
                     <% } %>
-                    
                     <tr>
                         <td><strong>Subtotal</strong></td>
                         <td class="monto total">$<%= subtotal.toFixed(2) %></td>
                     </tr>
-                    
                     <% if (descuento > 0) { %>
                     <tr>
                         <td style="color: #2e7d32;"><strong>Descuento</strong></td>
@@ -514,7 +467,6 @@
                         <td class="monto total">$<%= total.toFixed(2) %></td>
                     </tr>
                     <% } %>
-                    
                     <% if (depositoPagado > 0 && totalPendiente > 0) { %>
                     <tr>
                         <td>Depósito Pagado (25%)</td>
@@ -525,11 +477,9 @@
             </table>
         </div>
 
-        <!-- ESTADO -->
         <%
             let estadoClase = '';
             let estadoMostrar = '';
-            
             if (totalPendiente <= 0) {
                 estadoClase = 'pagado';
                 estadoMostrar = 'PAGADO COMPLETO';
@@ -545,13 +495,11 @@
             <%= estadoMostrar %>
         </div>
 
-        <!-- RESUMEN -->
         <div class="resumen-pago">
             <div class="fila">
                 <span class="label">Subtotal</span>
                 <span class="value">$<%= subtotal.toFixed(2) %></span>
             </div>
-            
             <% if (descuento > 0) { %>
             <div class="fila">
                 <span class="label">Descuento</span>
@@ -562,14 +510,12 @@
                 <span class="value">$<%= total.toFixed(2) %></span>
             </div>
             <% } %>
-            
             <% if (depositoPagado > 0 && totalPendiente > 0) { %>
             <div class="fila">
                 <span class="label">Depósito Pagado (25%)</span>
                 <span class="value">$<%= depositoPagado.toFixed(2) %></span>
             </div>
             <% } %>
-            
             <div class="fila total">
                 <span class="label">Balance Pendiente</span>
                 <span class="value <%= totalPendiente === 0 ? 'pagado' : 'pendiente' %>">
@@ -593,7 +539,6 @@
         </div>
     </div>
 
-    <!-- ===== BOTONES ===== -->
     <% if (mostrarBotones) { %>
     <div class="acciones-recibo visible">
         <button class="btn-accion imagen" onclick="descargarImagen()">Descargar Imagen</button>
