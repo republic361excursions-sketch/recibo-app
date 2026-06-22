@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #f5f5f0;
@@ -17,62 +16,23 @@
             align-items: center;
             padding: 30px;
         }
-
         .container {
             background: #ffffff;
             max-width: 700px;
             width: 100%;
             padding: 45px 50px;
             border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
             border: 1px solid #edebe6;
         }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a2a4a;
-            letter-spacing: 2px;
-        }
-
-        .header h1 span {
-            color: #c9a84c;
-        }
-
-        .subtitulo {
-            font-size: 14px;
-            color: #8e9aaf;
-            margin-bottom: 30px;
-            font-weight: 400;
-            letter-spacing: 0.5px;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 5px;
-            font-size: 13px;
-            letter-spacing: 0.3px;
-        }
-
-        .form-group label .required {
-            color: #e74c3c;
-            font-weight: 700;
-        }
-
-        .form-group input,
-        .form-group select {
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 22px; font-weight: 700; color: #1a2a4a; letter-spacing: 2px; }
+        .header h1 span { color: #c9a84c; }
+        .subtitulo { font-size: 14px; color: #8e9aaf; margin-bottom: 30px; font-weight: 400; letter-spacing: 0.5px; text-align: center; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-weight: 600; color: #2c3e50; margin-bottom: 5px; font-size: 13px; letter-spacing: 0.3px; }
+        .form-group label .required { color: #e74c3c; font-weight: 700; }
+        .form-group input, .form-group select {
             width: 100%;
             padding: 12px 14px;
             border: 2px solid #eae8e3;
@@ -83,36 +43,11 @@
             background: #fafaf8;
             color: #2c3e50;
         }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: #1a2a4a;
-            outline: none;
-            background: white;
-        }
-
-        .form-group input::placeholder {
-            color: #b5c0d0;
-            font-weight: 300;
-            font-size: 13px;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 20px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .small-hint {
-            color: #b5c0d0;
-            font-size: 12px;
-            margin-top: 4px;
-            font-weight: 300;
-        }
-
+        .form-group input:focus, .form-group select:focus { border-color: #1a2a4a; outline: none; background: white; }
+        .form-group input::placeholder { color: #b5c0d0; font-weight: 300; font-size: 13px; }
+        .form-row { display: flex; gap: 20px; }
+        .form-row .form-group { flex: 1; }
+        .small-hint { color: #b5c0d0; font-size: 12px; margin-top: 4px; font-weight: 300; }
         .btn {
             width: 100%;
             padding: 16px;
@@ -128,11 +63,7 @@
             letter-spacing: 1px;
             margin-top: 8px;
         }
-
-        .btn:hover {
-            background: #2c3e6e;
-        }
-
+        .btn:hover { background: #2c3e6e; }
         .btn-descuento {
             background: #8e9aaf;
             padding: 12px 18px;
@@ -142,34 +73,17 @@
             font-weight: 500;
             letter-spacing: 0.5px;
         }
-
-        .btn-descuento:hover {
-            background: #6b7a8f;
-        }
-
-        .btn-descuento.activo {
-            background: #e74c3c;
-        }
-
-        .btn-descuento.activo:hover {
-            background: #c0392b;
-        }
-
-        .descuento-activo {
-            display: none;
-        }
-
-        .descuento-activo.visible {
-            display: block;
-        }
-
+        .btn-descuento:hover { background: #6b7a8f; }
+        .btn-descuento.activo { background: #e74c3c; }
+        .btn-descuento.activo:hover { background: #c0392b; }
+        .descuento-activo { display: none; }
+        .descuento-activo.visible { display: block; }
         .estado-options {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
             padding-top: 4px;
         }
-
         .estado-options label {
             display: flex;
             align-items: center;
@@ -179,14 +93,12 @@
             font-size: 14px;
             color: #2c3e50;
         }
-
         .estado-options input[type="radio"] {
             width: 16px;
             height: 16px;
             accent-color: #1a2a4a;
             cursor: pointer;
         }
-
         .vista-previa {
             margin-top: 30px;
             padding: 20px;
@@ -194,7 +106,6 @@
             border-radius: 10px;
             border: 2px solid #eae8e3;
         }
-
         .vista-previa h4 {
             color: #1a2a4a;
             font-size: 14px;
@@ -203,7 +114,6 @@
             font-weight: 600;
             letter-spacing: 1px;
         }
-
         .vista-previa .recibo-mini {
             background: white;
             padding: 20px;
@@ -212,28 +122,15 @@
             font-size: 13px;
             color: #2c3e50;
         }
-
         .vista-previa .recibo-mini .fila {
             display: flex;
             justify-content: space-between;
             padding: 3px 0;
             border-bottom: 1px solid #f0efeb;
         }
-
-        .vista-previa .recibo-mini .fila:last-child {
-            border-bottom: none;
-        }
-
-        .vista-previa .recibo-mini .label {
-            font-weight: 500;
-            color: #6b7a8f;
-        }
-
-        .vista-previa .recibo-mini .valor {
-            font-weight: 400;
-            color: #1a2a4a;
-        }
-
+        .vista-previa .recibo-mini .fila:last-child { border-bottom: none; }
+        .vista-previa .recibo-mini .label { font-weight: 500; color: #6b7a8f; }
+        .vista-previa .recibo-mini .valor { font-weight: 400; color: #1a2a4a; }
         .vista-previa .recibo-mini .estado-mini {
             text-align: center;
             padding: 8px;
@@ -242,22 +139,9 @@
             font-weight: 600;
             font-size: 14px;
         }
-
-        .vista-previa .recibo-mini .estado-mini.pagado {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .vista-previa .recibo-mini .estado-mini.falta {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .vista-previa .recibo-mini .estado-mini.pendiente {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
+        .vista-previa .recibo-mini .estado-mini.pagado { background: #d4edda; color: #155724; }
+        .vista-previa .recibo-mini .estado-mini.falta { background: #fff3cd; color: #856404; }
+        .vista-previa .recibo-mini .estado-mini.pendiente { background: #f8d7da; color: #721c24; }
         .vista-previa .recibo-mini .total-mini {
             font-weight: 700;
             font-size: 15px;
@@ -267,7 +151,6 @@
             padding-top: 8px;
             border-top: 2px solid #1a2a4a;
         }
-
         .resultado {
             margin-top: 30px;
             padding: 25px;
@@ -276,19 +159,8 @@
             display: none;
             border: 2px solid #c9a84c;
         }
-
-        .resultado.visible {
-            display: block;
-        }
-
-        .resultado h3 {
-            color: #1a2a4a;
-            font-size: 18px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: 600;
-        }
-
+        .resultado.visible { display: block; }
+        .resultado h3 { color: #1a2a4a; font-size: 18px; margin-bottom: 15px; text-align: center; font-weight: 600; }
         .resultado .enlace {
             word-break: break-all;
             background: white;
@@ -299,12 +171,7 @@
             margin-bottom: 15px;
             color: #2c3e50;
         }
-
-        .resultado .qr-container {
-            text-align: center;
-            margin: 15px 0;
-        }
-
+        .resultado .qr-container { text-align: center; margin: 15px 0; }
         .resultado .qr-container img {
             max-width: 160px;
             border: 2px solid #eae8e3;
@@ -312,7 +179,6 @@
             padding: 8px;
             background: white;
         }
-
         .acciones {
             display: flex;
             flex-wrap: wrap;
@@ -320,7 +186,6 @@
             justify-content: center;
             margin-top: 15px;
         }
-
         .btn-copiar {
             background: #28a745;
             color: white;
@@ -332,11 +197,7 @@
             font-family: 'Inter', sans-serif;
             font-size: 13px;
         }
-
-        .btn-copiar:hover {
-            background: #218838;
-        }
-
+        .btn-copiar:hover { background: #218838; }
         .btn-qr {
             background: #c9a84c;
             color: white;
@@ -348,11 +209,7 @@
             font-family: 'Inter', sans-serif;
             font-size: 13px;
         }
-
-        .btn-qr:hover {
-            background: #b8973a;
-        }
-
+        .btn-qr:hover { background: #b8973a; }
         .btn-whatsapp {
             background: #25D366;
             color: white;
@@ -366,11 +223,7 @@
             font-family: 'Inter', sans-serif;
             font-size: 13px;
         }
-
-        .btn-whatsapp:hover {
-            background: #1da851;
-        }
-
+        .btn-whatsapp:hover { background: #1da851; }
         .btn-ver-recibo {
             display: inline-block;
             background: #1a2a4a;
@@ -383,30 +236,13 @@
             font-family: 'Inter', sans-serif;
             text-align: center;
         }
-
-        .btn-ver-recibo:hover {
-            background: #2c3e6e;
-        }
-
+        .btn-ver-recibo:hover { background: #2c3e6e; }
         @media (max-width: 600px) {
-            .container {
-                padding: 25px 20px;
-            }
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-            .estado-options {
-                flex-direction: column;
-                gap: 8px;
-            }
-            .resultado .enlace {
-                font-size: 12px;
-            }
-            .vista-previa .recibo-mini {
-                font-size: 12px;
-                padding: 15px;
-            }
+            .container { padding: 25px 20px; }
+            .form-row { flex-direction: column; gap: 0; }
+            .estado-options { flex-direction: column; gap: 8px; }
+            .resultado .enlace { font-size: 12px; }
+            .vista-previa .recibo-mini { font-size: 12px; padding: 15px; }
         }
     </style>
 </head>
@@ -418,35 +254,35 @@
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
         <form id="formRecibo">
-            <!-- ID (NO OBLIGATORIO) -->
+            <!-- ID -->
             <div class="form-group">
                 <label>ID / Código de Reserva</label>
-                <input type="text" id="id" placeholder="Ej: BUG-5198" oninput="actualizarVistaPrevia()">
+                <input type="text" id="id" placeholder="Ej: BUG-5198">
             </div>
 
-            <!-- CLIENTE (OBLIGATORIO) -->
+            <!-- CLIENTE -->
             <div class="form-group">
                 <label>Cliente <span class="required">*</span></label>
-                <input type="text" id="cliente" placeholder="Nombre completo" oninput="actualizarVistaPrevia()">
+                <input type="text" id="cliente" placeholder="Nombre completo">
             </div>
 
-            <!-- WHATSAPP (OBLIGATORIO) + CORREO (NO OBLIGATORIO) -->
+            <!-- WHATSAPP + CORREO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>WhatsApp <span class="required">*</span></label>
-                    <input type="text" id="whatsapp" placeholder="Ej: 809-555-1234" oninput="actualizarVistaPrevia()">
+                    <input type="text" id="whatsapp" placeholder="Ej: 809-555-1234">
                 </div>
                 <div class="form-group">
                     <label>Correo</label>
-                    <input type="email" id="correo" placeholder="correo@ejemplo.com" oninput="actualizarVistaPrevia()">
+                    <input type="email" id="correo" placeholder="correo@ejemplo.com">
                 </div>
             </div>
 
-            <!-- TIPO DE RECOGIDA + LUGAR DE RECOGIDA + HABITACION -->
+            <!-- TIPO DE RECOGIDA + LUGAR + HABITACION -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Recogida</label>
-                    <select id="tipoRecogida" onchange="cambiarEtiquetaHabitacion(); actualizarVistaPrevia();">
+                    <select id="tipoRecogida">
                         <option value="Hotel">Hotel</option>
                         <option value="Airbnb">Airbnb</option>
                         <option value="Punto de Encuentro">Punto de Encuentro</option>
@@ -454,13 +290,13 @@
                 </div>
                 <div class="form-group">
                     <label>Lugar de Recogida</label>
-                    <input type="text" id="lugarRecogida" placeholder="Ej: Riu Bavaro, Villa Sol, Parque Central" oninput="actualizarVistaPrevia()">
+                    <input type="text" id="lugarRecogida" placeholder="Ej: Riu Bavaro, Villa Sol, Parque Central">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label id="labelHabitacion">Habitación</label>
-                    <input type="text" id="habitacion" placeholder="Ej: 123, Villa B12" oninput="actualizarVistaPrevia()">
+                    <input type="text" id="habitacion" placeholder="Ej: 123, Villa B12">
                 </div>
             </div>
 
@@ -468,32 +304,32 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Transporte</label>
-                    <select id="transporte" onchange="actualizarVistaPrevia()">
+                    <select id="transporte">
                         <option value="Sí">Sí</option>
                         <option value="No">No</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Fecha de la Excursión</label>
-                    <input type="date" id="fechaExcursion" onchange="actualizarVistaPrevia()">
+                    <input type="date" id="fechaExcursion">
                 </div>
             </div>
 
-            <!-- EXCURSION (OBLIGATORIO) -->
+            <!-- EXCURSION -->
             <div class="form-group">
                 <label>Excursión <span class="required">*</span></label>
-                <input type="text" id="excursion" placeholder="Nombre de la excursión" oninput="actualizarVistaPrevia()">
+                <input type="text" id="excursion" placeholder="Nombre de la excursión">
             </div>
 
-            <!-- ADULTOS (OBLIGATORIO) + NIÑOS -->
+            <!-- ADULTOS + NIÑOS -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Adultos <span class="required">*</span></label>
-                    <input type="number" id="adultos" placeholder="Cantidad" min="0" oninput="calcularTodo()">
+                    <input type="number" id="adultos" placeholder="Cantidad" min="0">
                 </div>
                 <div class="form-group">
                     <label>Niños</label>
-                    <input type="number" id="ninos" placeholder="Cantidad" min="0" oninput="calcularTodo()">
+                    <input type="number" id="ninos" placeholder="Cantidad" min="0">
                 </div>
             </div>
 
@@ -501,11 +337,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Precio por Adulto (USD) <span class="required">*</span></label>
-                    <input type="number" id="precioAdulto" placeholder="Ej: 45" min="0" step="0.01" oninput="calcularTodo()">
+                    <input type="number" id="precioAdulto" placeholder="Ej: 45" min="0" step="0.01">
                 </div>
                 <div class="form-group">
                     <label>Precio por Niño (USD)</label>
-                    <input type="number" id="precioNino" placeholder="Ej: 25" min="0" step="0.01" oninput="calcularTodo()">
+                    <input type="number" id="precioNino" placeholder="Ej: 25" min="0" step="0.01">
                     <div class="small-hint">Si no aplica, dejar en 0.</div>
                 </div>
             </div>
@@ -525,7 +361,7 @@
             <!-- DESCUENTO -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label>Descuento (USD)</label>
-                <input type="number" id="descuento" min="0" step="0.01" oninput="calcularTodo()">
+                <input type="number" id="descuento" min="0" step="0.01">
                 <div class="small-hint">Monto a descontar del subtotal</div>
             </div>
 
@@ -546,9 +382,9 @@
             <div class="form-group">
                 <label>Estado de Pago</label>
                 <div class="estado-options">
-                    <label><input type="radio" name="estado" value="deposito" checked onchange="calcularTodo()"> Depósito (25%)</label>
-                    <label><input type="radio" name="estado" value="completo" onchange="calcularTodo()"> Pago Completo</label>
-                    <label><input type="radio" name="estado" value="pendiente" onchange="calcularTodo()"> Pendiente</label>
+                    <label><input type="radio" name="estado" value="deposito" checked> Depósito (25%)</label>
+                    <label><input type="radio" name="estado" value="completo"> Pago Completo</label>
+                    <label><input type="radio" name="estado" value="pendiente"> Pendiente</label>
                 </div>
                 <div class="small-hint" style="margin-top:6px;">Al seleccionar "Pago Completo", el depósito se ajusta a $0.00.</div>
             </div>
@@ -557,7 +393,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Método de Pago</label>
-                    <select id="metodoPago" onchange="actualizarVistaPrevia()">
+                    <select id="metodoPago">
                         <option value="Efectivo">Efectivo</option>
                         <option value="PayPal">PayPal</option>
                         <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
@@ -566,7 +402,7 @@
                 </div>
                 <div class="form-group">
                     <label>Notas</label>
-                    <input type="text" id="notas" placeholder="Notas adicionales" oninput="actualizarVistaPrevia()">
+                    <input type="text" id="notas" placeholder="Notas adicionales">
                 </div>
             </div>
 
@@ -625,13 +461,10 @@
         <!-- RESULTADO -->
         <div id="resultado" class="resultado">
             <h3>Recibo Generado</h3>
-            
             <div class="qr-container">
                 <img id="qrImg" src="" alt="QR Code">
             </div>
-
             <div class="enlace" id="enlaceGenerado"></div>
-
             <div class="acciones">
                 <button class="btn-copiar" onclick="copiarEnlace()">Copiar Enlace</button>
                 <button class="btn-qr" onclick="descargarQR()">Descargar QR</button>
@@ -642,56 +475,60 @@
     </div>
 
     <script>
-        // ====== VISTA PREVIA ======
+        // ====== ACTUALIZAR VISTA PREVIA ======
         function actualizarVistaPrevia() {
-            const id = document.getElementById('id').value || '---';
-            const cliente = document.getElementById('cliente').value || '---';
-            const whatsapp = document.getElementById('whatsapp').value || '---';
+            // Datos del cliente
+            document.getElementById('vpId').textContent = document.getElementById('id').value || '---';
+            document.getElementById('vpCliente').textContent = document.getElementById('cliente').value || '---';
+            document.getElementById('vpWhatsapp').textContent = document.getElementById('whatsapp').value || '---';
+            
             const tipoRecogida = document.getElementById('tipoRecogida').value || '';
             const lugarRecogida = document.getElementById('lugarRecogida').value || '';
-            const recogida = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '') || '---';
-            const habitacion = document.getElementById('habitacion').value || '---';
-            const excursion = document.getElementById('excursion').value || '---';
-            const fecha = document.getElementById('fechaExcursion').value || '---';
+            document.getElementById('vpRecogida').textContent = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '') || '---';
+            
+            // Cambiar etiqueta de habitación
+            const vpLabel = document.getElementById('vpLabelHabitacion');
+            if (tipoRecogida === 'Hotel') vpLabel.textContent = 'Habitación';
+            else if (tipoRecogida === 'Airbnb') vpLabel.textContent = 'Apartamento';
+            else if (tipoRecogida === 'Punto de Encuentro') vpLabel.textContent = 'Referencia';
+            
+            document.getElementById('vpHabitacion').textContent = document.getElementById('habitacion').value || '---';
+            document.getElementById('vpExcursion').textContent = document.getElementById('excursion').value || '---';
+            document.getElementById('vpFecha').textContent = document.getElementById('fechaExcursion').value || '---';
+            
             const adultos = document.getElementById('adultos').value || 0;
             const ninos = document.getElementById('ninos').value || 0;
-            const transporte = document.getElementById('transporte').value || '---';
-            const metodoPago = document.getElementById('metodoPago').value || '---';
-            const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+            document.getElementById('vpPersonas').textContent = adultos + ' Adultos, ' + ninos + ' Niños';
+            
+            document.getElementById('vpTransporte').textContent = document.getElementById('transporte').value || '---';
+            document.getElementById('vpMetodoPago').textContent = document.getElementById('metodoPago').value || '---';
+
+            // ====== CALCULAR TOTAL Y ESTADO ======
+            const precioAdulto = parseFloat(document.getElementById('precioAdulto').value) || 0;
+            const precioNino = parseFloat(document.getElementById('precioNino').value) || 0;
+            const subtotal = (parseInt(adultos) * precioAdulto) + (parseInt(ninos) * precioNino);
+            document.getElementById('subtotal').value = subtotal.toFixed(2);
+
             const descuento = parseFloat(document.getElementById('descuento').value) || 0;
             const total = subtotal - descuento;
-            
-            // ✅ OBTENER EL ESTADO SELECCIONADO CORRECTAMENTE
-            const estadoSeleccionado = document.querySelector('input[name="estado"]:checked');
-            const estado = estadoSeleccionado ? estadoSeleccionado.value : 'deposito';
-            
-            // ✅ OBTENER EL DEPÓSITO DEL CAMPO (ya calculado)
-            const deposito = parseFloat(document.getElementById('deposito').value) || 0;
+            document.getElementById('total').value = total.toFixed(2);
+
+            // Depósito según estado
+            const estado = document.querySelector('input[name="estado"]:checked').value;
+            let deposito = 0;
+            if (estado === 'completo') {
+                deposito = 0;
+            } else if (estado === 'deposito') {
+                deposito = total * 0.25;
+            } else if (estado === 'pendiente') {
+                deposito = 0;
+            }
+            document.getElementById('deposito').value = deposito.toFixed(2);
+
+            // Balance
             const balance = total - deposito;
 
-            // Cambiar etiqueta de habitación
-            const labelHabitacion = document.getElementById('vpLabelHabitacion');
-            const tipo = document.getElementById('tipoRecogida').value;
-            if (tipo === 'Hotel') {
-                labelHabitacion.textContent = 'Habitación';
-            } else if (tipo === 'Airbnb') {
-                labelHabitacion.textContent = 'Apartamento';
-            } else if (tipo === 'Punto de Encuentro') {
-                labelHabitacion.textContent = 'Referencia';
-            }
-
-            document.getElementById('vpId').textContent = id;
-            document.getElementById('vpCliente').textContent = cliente;
-            document.getElementById('vpWhatsapp').textContent = whatsapp;
-            document.getElementById('vpRecogida').textContent = recogida;
-            document.getElementById('vpHabitacion').textContent = habitacion;
-            document.getElementById('vpExcursion').textContent = excursion;
-            document.getElementById('vpFecha').textContent = fecha;
-            document.getElementById('vpPersonas').textContent = adultos + ' Adultos, ' + ninos + ' Niños';
-            document.getElementById('vpTransporte').textContent = transporte;
-            document.getElementById('vpMetodoPago').textContent = metodoPago;
-
-            // ✅ ACTUALIZAR ESTADO CON EL BALANCE CORRECTO
+            // Estado visual
             const estadoEl = document.getElementById('vpEstado');
             if (balance <= 0) {
                 estadoEl.textContent = '✅ Pagado Completo';
@@ -707,62 +544,42 @@
             document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
         }
 
-        // ====== CAMBIAR ETIQUETA HABITACION ======
-        function cambiarEtiquetaHabitacion() {
-            const label = document.getElementById('labelHabitacion');
-            const input = document.getElementById('habitacion');
-            const tipo = document.getElementById('tipoRecogida').value;
-            if (tipo === 'Hotel') {
-                label.textContent = 'Habitación';
-                input.placeholder = 'Ej: 123';
-            } else if (tipo === 'Airbnb') {
-                label.textContent = 'Apartamento';
-                input.placeholder = 'Ej: Villa B12, Casa 5';
-            } else if (tipo === 'Punto de Encuentro') {
-                label.textContent = 'Referencia';
-                input.placeholder = 'Ej: Parque Central, Esquina calle 5';
-            }
-        }
-
-        // ====== GENERAR FECHA ======
+        // ====== EVENTOS ======
         document.addEventListener('DOMContentLoaded', function() {
             const semana = new Date();
             semana.setDate(semana.getDate() + 7);
             document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
             
-            calcularTodo();
-        });
-
-        // ====== CALCULAR TODO ======
-        function calcularTodo() {
-            // Calcular subtotal
-            const adultos = parseInt(document.getElementById('adultos').value) || 0;
-            const ninos = parseInt(document.getElementById('ninos').value) || 0;
-            const precioAdulto = parseFloat(document.getElementById('precioAdulto').value) || 0;
-            const precioNino = parseFloat(document.getElementById('precioNino').value) || 0;
-            const subtotal = (adultos * precioAdulto) + (ninos * precioNino);
-            document.getElementById('subtotal').value = subtotal.toFixed(2);
-
-            // Calcular total con descuento
-            const descuento = parseFloat(document.getElementById('descuento').value) || 0;
-            const total = subtotal - descuento;
-            document.getElementById('total').value = total.toFixed(2);
-
-            // Ajustar depósito según estado
-            const estado = document.querySelector('input[name="estado"]:checked').value;
-            const depositoInput = document.getElementById('deposito');
+            // Todos los inputs actualizan la vista previa
+            document.querySelectorAll('#formRecibo input, #formRecibo select').forEach(el => {
+                el.addEventListener('input', actualizarVistaPrevia);
+                el.addEventListener('change', actualizarVistaPrevia);
+            });
             
-            if (estado === 'completo') {
-                depositoInput.value = '0.00';
-            } else if (estado === 'deposito') {
-                depositoInput.value = (total * 0.25).toFixed(2);
-            } else if (estado === 'pendiente') {
-                depositoInput.value = '0.00';
-            }
-
-            // Actualizar vista previa
+            // Radio buttons
+            document.querySelectorAll('input[name="estado"]').forEach(el => {
+                el.addEventListener('change', actualizarVistaPrevia);
+            });
+            
+            // Cambiar etiqueta de habitación en el formulario
+            document.getElementById('tipoRecogida').addEventListener('change', function() {
+                const label = document.getElementById('labelHabitacion');
+                const input = document.getElementById('habitacion');
+                if (this.value === 'Hotel') {
+                    label.textContent = 'Habitación';
+                    input.placeholder = 'Ej: 123';
+                } else if (this.value === 'Airbnb') {
+                    label.textContent = 'Apartamento';
+                    input.placeholder = 'Ej: Villa B12, Casa 5';
+                } else if (this.value === 'Punto de Encuentro') {
+                    label.textContent = 'Referencia';
+                    input.placeholder = 'Ej: Parque Central, Esquina calle 5';
+                }
+                actualizarVistaPrevia();
+            });
+            
             actualizarVistaPrevia();
-        }
+        });
 
         // ====== DESCUENTO ======
         function toggleDescuento() {
@@ -776,7 +593,7 @@
                 document.getElementById('descuento').value = '';
                 btn.innerHTML = '+ Agregar Descuento';
                 btn.classList.remove('activo');
-                calcularTodo();
+                actualizarVistaPrevia();
             }
         }
 
@@ -784,60 +601,44 @@
         document.getElementById('formRecibo').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const id = document.getElementById('id').value;
             const cliente = document.getElementById('cliente').value;
             const excursion = document.getElementById('excursion').value;
             const adultos = document.getElementById('adultos').value;
-            const ninos = document.getElementById('ninos').value;
             const precioAdulto = document.getElementById('precioAdulto').value;
-            const precioNino = document.getElementById('precioNino').value;
-            const subtotal = document.getElementById('subtotal').value;
-            const descuento = document.getElementById('descuento').value || '0';
-            const total = document.getElementById('total').value;
-            const deposito = document.getElementById('deposito').value;
-            const estado = document.querySelector('input[name="estado"]:checked').value;
-            const metodoPago = document.getElementById('metodoPago').value;
-            const whatsapp = document.getElementById('whatsapp').value || '';
-            const correo = document.getElementById('correo').value || '';
-            const tipoRecogida = document.getElementById('tipoRecogida').value || '';
-            const lugarRecogida = document.getElementById('lugarRecogida').value || '';
-            const habitacion = document.getElementById('habitacion').value || '';
-            const transporte = document.getElementById('transporte').value || 'Sí';
-            const notas = document.getElementById('notas').value || 'Sin notas adicionales';
-            const fechaExcursion = document.getElementById('fechaExcursion').value || '';
 
             if (!cliente || !excursion || !adultos || !precioAdulto) {
                 alert('⚠️ Los campos Cliente, Excursión, Adultos y Precio por Adulto son obligatorios.');
                 return;
             }
 
-            const recogidaCompleta = tipoRecogida + (lugarRecogida ? ' - ' + lugarRecogida : '');
+            const id = document.getElementById('id').value || 'Sin ID';
+            const recogidaCompleta = document.getElementById('tipoRecogida').value + (document.getElementById('lugarRecogida').value ? ' - ' + document.getElementById('lugarRecogida').value : '');
 
-            const base = 'https://recibo-app.vercel.app/ver-recibo';
             const params = new URLSearchParams({
-                id: id || 'Sin ID',
-                recibo: id || 'Sin ID',
+                id: id,
+                recibo: id,
                 cliente: cliente,
                 excursion: excursion,
                 adultos: adultos,
-                ninos: ninos || 0,
+                ninos: document.getElementById('ninos').value || 0,
                 precioAdulto: precioAdulto,
-                precioNino: precioNino || 0,
-                subtotal: subtotal,
-                descuento: descuento,
-                total: total,
-                deposito: deposito,
-                estado: estado,
-                metodoPago: metodoPago,
-                whatsapp: whatsapp,
-                correo: correo,
+                precioNino: document.getElementById('precioNino').value || 0,
+                subtotal: document.getElementById('subtotal').value,
+                descuento: document.getElementById('descuento').value || '0',
+                total: document.getElementById('total').value,
+                deposito: document.getElementById('deposito').value,
+                estado: document.querySelector('input[name="estado"]:checked').value,
+                metodoPago: document.getElementById('metodoPago').value,
+                whatsapp: document.getElementById('whatsapp').value || '',
+                correo: document.getElementById('correo').value || '',
                 hotel: recogidaCompleta,
-                habitacion: habitacion,
-                transporte: transporte,
-                notas: notas,
-                fechaExcursion: fechaExcursion
+                habitacion: document.getElementById('habitacion').value || '',
+                transporte: document.getElementById('transporte').value || 'Sí',
+                notas: document.getElementById('notas').value || 'Sin notas adicionales',
+                fechaExcursion: document.getElementById('fechaExcursion').value || ''
             });
 
+            const base = 'https://recibo-app.vercel.app/ver-recibo';
             const enlaceQR = base + '?' + params.toString();
             const enlaceAdmin = base + '?' + params.toString() + '&admin=true';
 
@@ -848,30 +649,29 @@
             document.getElementById('qrImg').src = qrUrl;
 
             const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlaceQR}`;
-            document.getElementById('whatsappLink').href = `https://wa.me/1${whatsapp ? '?text=' + encodeURIComponent(mensaje) : '?text=' + encodeURIComponent(mensaje)}`;
+            document.getElementById('whatsappLink').href = `https://wa.me/1${document.getElementById('whatsapp').value ? '?text=' + encodeURIComponent(mensaje) : '?text=' + encodeURIComponent(mensaje)}`;
 
             document.getElementById('resultado').classList.add('visible');
         });
 
         function copiarEnlace() {
             const enlace = document.getElementById('enlaceGenerado').textContent;
-            navigator.clipboard.writeText(enlace).then(() => {
-                alert('Enlace copiado');
-            }).catch(() => {
-                const textarea = document.createElement('textarea');
-                textarea.value = enlace;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                alert('Enlace copiado');
-            });
+            navigator.clipboard.writeText(enlace).then(() => alert('Enlace copiado'))
+                .catch(() => {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = enlace;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    alert('Enlace copiado');
+                });
         }
 
         function descargarQR() {
             const qrImg = document.getElementById('qrImg');
             const link = document.createElement('a');
-            link.download = 'recibo-qr-' + document.getElementById('id').value + '.png';
+            link.download = 'recibo-qr-' + (document.getElementById('id').value || 'recibo') + '.png';
             link.href = qrImg.src;
             link.click();
         }
