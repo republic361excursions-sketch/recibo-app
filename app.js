@@ -116,6 +116,7 @@ app.get('/ver-recibo', (req, res) => {
     }
 
     // ====== VERIFICAR SI ES ADMIN ======
+    // Solo mostrar botones si admin coincide con la clave secreta
     const esAdmin = admin === ADMIN_KEY;
 
     // ====== DATOS PARA LA VISTA ======
