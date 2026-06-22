@@ -255,28 +255,28 @@
         </div>
         <p class="subtitulo">Generador de Recibos de Pago</p>
 
-        <form id="formRecibo">
+        <form id="formRecibo" action="/ver-recibo" method="GET" target="_blank">
             <!-- ID -->
             <div class="form-group">
                 <label>ID / Código de Reserva</label>
-                <input type="text" id="id" placeholder="Ej: BUG-5198" oninput="actualizarVistaPrevia()">
+                <input type="text" id="id" name="id" placeholder="Ej: BUG-5198" oninput="actualizarVistaPrevia()">
             </div>
 
             <!-- CLIENTE -->
             <div class="form-group">
                 <label>Cliente <span class="required">*</span></label>
-                <input type="text" id="cliente" placeholder="Nombre completo" oninput="actualizarVistaPrevia()">
+                <input type="text" id="cliente" name="cliente" placeholder="Nombre completo" required oninput="actualizarVistaPrevia()">
             </div>
 
             <!-- WHATSAPP + CORREO -->
             <div class="form-row">
                 <div class="form-group">
                     <label>WhatsApp <span class="required">*</span></label>
-                    <input type="text" id="whatsapp" placeholder="Ej: 809-555-1234" oninput="actualizarVistaPrevia()">
+                    <input type="text" id="whatsapp" name="whatsapp" placeholder="Ej: 809-555-1234" oninput="actualizarVistaPrevia()">
                 </div>
                 <div class="form-group">
                     <label>Correo</label>
-                    <input type="email" id="correo" placeholder="correo@ejemplo.com" oninput="actualizarVistaPrevia()">
+                    <input type="email" id="correo" name="correo" placeholder="correo@ejemplo.com" oninput="actualizarVistaPrevia()">
                 </div>
             </div>
 
@@ -284,20 +284,20 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Excursión</label>
-                    <select id="tipoExcursion" onchange="cambiarTipoExcursion(); actualizarVistaPrevia();">
+                    <select id="tipoExcursion" name="tipoExcursion" onchange="cambiarTipoExcursion(); actualizarVistaPrevia();">
                         <option value="compartido">Compartido</option>
                         <option value="privado">Privado</option>
                     </select>
                 </div>
                 <div class="form-group privado-group" id="privadoGroup">
                     <label>Grupo</label>
-                    <input type="text" id="grupo" placeholder="Ej: Familia Pérez, Grupo 10" oninput="actualizarVistaPrevia()">
+                    <input type="text" id="grupo" name="grupo" placeholder="Ej: Familia Pérez, Grupo 10" oninput="actualizarVistaPrevia()">
                 </div>
             </div>
             <div class="form-row privado-group" id="privadoPrecioGroup">
                 <div class="form-group">
                     <label>Capacidad Máxima</label>
-                    <input type="number" id="capacidadMaxima" placeholder="Ej: 10" min="0" oninput="actualizarVistaPrevia()">
+                    <input type="number" id="capacidadMaxima" name="capacidadMaxima" placeholder="Ej: 10" min="0" oninput="actualizarVistaPrevia()">
                     <div class="small-hint">Número máximo de personas</div>
                 </div>
             </div>
@@ -306,7 +306,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Tipo de Recogida</label>
-                    <select id="tipoRecogida" onchange="cambiarEtiquetaHabitacion(); actualizarVistaPrevia();">
+                    <select id="tipoRecogida" name="tipoRecogida" onchange="cambiarEtiquetaHabitacion(); actualizarVistaPrevia();">
                         <option value="Hotel">Hotel</option>
                         <option value="Airbnb">Airbnb</option>
                         <option value="Punto de Encuentro">Punto de Encuentro</option>
@@ -315,17 +315,17 @@
                 </div>
                 <div class="form-group" id="lugarRecogidaGroup">
                     <label id="labelLugarRecogida">Lugar de Recogida</label>
-                    <input type="text" id="lugarRecogida" placeholder="Ej: Riu Bavaro, Villa Sol, Parque Central" oninput="actualizarVistaPrevia()">
+                    <input type="text" id="lugarRecogida" name="lugarRecogida" placeholder="Ej: Riu Bavaro, Villa Sol, Parque Central" oninput="actualizarVistaPrevia()">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label id="labelHabitacion">Habitación</label>
-                    <input type="text" id="habitacion" placeholder="Ej: 123, Villa B12" oninput="actualizarVistaPrevia()">
+                    <input type="text" id="habitacion" name="habitacion" placeholder="Ej: 123, Villa B12" oninput="actualizarVistaPrevia()">
                 </div>
                 <div class="form-group" id="horaRecogidaGroup">
                     <label id="labelHoraRecogida">Hora de Recogida</label>
-                    <input type="time" id="horaRecogida" onchange="actualizarVistaPrevia()">
+                    <input type="time" id="horaRecogida" name="horaRecogida" onchange="actualizarVistaPrevia()">
                 </div>
             </div>
 
@@ -333,7 +333,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Transporte</label>
-                    <select id="transporte" onchange="actualizarVistaPrevia();">
+                    <select id="transporte" name="transporte" onchange="actualizarVistaPrevia();">
                         <option value="Sí">Sí</option>
                         <option value="No">No</option>
                     </select>
@@ -344,11 +344,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Fecha de la Excursión</label>
-                    <input type="date" id="fechaExcursion" onchange="actualizarVistaPrevia()">
+                    <input type="date" id="fechaExcursion" name="fechaExcursion" onchange="actualizarVistaPrevia()">
                 </div>
                 <div class="form-group">
                     <label>Excursión <span class="required">*</span></label>
-                    <input type="text" id="excursion" placeholder="Nombre de la excursión" oninput="actualizarVistaPrevia()">
+                    <input type="text" id="excursion" name="excursion" placeholder="Nombre de la excursión" required oninput="actualizarVistaPrevia()">
                 </div>
             </div>
 
@@ -356,11 +356,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label id="labelAdultos">Adultos <span class="required">*</span></label>
-                    <input type="number" id="adultos" placeholder="Cantidad" min="0" oninput="calcularSubtotal()">
+                    <input type="number" id="adultos" name="adultos" placeholder="Cantidad" min="0" oninput="calcularSubtotal()">
                 </div>
                 <div class="form-group">
                     <label id="labelNinos">Niños</label>
-                    <input type="number" id="ninos" placeholder="Cantidad" min="0" oninput="calcularSubtotal()">
+                    <input type="number" id="ninos" name="ninos" placeholder="Cantidad" min="0" oninput="calcularSubtotal()">
                 </div>
             </div>
 
@@ -368,11 +368,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label id="labelPrecioAdulto">Precio por Adulto (USD) <span class="required">*</span></label>
-                    <input type="number" id="precioAdulto" placeholder="Ej: 45" min="0" step="0.01" oninput="calcularSubtotal()">
+                    <input type="number" id="precioAdulto" name="precioAdulto" placeholder="Ej: 45" min="0" step="0.01" oninput="calcularSubtotal()">
                 </div>
                 <div class="form-group">
                     <label id="labelPrecioNino">Precio por Niño (USD)</label>
-                    <input type="number" id="precioNino" placeholder="Ej: 25" min="0" step="0.01" oninput="calcularSubtotal()">
+                    <input type="number" id="precioNino" name="precioNino" placeholder="Ej: 25" min="0" step="0.01" oninput="calcularSubtotal()">
                     <div class="small-hint">Si no aplica, dejar en 0.</div>
                 </div>
             </div>
@@ -381,18 +381,18 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Subtotal (USD)</label>
-                    <input type="number" id="subtotal" min="0" step="0.01" readonly style="background:#f0f0f0; font-weight:600; color:#1a2a4a;">
+                    <input type="number" id="subtotal" name="subtotal" min="0" step="0.01" readonly style="background:#f0f0f0; font-weight:600; color:#1a2a4a;">
                 </div>
                 <div class="form-group">
                     <label>Depósito (USD)</label>
-                    <input type="number" id="deposito" min="0" step="0.01" readonly style="background:#f0f0f0; font-weight:600; color:#1a2a4a;">
+                    <input type="number" id="deposito" name="deposito" min="0" step="0.01" readonly style="background:#f0f0f0; font-weight:600; color:#1a2a4a;">
                 </div>
             </div>
 
             <!-- DESCUENTO -->
             <div class="form-group descuento-activo" id="descuentoGroup">
                 <label>Descuento (USD)</label>
-                <input type="number" id="descuento" min="0" step="0.01" oninput="calcularSubtotal()">
+                <input type="number" id="descuento" name="descuento" min="0" step="0.01" oninput="calcularSubtotal()">
                 <div class="small-hint">Monto a descontar del subtotal</div>
             </div>
 
@@ -400,7 +400,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Total (USD)</label>
-                    <input type="number" id="total" min="0" step="0.01" readonly style="background:#f0f0f0; font-weight:600; color:#1a2a4a;">
+                    <input type="number" id="total" name="total" min="0" step="0.01" readonly style="background:#f0f0f0; font-weight:600; color:#1a2a4a;">
                 </div>
                 <div class="form-group" style="display:flex; align-items:flex-end;">
                     <button type="button" class="btn btn-descuento" id="btnDescuento" onclick="toggleDescuento()">
@@ -424,7 +424,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Método de Pago</label>
-                    <select id="metodoPago" onchange="actualizarVistaPrevia()">
+                    <select id="metodoPago" name="metodoPago" onchange="actualizarVistaPrevia()">
                         <option value="Efectivo">Efectivo</option>
                         <option value="PayPal">PayPal</option>
                         <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
@@ -433,7 +433,7 @@
                 </div>
                 <div class="form-group">
                     <label>Notas</label>
-                    <input type="text" id="notas" placeholder="Notas adicionales" oninput="actualizarVistaPrevia()">
+                    <input type="text" id="notas" name="notas" placeholder="Notas adicionales" oninput="actualizarVistaPrevia()">
                 </div>
             </div>
 
@@ -565,7 +565,6 @@
             const labelHora = document.getElementById('labelHoraRecogida');
             
             if (tipo === 'Sin Recogida') {
-                // Cuando es SIN RECOGIDA
                 labelLugar.textContent = 'Lugar de la Excursión';
                 inputLugar.placeholder = 'Ej: Muelle de Punta Cana, Puerto de Bayahíbe';
                 labelHora.textContent = 'Hora de la Excursión';
@@ -574,7 +573,6 @@
                 document.getElementById('habitacion').value = '';
                 document.getElementById('habitacion').disabled = true;
             } else {
-                // Cuando hay recogida (Hotel, Airbnb, Punto de Encuentro)
                 labelLugar.textContent = 'Lugar de Recogida';
                 inputLugar.placeholder = 'Ej: Riu Bavaro, Villa Sol, Parque Central';
                 labelHora.textContent = 'Hora de Recogida';
@@ -642,8 +640,7 @@
             const tipoRecogida = document.getElementById('tipoRecogida').value || '';
             const lugarRecogida = document.getElementById('lugarRecogida').value || '';
             
-            // *** CAMBIO IMPORTANTE AQUÍ ***
-            // Si es Sin Recogida, mostrar "Lugar de la Excursión" en la vista previa
+            // Vista previa de recogida
             const vpLabelRecogida = document.getElementById('vpLabelRecogida');
             let recogidaTexto = '';
             
@@ -667,7 +664,7 @@
             const transporte = document.getElementById('transporte').value || '---';
             document.getElementById('vpTransporte').textContent = transporte;
             
-            // Cambiar label de hora en vista previa
+            // Hora de recogida
             const vpLabelHora = document.getElementById('vpLabelHora');
             if (tipoRecogida === 'Sin Recogida') {
                 vpLabelHora.textContent = 'Hora de la Excursión';
@@ -698,32 +695,19 @@
             const balance = total - deposito;
 
             const estadoEl = document.getElementById('vpEstado');
-            if (estado === 'completo') {
-                estadoEl.textContent = 'Pagado Completo';
+            if (estado === 'completo' || balance <= 0) {
+                estadoEl.textContent = '✅ Pagado Completo';
                 estadoEl.className = 'estado-mini pagado';
-            } else if (estado === 'deposito') {
-                estadoEl.textContent = 'Falta Pagar: $' + balance.toFixed(2);
+            } else if (estado === 'deposito' && deposito > 0) {
+                estadoEl.textContent = '💰 Falta Pagar: $' + balance.toFixed(2);
                 estadoEl.className = 'estado-mini falta';
-            } else if (estado === 'pendiente') {
-                estadoEl.textContent = 'Pendiente de Pago: $' + balance.toFixed(2);
+            } else {
+                estadoEl.textContent = '⏳ Pendiente de Pago: $' + balance.toFixed(2);
                 estadoEl.className = 'estado-mini pendiente';
             }
 
             document.getElementById('vpTotal').textContent = 'Total: $' + total.toFixed(2);
         }
-
-        // ====== GENERAR FECHA ======
-        document.addEventListener('DOMContentLoaded', function() {
-            const semana = new Date();
-            semana.setDate(semana.getDate() + 7);
-            document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
-            
-            document.querySelector('input[name="estado"][value="completo"]').checked = true;
-            
-            // Inicializar etiquetas
-            cambiarEtiquetaHabitacion();
-            actualizarVistaPrevia();
-        });
 
         // ====== DESCUENTO ======
         function toggleDescuento() {
@@ -741,80 +725,18 @@
             }
         }
 
-        // ====== ENVIAR ======
-        document.getElementById('formRecibo').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // ====== FECHA POR DEFECTO ======
+        document.addEventListener('DOMContentLoaded', function() {
+            const semana = new Date();
+            semana.setDate(semana.getDate() + 7);
+            document.getElementById('fechaExcursion').value = semana.toISOString().split('T')[0];
             
-            const cliente = document.getElementById('cliente').value;
-            const excursion = document.getElementById('excursion').value;
-            const adultos = document.getElementById('adultos').value;
-            const precioAdulto = document.getElementById('precioAdulto').value;
-            const tipo = document.getElementById('tipoExcursion').value;
-
-            if (tipo === 'compartido' && (!adultos || !precioAdulto)) {
-                alert('Para excursiones compartidas, completa Adultos y Precio por Adulto.');
-                return;
-            }
-            if (tipo === 'privado' && !precioAdulto) {
-                alert('Para excursiones privadas, completa el Precio Total.');
-                return;
-            }
-            if (!cliente || !excursion) {
-                alert('Los campos Cliente y Excursión son obligatorios.');
-                return;
-            }
-
-            const id = document.getElementById('id').value || 'Sin ID';
-            const recogidaCompleta = document.getElementById('tipoRecogida').value + (document.getElementById('lugarRecogida').value ? ' - ' + document.getElementById('lugarRecogida').value : '');
-            const horaRecogida = document.getElementById('horaRecogida').value || '';
-            const transporte = document.getElementById('transporte').value || 'Sí';
-            const grupo = document.getElementById('grupo').value || '';
-            const capacidadMaxima = document.getElementById('capacidadMaxima').value || '';
-
-            const params = new URLSearchParams({
-                id: id,
-                recibo: id,
-                cliente: cliente,
-                tipoExcursion: tipo,
-                grupo: grupo,
-                excursion: excursion,
-                adultos: adultos,
-                ninos: document.getElementById('ninos').value || 0,
-                precioAdulto: precioAdulto,
-                precioNino: document.getElementById('precioNino').value || 0,
-                subtotal: document.getElementById('subtotal').value,
-                descuento: document.getElementById('descuento').value || '0',
-                total: document.getElementById('total').value,
-                deposito: document.getElementById('deposito').value,
-                estado: document.querySelector('input[name="estado"]:checked').value,
-                metodoPago: document.getElementById('metodoPago').value,
-                whatsapp: document.getElementById('whatsapp').value || '',
-                correo: document.getElementById('correo').value || '',
-                hotel: recogidaCompleta,
-                habitacion: document.getElementById('habitacion').value || '',
-                horaRecogida: horaRecogida,
-                transporte: transporte,
-                capacidadMaxima: capacidadMaxima,
-                notas: document.getElementById('notas').value || 'Sin notas adicionales',
-                fechaExcursion: document.getElementById('fechaExcursion').value || ''
-            });
-
-            const base = 'https://recibo-app.vercel.app/ver-recibo';
-            const enlaceQR = base + '?' + params.toString();
-            const enlaceAdmin = base + '?' + params.toString() + '&admin=true';
-
-            document.getElementById('enlaceGenerado').textContent = enlaceQR;
-            document.getElementById('verRecibo').href = enlaceAdmin;
-
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(enlaceQR)}&size=200x200`;
-            document.getElementById('qrImg').src = qrUrl;
-
-            const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Escanea este QR o haz clic en el enlace: ${enlaceQR}`;
-            document.getElementById('whatsappLink').href = `https://wa.me/1${document.getElementById('whatsapp').value ? '?text=' + encodeURIComponent(mensaje) : '?text=' + encodeURIComponent(mensaje)}`;
-
-            document.getElementById('resultado').classList.add('visible');
+            document.querySelector('input[name="estado"][value="completo"]').checked = true;
+            cambiarEtiquetaHabitacion();
+            actualizarVistaPrevia();
         });
 
+        // ====== COPIAR ENLACE ======
         function copiarEnlace() {
             const enlace = document.getElementById('enlaceGenerado').textContent;
             navigator.clipboard.writeText(enlace).then(() => alert('Enlace copiado'))
@@ -829,6 +751,7 @@
                 });
         }
 
+        // ====== DESCARGAR QR ======
         function descargarQR() {
             const qrImg = document.getElementById('qrImg');
             const link = document.createElement('a');
@@ -836,6 +759,15 @@
             link.href = qrImg.src;
             link.click();
         }
+
+        // ====== ENVIAR FORMULARIO ======
+        document.getElementById('formRecibo').addEventListener('submit', function(e) {
+            // No prevenimos el submit porque queremos que abra en nueva pestaña
+            // Solo mostramos el resultado después de generar
+            setTimeout(function() {
+                document.getElementById('resultado').classList.add('visible');
+            }, 1000);
+        });
     </script>
 </body>
 </html>
