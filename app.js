@@ -59,12 +59,12 @@ app.get('/ver-recibo', (req, res) => {
         admin, tipoRecogida, lugarRecogida, timestamp, expiracion
     } = req.query;
 
-    // ====== VALIDACIÓN DE PARÁMETROS OBLIGATORIOS ======
+    // ====== VALIDACIÓN ======
     if (!cliente || !excursion) {
         return res.status(400).send('Error: Los campos Cliente y Excursión son obligatorios.');
     }
 
-    // ====== VERIFICACIÓN DE ADMINISTRADOR ======
+    // ====== VERIFICAR ADMIN ======
     const esAdmin = admin === ADMIN_KEY;
 
     // ====== PROCESAR EXPIRACIÓN ======
@@ -81,7 +81,6 @@ app.get('/ver-recibo', (req, res) => {
         const fechaActual = Date.now();
         const horasTranscurridas = (fechaActual - fechaGeneracion) / (1000 * 60 * 60);
         
-        // Solo validar expiración si NO es admin
         if (!esAdmin && horasTranscurridas > horasExpiracion) {
             return res.status(410).send(`
                 <!DOCTYPE html>
@@ -95,7 +94,7 @@ app.get('/ver-recibo', (req, res) => {
                     <style>
                         * { margin: 0; padding: 0; box-sizing: border-box; }
                         body {
-                            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                            font-family: 'Inter', sans-serif;
                             background: #f0f2f5;
                             min-height: 100vh;
                             display: flex;
@@ -109,27 +108,13 @@ app.get('/ver-recibo', (req, res) => {
                             width: 100%;
                             padding: 45px 50px;
                             border-radius: 16px;
-                            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+                            box-shadow: 0 8px 40px rgba(0,0,0,0.08);
                             border: 1px solid #e8eaed;
                             text-align: center;
                         }
-                        .icono {
-                            font-size: 72px;
-                            margin-bottom: 20px;
-                        }
-                        h1 {
-                            color: #c62828;
-                            font-size: 26px;
-                            font-weight: 700;
-                            margin-bottom: 12px;
-                            letter-spacing: 0.5px;
-                        }
-                        .subtitulo-error {
-                            color: #6b7a8f;
-                            font-size: 15px;
-                            line-height: 1.6;
-                            margin-bottom: 8px;
-                        }
+                        .icono { font-size: 72px; margin-bottom: 20px; }
+                        h1 { color: #c62828; font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+                        .subtitulo-error { color: #6b7a8f; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
                         .btn {
                             display: inline-block;
                             padding: 14px 36px;
@@ -143,14 +128,9 @@ app.get('/ver-recibo', (req, res) => {
                             text-decoration: none;
                             transition: all 0.3s ease;
                             font-family: 'Inter', sans-serif;
-                            letter-spacing: 0.5px;
                             margin-top: 8px;
                         }
-                        .btn:hover {
-                            background: #2c3e6e;
-                            transform: translateY(-2px);
-                            box-shadow: 0 6px 20px rgba(26, 42, 74, 0.25);
-                        }
+                        .btn:hover { background: #2c3e6e; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,42,74,0.25); }
                         .detalles {
                             margin-top: 20px;
                             padding: 16px 20px;
@@ -167,33 +147,14 @@ app.get('/ver-recibo', (req, res) => {
                             padding: 4px 0;
                             border-bottom: 1px solid #f0f0f0;
                         }
-                        .detalles .fila:last-child {
-                            border-bottom: none;
-                        }
-                        .detalles .label {
-                            font-weight: 500;
-                            color: #6b7a8f;
-                        }
-                        .detalles .valor {
-                            font-weight: 600;
-                            color: #1a2a4a;
-                        }
-                        .footer-error {
-                            margin-top: 20px;
-                            font-size: 12px;
-                            color: #b0bec5;
-                            letter-spacing: 0.5px;
-                        }
+                        .detalles .fila:last-child { border-bottom: none; }
+                        .detalles .label { font-weight: 500; color: #6b7a8f; }
+                        .detalles .valor { font-weight: 600; color: #1a2a4a; }
+                        .footer-error { margin-top: 20px; font-size: 12px; color: #b0bec5; }
                         @media (max-width: 640px) {
-                            .container {
-                                padding: 30px 25px;
-                            }
-                            .icono {
-                                font-size: 56px;
-                            }
-                            h1 {
-                                font-size: 22px;
-                            }
+                            .container { padding: 30px 25px; }
+                            .icono { font-size: 56px; }
+                            h1 { font-size: 22px; }
                         }
                     </style>
                 </head>
@@ -237,11 +198,11 @@ app.get('/ver-recibo', (req, res) => {
         fechaExpiracion = new Date(fechaGeneracion + (horasExpiracion * 60 * 60 * 1000));
     }
 
-    // ====== GENERACIÓN DE IDENTIFICADORES ======
+    // ====== GENERAR ID ======
     const idFinal = id || `REC-${Date.now()}`;
     const reciboFinal = recibo || idFinal;
 
-    // ====== CÁLCULO DE VALORES NUMÉRICOS ======
+    // ====== CÁLCULOS ======
     const numAdultos = parseInt(adultos) || 1;
     const numNinos = parseInt(ninos) || 0;
     const precioAdultoNum = parseFloat(precioAdulto) || 0;
@@ -261,14 +222,12 @@ app.get('/ver-recibo', (req, res) => {
     const depositoNum = parseFloat(deposito) || 0;
     
     let balancePendiente = totalCalculado - depositoNum;
-    
     if (estado === 'completo' || balancePendiente <= 0.009) {
         balancePendiente = 0;
     }
 
-    // ====== PROCESAMIENTO DE LA RECOGIDA ======
+    // ====== RECOGIDA ======
     const esSinRecogida = tipoRecogida === 'Sin Recogida';
-    
     let recogidaMostrar = '';
     let lugarMostrar = '';
     
@@ -288,13 +247,11 @@ app.get('/ver-recibo', (req, res) => {
     let horaMostrar = horaRecogida || '';
     let labelHora = esSinRecogida ? 'Hora de la Excursión' : 'Hora de Recogida';
 
-    // ====== DETERMINACIÓN DEL ESTADO REAL ======
+    // ====== ESTADO ======
     let estadoReal = estado || 'pendiente';
-    
     if (balancePendiente <= 0.009) {
         estadoReal = 'completo';
     }
-    
     if (estadoReal === 'deposito' && depositoNum === 0) {
         estadoReal = 'pendiente';
     }
@@ -307,7 +264,7 @@ app.get('/ver-recibo', (req, res) => {
     
     const estadoInfo = estadoConfig[estadoReal] || { texto: 'ESTADO DESCONOCIDO', color: '#6c757d' };
 
-    // ====== CONSTRUCCIÓN DE DATOS PARA LA VISTA ======
+    // ====== DATOS ======
     const datos = {
         idFactura: idFinal,
         numeroRecibo: reciboFinal,
@@ -357,9 +314,6 @@ app.get('/ver-recibo', (req, res) => {
     res.render('recibo', datos);
 });
 
-/**
- * Iniciar el servidor
- */
 app.listen(PORT, () => {
     console.log('========================================');
     console.log('  REPUBLIC EXCURSIONS - SISTEMA DE RECIBOS');
@@ -367,7 +321,7 @@ app.listen(PORT, () => {
     console.log(`  Servidor: http://localhost:${PORT}`);
     console.log(`  Clave Admin: ${ADMIN_KEY}`);
     console.log('  Expiración: Configurable por recibo');
-    console.log('  Opciones: 1h a 8 meses + Permanente');
+    console.log('  Opciones: 1h a 8 meses + Personalizado + Permanente');
     console.log('  Estado: Servidor corriendo correctamente');
     console.log('========================================');
 });
