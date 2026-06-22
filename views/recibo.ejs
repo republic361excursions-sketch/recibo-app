@@ -3,276 +3,450 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recibo <%= numeroRecibo %></title>
+    <meta name="theme-color" content="#1a2a4a">
+    <title>Recibo <%= numeroRecibo %> | Republic Excursions</title>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ===== RESET Y ESTILOS BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f5f5f0;
+            background: #f0f2f5;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px;
+            padding: 40px 20px;
         }
+
+        /* ===== CONTENEDOR DEL RECIBO ===== */
         .recibo {
             background: #ffffff;
-            max-width: 700px;
+            max-width: 820px;
             width: 100%;
-            padding: 45px 50px;
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-            border: 1px solid #edebe6;
+            padding: 50px 55px;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e8eaed;
             margin-bottom: 30px;
+            transition: box-shadow 0.3s ease;
         }
+        
+        .recibo:hover {
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ===== ENCABEZADO ===== */
         .header {
             text-align: center;
-            border-bottom: 2px solid #1a2a4a;
-            padding-bottom: 22px;
-            margin-bottom: 28px;
+            border-bottom: 3px solid #1a2a4a;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
         }
+        
         .header .logo {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
             color: #1a2a4a;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             text-transform: uppercase;
         }
-        .header .logo span { color: #c9a84c; }
+        
+        .header .logo span {
+            color: #c9a84c;
+        }
+        
         .header .titulo {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 300;
             color: #2c3e50;
-            margin-top: 4px;
-            letter-spacing: 1px;
+            margin-top: 6px;
+            letter-spacing: 2px;
         }
+        
         .header .recibo-numero {
-            font-size: 13px;
+            font-size: 14px;
             color: #8e9aaf;
-            margin-top: 4px;
+            margin-top: 6px;
             font-weight: 400;
             letter-spacing: 0.5px;
         }
+
+        /* ===== INFORMACIÓN DEL CLIENTE ===== */
         .info-cliente {
-            margin-bottom: 28px;
-            padding: 16px 22px;
-            background: #f8f7f4;
-            border-radius: 8px;
-            border-left: 4px solid #c9a84c;
+            margin-bottom: 30px;
+            padding: 20px 28px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid #c9a84c;
         }
+        
         .info-cliente .titulo {
-            font-size: 11px;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             color: #8e9aaf;
             font-weight: 600;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #eae8e3;
-            padding-bottom: 6px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #e8eaed;
+            padding-bottom: 8px;
         }
+        
         .info-cliente .fila {
             display: flex;
             justify-content: space-between;
-            padding: 4px 0;
+            padding: 6px 0;
             font-size: 14px;
             color: #2c3e50;
-            border-bottom: 1px solid #f0efeb;
+            border-bottom: 1px solid #f0f0f0;
         }
-        .info-cliente .fila:last-child { border-bottom: none; }
-        .info-cliente .label { font-weight: 500; color: #6b7a8f; }
-        .info-cliente .valor { font-weight: 400; text-align: right; color: #1a2a4a; }
+        
+        .info-cliente .fila:last-child {
+            border-bottom: none;
+        }
+        
+        .info-cliente .label {
+            font-weight: 500;
+            color: #6b7a8f;
+        }
+        
+        .info-cliente .valor {
+            font-weight: 400;
+            text-align: right;
+            color: #1a2a4a;
+        }
+
+        /* ===== TABLA DE CONCEPTOS ===== */
+        .tabla-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+        
         .tabla {
             width: 100%;
             border-collapse: collapse;
-            margin: 24px 0;
             font-size: 14px;
             border-bottom: 2px solid #1a2a4a;
         }
+        
         .tabla th {
             text-align: left;
-            padding: 10px 0;
+            padding: 12px 0;
             border-bottom: 2px solid #1a2a4a;
             color: #1a2a4a;
             font-weight: 600;
             font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 1px;
         }
+        
         .tabla td {
-            padding: 8px 0;
-            border-bottom: 1px solid #eeede8;
+            padding: 10px 0;
+            border-bottom: 1px solid #e8eaed;
             color: #2c3e50;
         }
-        .tabla .monto { text-align: right; font-weight: 500; }
-        .tabla .total { font-weight: 600; font-size: 15px; }
+        
+        .tabla .monto {
+            text-align: right;
+            font-weight: 500;
+        }
+        
+        .tabla .total {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* ===== ESTADO DE PAGO ===== */
         .estado-unico {
             text-align: center;
-            padding: 16px 20px;
-            border-radius: 8px;
-            margin: 24px 0;
+            padding: 18px 24px;
+            border-radius: 10px;
+            margin: 25px 0;
             font-size: 22px;
             font-weight: 600;
-            letter-spacing: 0.3px;
+            letter-spacing: 1px;
         }
+        
         .estado-unico.pagado {
-            background: #eafaf1;
-            border: 2px solid #27ae60;
-            color: #1e8449;
+            background: #e8f5e9;
+            border: 2px solid #2e7d32;
+            color: #1b5e20;
         }
+        
         .estado-unico.falta {
-            background: #fef9e7;
-            border: 2px solid #f1c40f;
-            color: #7d6608;
+            background: #fff8e1;
+            border: 2px solid #f9a825;
+            color: #e65100;
         }
+        
         .estado-unico.pendiente {
-            background: #fdedec;
-            border: 2px solid #e74c3c;
-            color: #922b21;
+            background: #ffebee;
+            border: 2px solid #c62828;
+            color: #b71c1c;
         }
+
+        /* ===== RESUMEN DE PAGO ===== */
         .resumen-pago {
-            background: #f8f7f4;
-            padding: 16px 24px;
-            border-radius: 8px;
+            background: #f8f9fa;
+            padding: 20px 28px;
+            border-radius: 12px;
             margin: 20px 0;
         }
+        
         .resumen-pago .fila {
             display: flex;
             justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px solid #eae8e3;
+            padding: 6px 0;
+            border-bottom: 1px solid #e8eaed;
             font-size: 14px;
         }
-        .resumen-pago .fila:last-child { border-bottom: none; }
-        .resumen-pago .label { font-weight: 500; color: #6b7a8f; }
-        .resumen-pago .value { font-weight: 600; color: #1a2a4a; }
-        .resumen-pago .value.pendiente { color: #e74c3c; }
-        .resumen-pago .value.pagado { color: #27ae60; }
+        
+        .resumen-pago .fila:last-child {
+            border-bottom: none;
+        }
+        
+        .resumen-pago .label {
+            font-weight: 500;
+            color: #6b7a8f;
+        }
+        
+        .resumen-pago .value {
+            font-weight: 600;
+            color: #1a2a4a;
+        }
+        
+        .resumen-pago .value.pendiente {
+            color: #c62828;
+        }
+        
+        .resumen-pago .value.pagado {
+            color: #2e7d32;
+        }
+        
         .resumen-pago .fila.total {
             border-top: 2px solid #1a2a4a;
-            padding-top: 8px;
-            margin-top: 4px;
+            padding-top: 10px;
+            margin-top: 6px;
             font-size: 15px;
         }
+
+        /* ===== PIE DE PÁGINA ===== */
         .footer {
             text-align: center;
-            margin-top: 28px;
-            padding-top: 18px;
-            border-top: 1px solid #eae8e3;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e8eaed;
             color: #aab3c5;
             font-size: 12px;
             letter-spacing: 0.5px;
         }
+        
         .footer .empresa {
             color: #1a2a4a;
             font-weight: 600;
-            font-size: 13px;
-            letter-spacing: 1.5px;
+            font-size: 14px;
+            letter-spacing: 2px;
         }
+        
         .footer .direccion {
             margin-top: 4px;
-            font-size: 11px;
-            color: #c5cdd8;
+            font-size: 12px;
+            color: #b0bec5;
         }
+        
         .footer .codigo {
-            margin-top: 6px;
-            font-size: 10px;
-            color: #c5cdd8;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #b0bec5;
             letter-spacing: 0.5px;
         }
+
+        /* ===== QR INFO ===== */
         .qr-info {
             text-align: center;
-            margin: 14px 0;
-            padding: 10px;
-            background: #f8f7f4;
-            border-radius: 8px;
+            margin: 16px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 10px;
             font-size: 12px;
             color: #8e9aaf;
         }
-        .qr-info span { font-weight: 600; color: #1a2a4a; }
+        
+        .qr-info span {
+            font-weight: 600;
+            color: #1a2a4a;
+        }
+
+        /* ===== BOTONES DE ADMINISTRACIÓN ===== */
         .acciones-recibo {
             display: none;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 14px;
             justify-content: center;
-            max-width: 700px;
+            max-width: 820px;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
         }
-        .acciones-recibo.visible { display: flex; }
+        
+        .acciones-recibo.visible {
+            display: flex;
+        }
+        
         .btn-accion {
-            padding: 12px 28px;
+            padding: 14px 32px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
             text-align: center;
             background: #1a2a4a;
-            color: white;
+            color: #ffffff;
+            letter-spacing: 0.5px;
         }
-        .btn-accion:hover { background: #2c3e6e; }
-        .btn-accion.whatsapp { background: #25D366; }
-        .btn-accion.whatsapp:hover { background: #1da851; }
-        .btn-accion.imagen { background: #c9a84c; }
-        .btn-accion.imagen:hover { background: #b8973a; }
-        .btn-accion.volver { background: #8e9aaf; }
-        .btn-accion.volver:hover { background: #6b7a8f; }
+        
+        .btn-accion:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-accion:active {
+            transform: translateY(0);
+        }
+        
+        .btn-accion.whatsapp {
+            background: #25D366;
+        }
+        
+        .btn-accion.whatsapp:hover {
+            background: #1da851;
+        }
+        
+        .btn-accion.imagen {
+            background: #c9a84c;
+        }
+        
+        .btn-accion.imagen:hover {
+            background: #b8973a;
+        }
+        
+        .btn-accion.volver {
+            background: #78909c;
+        }
+        
+        .btn-accion.volver:hover {
+            background: #607d8b;
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media print {
-            body { background: white; padding: 0; }
-            .recibo { box-shadow: none; border: 1px solid #ddd; padding: 30px; }
-            .acciones-recibo { display: none !important; }
+            body {
+                background: #ffffff;
+                padding: 0;
+            }
+            
+            .recibo {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                padding: 30px;
+            }
+            
+            .acciones-recibo {
+                display: none !important;
+            }
         }
-        @media (max-width: 600px) {
-            .recibo { padding: 25px 20px; }
-            .info-cliente .fila { flex-direction: column; align-items: flex-start; }
-            .info-cliente .valor { text-align: left; width: 100%; }
-            .tabla { font-size: 13px; }
-            .estado-unico { font-size: 18px; padding: 12px; }
-            .acciones-recibo { flex-direction: column; align-items: center; }
-            .btn-accion { width: 100%; text-align: center; }
+        
+        @media (max-width: 640px) {
+            .recibo {
+                padding: 25px 20px;
+            }
+            
+            .info-cliente .fila {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .info-cliente .valor {
+                text-align: left;
+                width: 100%;
+            }
+            
+            .tabla {
+                font-size: 13px;
+            }
+            
+            .estado-unico {
+                font-size: 18px;
+                padding: 14px;
+            }
+            
+            .acciones-recibo {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-accion {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- ===== RECIBO ===== -->
     <div id="reciboContainer" class="recibo">
+        
+        <!-- ENCABEZADO -->
         <div class="header">
             <div class="logo">Republic <span>Excursions</span></div>
             <div class="titulo">Recibo de Pago</div>
             <div class="recibo-numero">Recibo # <%= numeroRecibo %></div>
         </div>
 
-        <!-- ====== INFORMACIÓN DEL CLIENTE ====== -->
+        <!-- INFORMACIÓN DEL CLIENTE -->
         <div class="info-cliente">
             <div class="titulo">Información de la Reserva</div>
+            
             <div class="fila">
                 <span class="label">Factura / Reserva</span>
                 <span class="valor"><%= idFactura %></span>
             </div>
+            
             <div class="fila">
                 <span class="label">Cliente</span>
                 <span class="valor"><%= cliente %></span>
             </div>
+            
             <div class="fila">
                 <span class="label">Tipo de Excursión</span>
                 <span class="valor"><%= tipoExcursion === 'privado' ? 'Privado' : 'Compartido' %></span>
             </div>
+            
             <% if (grupo) { %>
             <div class="fila">
                 <span class="label">Grupo</span>
                 <span class="valor"><%= grupo %></span>
             </div>
             <% } %>
+            
             <% if (whatsapp) { %>
             <div class="fila">
                 <span class="label">WhatsApp</span>
                 <span class="valor"><%= whatsapp %></span>
             </div>
             <% } %>
+            
             <% if (correo) { %>
             <div class="fila">
                 <span class="label">Correo Electrónico</span>
@@ -310,28 +484,34 @@
                 <span class="label">Transporte</span>
                 <span class="valor"><%= transporte %></span>
             </div>
+            
             <div class="fila">
                 <span class="label">Excursión</span>
                 <span class="valor"><%= excursion %></span>
             </div>
+            
             <div class="fila">
                 <span class="label">Fecha</span>
                 <span class="valor"><%= fechaExcursion %></span>
             </div>
+            
             <div class="fila">
                 <span class="label">Personas</span>
                 <span class="valor"><%= adultos %> Adultos, <%= ninos %> Niños</span>
             </div>
+            
             <% if (capacidadMaxima) { %>
             <div class="fila">
                 <span class="label">Capacidad Máxima</span>
                 <span class="valor"><%= capacidadMaxima %></span>
             </div>
             <% } %>
+            
             <div class="fila">
                 <span class="label">Método de Pago</span>
                 <span class="valor"><%= metodoPago %></span>
             </div>
+            
             <% if (notas && notas !== 'Sin notas adicionales') { %>
             <div class="fila">
                 <span class="label">Notas</span>
@@ -340,85 +520,87 @@
             <% } %>
         </div>
 
-        <!-- ====== TABLA DE CONCEPTOS ====== -->
-        <table class="tabla">
-            <thead>
-                <tr>
-                    <th>Concepto</th>
-                    <th class="monto">Monto (USD)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong><%= excursion %></strong></td>
-                    <td class="monto"></td>
-                </tr>
-                
-                <% if (tipoExcursion === 'compartido') { %>
-                <tr>
-                    <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
-                    <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
-                </tr>
-                <% if (ninos > 0) { %>
-                <tr>
-                    <td>Niños: <%= ninos %> × $<%= precioNino.toFixed(2) %></td>
-                    <td class="monto">$<%= (ninos * precioNino).toFixed(2) %></td>
-                </tr>
-                <% } %>
-                
-                <% } else { %>
-                <tr>
-                    <td>Privado - <%= adultos %> personas</td>
-                    <td class="monto">$<%= precioAdulto.toFixed(2) %></td>
-                </tr>
-                <% } %>
-                
-                <tr>
-                    <td><strong>Subtotal</strong></td>
-                    <td class="monto total">$<%= subtotal.toFixed(2) %></td>
-                </tr>
-                
-                <% if (descuento > 0) { %>
-                <tr>
-                    <td style="color:#27ae60;"><strong>Descuento</strong></td>
-                    <td class="monto" style="color:#27ae60;">-$<%= descuento.toFixed(2) %></td>
-                </tr>
-                <tr>
-                    <td><strong>Total</strong></td>
-                    <td class="monto total">$<%= total.toFixed(2) %></td>
-                </tr>
-                <% } %>
-                
-                <% if (depositoPagado > 0 && totalPendiente > 0) { %>
-                <tr>
-                    <td>Depósito Pagado (25%)</td>
-                    <td class="monto">$<%= depositoPagado.toFixed(2) %></td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
+        <!-- TABLA DE CONCEPTOS -->
+        <div class="tabla-container">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th class="monto">Monto (USD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong><%= excursion %></strong></td>
+                        <td class="monto"></td>
+                    </tr>
+                    
+                    <% if (tipoExcursion === 'compartido') { %>
+                    <tr>
+                        <td>Adultos: <%= adultos %> × $<%= precioAdulto.toFixed(2) %></td>
+                        <td class="monto">$<%= (adultos * precioAdulto).toFixed(2) %></td>
+                    </tr>
+                    <% if (ninos > 0) { %>
+                    <tr>
+                        <td>Niños: <%= ninos %> × $<%= precioNino.toFixed(2) %></td>
+                        <td class="monto">$<%= (ninos * precioNino).toFixed(2) %></td>
+                    </tr>
+                    <% } %>
+                    
+                    <% } else { %>
+                    <tr>
+                        <td>Privado - <%= adultos %> personas</td>
+                        <td class="monto">$<%= precioAdulto.toFixed(2) %></td>
+                    </tr>
+                    <% } %>
+                    
+                    <tr>
+                        <td><strong>Subtotal</strong></td>
+                        <td class="monto total">$<%= subtotal.toFixed(2) %></td>
+                    </tr>
+                    
+                    <% if (descuento > 0) { %>
+                    <tr>
+                        <td style="color: #2e7d32;"><strong>Descuento</strong></td>
+                        <td class="monto" style="color: #2e7d32;">-$<%= descuento.toFixed(2) %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td class="monto total">$<%= total.toFixed(2) %></td>
+                    </tr>
+                    <% } %>
+                    
+                    <% if (depositoPagado > 0 && totalPendiente > 0) { %>
+                    <tr>
+                        <td>Depósito Pagado (25%)</td>
+                        <td class="monto">$<%= depositoPagado.toFixed(2) %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
 
-        <!-- ====== ESTADO ====== -->
+        <!-- ESTADO DE PAGO -->
         <%
             let estadoClase = '';
             let estadoMostrar = '';
             
             if (totalPendiente <= 0) {
                 estadoClase = 'pagado';
-                estadoMostrar = '✅ PAGADO COMPLETO';
+                estadoMostrar = 'PAGADO COMPLETO';
             } else if (estado === 'deposito' && depositoPagado > 0) {
                 estadoClase = 'falta';
-                estadoMostrar = '💰 DEPÓSITO PAGADO - Falta: $' + totalPendiente.toFixed(2);
+                estadoMostrar = 'DEPÓSITO PAGADO - Falta: $' + totalPendiente.toFixed(2);
             } else {
                 estadoClase = 'pendiente';
-                estadoMostrar = '⏳ PENDIENTE DE PAGO - Total: $' + totalPendiente.toFixed(2);
+                estadoMostrar = 'PENDIENTE DE PAGO - Total: $' + totalPendiente.toFixed(2);
             }
         %>
         <div class="estado-unico <%= estadoClase %>">
             <%= estadoMostrar %>
         </div>
 
-        <!-- ====== RESUMEN DE PAGO ====== -->
+        <!-- RESUMEN DE PAGO -->
         <div class="resumen-pago">
             <div class="fila">
                 <span class="label">Subtotal</span>
@@ -428,7 +610,7 @@
             <% if (descuento > 0) { %>
             <div class="fila">
                 <span class="label">Descuento</span>
-                <span class="value" style="color:#27ae60;">-$<%= descuento.toFixed(2) %></span>
+                <span class="value" style="color: #2e7d32;">-$<%= descuento.toFixed(2) %></span>
             </div>
             <div class="fila">
                 <span class="label">Total</span>
@@ -448,16 +630,18 @@
                 <span class="value <%= totalPendiente === 0 ? 'pagado' : 'pendiente' %>">
                     $<%= totalPendiente.toFixed(2) %>
                     <% if (totalPendiente === 0) { %>
-                        <span style="font-size:12px; color:#27ae60;"> (Pagado)</span>
+                        <span style="font-size: 12px; color: #2e7d32;"> (Pagado)</span>
                     <% } %>
                 </span>
             </div>
         </div>
 
+        <!-- QR INFO -->
         <div class="qr-info">
             <span>Documento de verificación</span> &mdash; Código <%= numeroRecibo %>
         </div>
 
+        <!-- PIE DE PÁGINA -->
         <div class="footer">
             <p class="empresa">Republic Excursions</p>
             <p class="direccion">Punta Cana, República Dominicana</p>
@@ -466,31 +650,46 @@
         </div>
     </div>
 
-    <!-- ====== BOTONES (SOLO ADMIN) ====== -->
+    <!-- ===== BOTONES DE ADMINISTRACIÓN ===== -->
     <% if (mostrarBotones) { %>
     <div class="acciones-recibo visible">
-        <button class="btn-accion imagen" onclick="descargarImagen()">Descargar Imagen</button>
-        <a href="#" class="btn-accion whatsapp" id="whatsappBtn">Enviar por WhatsApp</a>
-        <a href="/" class="btn-accion volver">Volver al inicio</a>
+        <button class="btn-accion imagen" onclick="descargarImagen()">
+            Descargar Imagen
+        </button>
+        <a href="#" class="btn-accion whatsapp" id="whatsappBtn">
+            Enviar por WhatsApp
+        </a>
+        <a href="/" class="btn-accion volver">
+            Volver al inicio
+        </a>
     </div>
     <% } %>
 
+    <!-- ===== SCRIPTS ===== -->
     <script>
+        /**
+         * Configuración del botón de WhatsApp al cargar la página
+         */
         document.addEventListener('DOMContentLoaded', function() {
-            const cliente = '<%= cliente %>';
-            const excursion = '<%= excursion %>';
-            const enlace = window.location.href;
-            const mensaje = `Hola ${cliente}, tu recibo de ${excursion} está listo. Puedes verlo aquí: ${enlace}`;
-            const whatsappBtn = document.getElementById('whatsappBtn');
+            var cliente = '<%= cliente %>';
+            var excursion = '<%= excursion %>';
+            var enlace = window.location.href;
+            var mensaje = 'Hola ' + cliente + ', tu recibo de ' + excursion + ' está listo. Puedes verlo aquí: ' + enlace;
+            var whatsappBtn = document.getElementById('whatsappBtn');
+            
             if (whatsappBtn) {
-                whatsappBtn.href = `https://wa.me/1?text=${encodeURIComponent(mensaje)}`;
+                whatsappBtn.href = 'https://wa.me/1?text=' + encodeURIComponent(mensaje);
             }
         });
 
+        /**
+         * Descarga el recibo como imagen PNG
+         */
         function descargarImagen() {
-            const elemento = document.getElementById('reciboContainer');
-            const btn = document.querySelector('.btn-accion.imagen');
-            const textoOriginal = btn.innerHTML;
+            var elemento = document.getElementById('reciboContainer');
+            var btn = document.querySelector('.btn-accion.imagen');
+            var textoOriginal = btn.innerHTML;
+            
             btn.innerHTML = 'Generando...';
             btn.disabled = true;
 
@@ -500,21 +699,30 @@
                 useCORS: true,
                 allowTaint: true,
                 logging: false
-            }).then(canvas => {
-                const link = document.createElement('a');
-                const reciboNum = document.querySelector('.recibo-numero').textContent.trim().replace(/\s/g, '');
-                link.download = `recibo-${reciboNum}.png`;
+            })
+            .then(function(canvas) {
+                var link = document.createElement('a');
+                var reciboNum = document.querySelector('.recibo-numero')
+                    .textContent
+                    .trim()
+                    .replace(/\s/g, '');
+                link.download = 'recibo-' + reciboNum + '.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
+                
                 btn.innerHTML = textoOriginal;
                 btn.disabled = false;
-            }).catch(error => {
+            })
+            .catch(function(error) {
                 console.error('Error al generar la imagen:', error);
                 btn.innerHTML = 'Error';
                 btn.disabled = false;
-                setTimeout(() => { btn.innerHTML = textoOriginal; }, 3000);
+                setTimeout(function() {
+                    btn.innerHTML = textoOriginal;
+                }, 3000);
             });
         }
     </script>
+
 </body>
 </html>
